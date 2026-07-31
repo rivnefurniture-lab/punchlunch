@@ -111,13 +111,35 @@ p.body + p.body{margin-top:16px}
 
 /* MARQUEE (auto-scroll reel of square tiles) */
 .marquee{position:relative;overflow:hidden;padding:18px 0;border-block:1px solid var(--line);background:linear-gradient(180deg,#080808,#050505);z-index:2}
-.marquee .track{display:flex;gap:16px;width:max-content;animation:scroll-x var(--dur,42s) linear infinite;will-change:transform}
-.marquee.rev .track{animation-direction:reverse}
-.marquee:hover .track{animation-play-state:paused}
+.marquee .track{display:flex;gap:16px;width:max-content;will-change:transform;cursor:grab;touch-action:pan-y;user-select:none;-webkit-user-select:none}
+.marquee .track.dragging{cursor:grabbing}
+.marquee .hint{position:absolute;top:12px;right:clamp(18px,4vw,48px);z-index:4;font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-dim);display:flex;align-items:center;gap:8px;pointer-events:none}
+.marquee .hint svg{width:26px;height:14px;stroke:var(--accent);fill:none}
 .marquee .cell{width:clamp(150px,17vw,230px);aspect-ratio:1;border-radius:12px;overflow:hidden;flex:none;border:1px solid var(--line);position:relative;background:#0d0d0d}
+.marquee .cell video,.marquee .cell img{pointer-events:none}
 .marquee .cell video{width:100%;height:100%;object-fit:cover}
 .marquee .cell::after{content:"";position:absolute;inset:0;box-shadow:inset 0 0 40px rgba(0,0,0,.55)}
 @keyframes scroll-x{to{transform:translateX(-50%)}}
+
+/* KALEIDOSCOPE motifs for dark sections */
+.kaleido{position:absolute;z-index:0;pointer-events:none;border-radius:50%;
+  background:repeating-conic-gradient(from 0deg,
+    rgba(255,74,28,.85) 0deg 7deg, transparent 7deg 20deg,
+    rgba(255,122,77,.6) 20deg 27deg, transparent 27deg 45deg,
+    rgba(255,74,28,.5) 45deg 50deg, transparent 50deg 68deg);
+  -webkit-mask:radial-gradient(circle,#000 0%,#000 30%,rgba(0,0,0,.35) 55%,transparent 72%);
+  mask:radial-gradient(circle,#000 0%,#000 30%,rgba(0,0,0,.35) 55%,transparent 72%);
+  mix-blend-mode:screen;opacity:.18;filter:blur(1px);animation:spin 52s linear infinite}
+.kaleido::after{content:"";position:absolute;inset:14%;border-radius:50%;
+  background:repeating-conic-gradient(from 12deg,
+    rgba(255,150,110,.7) 0deg 5deg, transparent 5deg 18deg,
+    rgba(255,74,28,.5) 18deg 24deg, transparent 24deg 40deg);
+  -webkit-mask:radial-gradient(circle,#000 0%,transparent 68%);mask:radial-gradient(circle,#000 0%,transparent 68%);
+  animation:spin 34s linear infinite reverse}
+.kaleido.slow{animation-duration:80s;opacity:.13}
+.kaleido.rev{animation-direction:reverse}
+@keyframes spin{to{transform:rotate(360deg)}}
+@media(max-width:640px){.kaleido{opacity:.12;filter:blur(3px)}}
 .marquee-label{position:absolute;top:50%;left:clamp(18px,4vw,48px);transform:translateY(-50%);z-index:3;font-family:'Instrument Serif',serif;font-style:italic;font-size:clamp(20px,2.4vw,30px);color:#fff;background:rgba(5,5,5,.55);backdrop-filter:blur(6px);padding:8px 16px;border-radius:100px;border:1px solid var(--line);pointer-events:none}
 
 /* WHY — split with video */
@@ -267,6 +289,7 @@ footer{border-top:1px solid var(--line);padding:52px 0 40px;position:relative;z-
 
 <!-- MARQUEE 1 -->
 <div class="marquee" data-dur="46">
+  <div class="hint">Drag to spin <svg viewBox="0 0 26 14"><path d="M2 7h22M18 2l6 5-6 5" stroke-width="1.6"/></svg></div>
   <div class="track auto">
     <div class="cell"><video data-lazy="assets/video/sq1.mp4" poster="assets/img/sq1.jpg" muted loop playsinline></video></div>
     <div class="cell"><video data-lazy="assets/video/sq2.mp4" poster="assets/img/sq2.jpg" muted loop playsinline></video></div>
@@ -281,7 +304,7 @@ footer{border-top:1px solid var(--line);padding:52px 0 40px;position:relative;z-
 
 <!-- WHY WE EXIST -->
 <section class="why" id="why">
-  <div class="glow tl"></div>
+  <div class="glow tl"><i class="kaleido" style="width:560px;height:560px;top:-150px;left:-140px"></i></div>
   <div class="wrap">
     <div class="eyebrow" data-num="01 / ">Why we exist</div>
     <div class="split2">
@@ -300,6 +323,7 @@ footer{border-top:1px solid var(--line);padding:52px 0 40px;position:relative;z-
 
 <!-- WHAT AI CHANGES -->
 <section class="ai" id="ai">
+  <div class="glow br"><i class="kaleido slow" style="width:640px;height:640px;bottom:-220px;right:-180px"></i></div>
   <div class="wrap">
     <div class="eyebrow" data-num="02 / ">What AI changes (and what it doesn't)</div>
     <h2 class="big reveal" style="max-width:16ch">The honest version.</h2>
@@ -325,7 +349,7 @@ footer{border-top:1px solid var(--line);padding:52px 0 40px;position:relative;z-
 
 <!-- WHAT WE MAKE (autoplay gif grid) -->
 <section class="work" id="work">
-  <div class="glow br"></div>
+  <div class="glow br"><i class="kaleido rev" style="width:600px;height:600px;bottom:-200px;right:-160px"></i></div>
   <div class="wrap">
     <div class="eyebrow" data-num="03 / ">What we make</div>
     <h2 class="big reveal">Work that plays in a bigger league <span class="serif accent">than it pays for.</span></h2>
@@ -371,6 +395,7 @@ footer{border-top:1px solid var(--line);padding:52px 0 40px;position:relative;z-
 
 <!-- HOW IT WORKS -->
 <section class="process" id="process">
+  <div class="glow tl"><i class="kaleido" style="width:520px;height:520px;top:-160px;left:-160px"></i></div>
   <div class="wrap">
     <div class="eyebrow" data-num="04 / ">How it works</div>
     <h2 class="big reveal">Days, not months.</h2>
@@ -391,6 +416,7 @@ footer{border-top:1px solid var(--line);padding:52px 0 40px;position:relative;z-
 
 <!-- PRICE -->
 <section class="price" id="price">
+  <div class="glow br"><i class="kaleido slow rev" style="width:680px;height:680px;bottom:-240px;right:-200px"></i></div>
   <div class="wrap inner">
     <div class="num-wrap reveal">
       <video data-lazy="assets/video/reel5.mp4" muted loop playsinline poster="assets/img/reel5.jpg"></video>
@@ -408,6 +434,7 @@ footer{border-top:1px solid var(--line);padding:52px 0 40px;position:relative;z-
 
 <!-- MARQUEE 2 (reverse) -->
 <div class="marquee rev" data-dur="52">
+  <div class="hint">Drag to spin <svg viewBox="0 0 26 14"><path d="M2 7h22M18 2l6 5-6 5" stroke-width="1.6"/></svg></div>
   <div class="track auto">
     <div class="cell"><video data-lazy="assets/video/sq8.mp4" poster="assets/img/sq8.jpg" muted loop playsinline></video></div>
     <div class="cell"><video data-lazy="assets/video/sq7.mp4" poster="assets/img/sq7.jpg" muted loop playsinline></video></div>
@@ -422,7 +449,7 @@ footer{border-top:1px solid var(--line);padding:52px 0 40px;position:relative;z-
 
 <!-- REALITY CHECK -->
 <section class="reality" id="reality">
-  <div class="glow tl"></div>
+  <div class="glow tl"><i class="kaleido rev" style="width:560px;height:560px;top:-170px;right:-150px;left:auto"></i></div>
   <div class="wrap">
     <div class="eyebrow" data-num="06 / ">A reality check</div>
     <h2 class="big reveal" style="max-width:22ch">Will one ad make you famous? <span class="serif accent">No.</span></h2>
@@ -497,10 +524,37 @@ links.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{burger.cl
 const io=new IntersectionObserver((es)=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}})},{threshold:.14,rootMargin:'0px 0px -6% 0px'});
 document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
 
-/* Duplicate each marquee's tiles so the -50% scroll loops seamlessly */
-document.querySelectorAll('.marquee .track').forEach(t=>{
-  t.style.setProperty('--dur',(t.parentElement.dataset.dur||'46')+'s');
-  t.innerHTML+=t.innerHTML;
+/* Draggable, infinitely-looping reels (auto-drift + grab to spin/fling) */
+document.querySelectorAll('.marquee').forEach(m=>{
+  const track=m.querySelector('.track');
+  // duplicate until the strip is at least 2x the viewport, so the loop never gaps
+  let guard=0;
+  while(track.scrollWidth < m.clientWidth*2 + 400 && guard++<4){ track.innerHTML+=track.innerHTML; }
+  let half=track.scrollWidth/2;
+  addEventListener('resize',()=>{half=track.scrollWidth/2;},{passive:true});
+  const dir=m.classList.contains('rev')?-1:1;
+  const AUTO=0.35*dir;                       // gentle constant drift (px/frame)
+  let offset=dir<0?half:0, vel=0, dragging=false, lastX=0, movedAt=0, lastT=0;
+  const norm=()=>{ if(half>0){ offset=((offset%half)+half)%half; } };
+  const apply=()=>{ track.style.transform='translate3d('+(-offset)+'px,0,0)'; };
+  function frame(now){
+    if(!dragging){
+      offset+=AUTO+vel;
+      vel*=0.94; if(Math.abs(vel)<0.02) vel=0;
+      norm(); apply();
+    }
+    requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+  const getX=e=>e.touches?e.touches[0].clientX:e.clientX;
+  const down=e=>{dragging=true;track.classList.add('dragging');lastX=getX(e);vel=0;lastT=performance.now();};
+  const move=e=>{ if(!dragging)return; const x=getX(e),now=performance.now(),dx=x-lastX,dt=Math.max(now-lastT,1);
+    offset-=dx; vel=-dx/dt*16; lastX=x; lastT=now; norm(); apply(); };
+  const up=()=>{ if(!dragging)return; dragging=false; track.classList.remove('dragging'); };
+  track.addEventListener('pointerdown',down);
+  addEventListener('pointermove',move,{passive:true});
+  addEventListener('pointerup',up); addEventListener('pointercancel',up);
+  track.addEventListener('dragstart',e=>e.preventDefault());
 });
 
 /* Lazy-load + play videos only while visible; pause offscreen to save CPU/battery */
