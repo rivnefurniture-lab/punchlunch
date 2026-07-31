@@ -26,6 +26,7 @@
   --accent-2:#ff7a4d;
   --max:1320px;
   --ease:cubic-bezier(.2,.7,.2,1);
+  --drag-cur:url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='30'%20height='30'%3E%3Ccircle%20cx='15'%20cy='15'%20r='13.5'%20fill='rgba(0,0,0,0.4)'%20stroke='%23ff4a1c'%20stroke-width='1.2'/%3E%3Cpath%20d='M12%2011%208%2015l4%204M18%2011l4%204-4%204'%20fill='none'%20stroke='%23fff'%20stroke-width='1.6'%20stroke-linecap='round'%20stroke-linejoin='round'/%3E%3C/svg%3E") 15 15,ew-resize;
 }
 html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
 body{background:var(--bg);color:var(--ink);font-family:'Space Grotesk',system-ui,sans-serif;font-size:18px;line-height:1.5;overflow-x:hidden;position:relative}
@@ -111,11 +112,11 @@ p.body + p.body{margin-top:16px}
 
 /* MARQUEE (auto-scroll reel of square tiles) */
 .marquee{position:relative;overflow:hidden;padding:18px 0;border-block:1px solid var(--line);background:linear-gradient(180deg,#080808,#050505);z-index:2}
-.marquee .track{display:flex;gap:16px;width:max-content;will-change:transform;cursor:grab;touch-action:pan-y;user-select:none;-webkit-user-select:none}
-.marquee .track.dragging{cursor:grabbing}
+.marquee .track{display:flex;width:max-content;will-change:transform;cursor:var(--drag-cur);touch-action:pan-y;user-select:none;-webkit-user-select:none}
+.marquee .track.dragging{cursor:var(--drag-cur)}
 .marquee .hint{position:absolute;top:12px;right:clamp(18px,4vw,48px);z-index:4;font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-dim);display:flex;align-items:center;gap:8px;pointer-events:none}
 .marquee .hint svg{width:26px;height:14px;stroke:var(--accent);fill:none}
-.marquee .cell{width:clamp(150px,17vw,230px);aspect-ratio:1;border-radius:12px;overflow:hidden;flex:none;border:1px solid var(--line);position:relative;background:#0d0d0d}
+.marquee .cell{width:clamp(150px,17vw,230px);aspect-ratio:1;border-radius:12px;overflow:hidden;flex:none;border:1px solid var(--line);position:relative;background:#0d0d0d;margin-right:16px}
 .marquee .cell video,.marquee .cell img{pointer-events:none}
 .marquee .cell video{width:100%;height:100%;object-fit:cover}
 .marquee .cell::after{content:"";position:absolute;inset:0;box-shadow:inset 0 0 40px rgba(0,0,0,.55)}
@@ -138,6 +139,26 @@ p.body + p.body{margin-top:16px}
   animation:spin 34s linear infinite reverse}
 .kaleido.slow{animation-duration:80s;opacity:.13}
 .kaleido.rev{animation-direction:reverse}
+/* variants — different symmetry, same restrained palette */
+.kaleido.kb{background:repeating-conic-gradient(from 6deg,
+    rgba(255,74,28,.8) 0deg 4deg, transparent 4deg 13deg,
+    rgba(255,140,90,.5) 13deg 17deg, transparent 17deg 30deg);
+  -webkit-mask:radial-gradient(circle,transparent 10%,#000 24%,#000 44%,transparent 68%);
+  mask:radial-gradient(circle,transparent 10%,#000 24%,#000 44%,transparent 68%);animation-duration:66s;opacity:.16}
+.kaleido.kb::after{background:repeating-conic-gradient(from 0deg,
+    rgba(255,175,130,.6) 0deg 3deg, transparent 3deg 11deg);animation-duration:42s}
+.kaleido.kc{background:repeating-conic-gradient(from 0deg,
+    rgba(255,74,28,.7) 0deg 9deg, transparent 9deg 29deg);
+  -webkit-mask:radial-gradient(circle,#000 0%,#000 40%,transparent 74%);
+  mask:radial-gradient(circle,#000 0%,#000 40%,transparent 74%);filter:blur(2px);animation-duration:92s;opacity:.14}
+.kaleido.kc::after{inset:22%;background:repeating-conic-gradient(from 18deg,
+    rgba(255,120,80,.5) 0deg 6deg, transparent 6deg 24deg);animation-duration:58s}
+.kaleido.kd{background:
+    repeating-conic-gradient(from 3deg, rgba(255,90,40,.75) 0deg 2.5deg, transparent 2.5deg 9deg),
+    radial-gradient(circle, rgba(255,74,28,.25), transparent 60%);
+  -webkit-mask:radial-gradient(circle,transparent 6%,#000 20%,#000 38%,transparent 64%);
+  mask:radial-gradient(circle,transparent 6%,#000 20%,#000 38%,transparent 64%);animation-duration:74s;opacity:.15}
+.kaleido.kd::after{background:repeating-conic-gradient(from 9deg, rgba(255,160,120,.5) 0deg 4deg, transparent 4deg 16deg);animation-duration:48s}
 @keyframes spin{to{transform:rotate(360deg)}}
 @media(max-width:640px){.kaleido{opacity:.12;filter:blur(3px)}}
 .marquee-label{position:absolute;top:50%;left:clamp(18px,4vw,48px);transform:translateY(-50%);z-index:3;font-family:'Instrument Serif',serif;font-style:italic;font-size:clamp(20px,2.4vw,30px);color:#fff;background:rgba(5,5,5,.55);backdrop-filter:blur(6px);padding:8px 16px;border-radius:100px;border:1px solid var(--line);pointer-events:none}
@@ -247,10 +268,11 @@ p.body + p.body{margin-top:16px}
 
 /* FOOTER */
 footer{border-top:1px solid var(--line);padding:52px 0 40px;position:relative;z-index:2}
-.foot-marquee{overflow:hidden;white-space:nowrap;padding:18px 0;border-bottom:1px solid var(--line);margin-bottom:36px}
-.foot-marquee .t{display:inline-flex;gap:40px;animation:scroll-x 26s linear infinite;will-change:transform}
-.foot-marquee span{font-family:'Instrument Serif',serif;font-style:italic;font-size:clamp(28px,5vw,54px);color:var(--ink-dim)}
-.foot-marquee span .accent{color:var(--accent)}
+.foot-marquee{overflow:hidden;padding:18px 0;border-bottom:1px solid var(--line);margin-bottom:36px}
+.foot-marquee .t{display:inline-flex;align-items:center;width:max-content;will-change:transform}
+.foot-marquee .u{display:inline-flex;align-items:center;gap:30px;padding-right:30px;white-space:nowrap;font-family:'Instrument Serif',serif;font-style:italic;font-size:clamp(28px,5vw,54px);color:var(--ink-dim)}
+.foot-marquee .u .accent{color:var(--accent)}
+.foot-marquee .sep{color:var(--accent);opacity:.5;font-style:normal;font-size:.62em;transform:translateY(-2px)}
 .foot-bottom{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:18px;color:var(--ink-dim);font-size:13px;letter-spacing:.04em}
 .foot-bottom a:hover{color:var(--ink)}
 .foot-bottom .foot-logo{font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--ink)}
@@ -323,7 +345,7 @@ footer{border-top:1px solid var(--line);padding:52px 0 40px;position:relative;z-
 
 <!-- WHAT AI CHANGES -->
 <section class="ai" id="ai">
-  <div class="glow br"><i class="kaleido slow" style="width:640px;height:640px;bottom:-220px;right:-180px"></i></div>
+  <div class="glow br"><i class="kaleido kc" style="width:660px;height:660px;bottom:-230px;right:-190px"></i></div>
   <div class="wrap">
     <div class="eyebrow" data-num="02 / ">What AI changes (and what it doesn't)</div>
     <h2 class="big reveal" style="max-width:16ch">The honest version.</h2>
@@ -349,7 +371,7 @@ footer{border-top:1px solid var(--line);padding:52px 0 40px;position:relative;z-
 
 <!-- WHAT WE MAKE (autoplay gif grid) -->
 <section class="work" id="work">
-  <div class="glow br"><i class="kaleido rev" style="width:600px;height:600px;bottom:-200px;right:-160px"></i></div>
+  <div class="glow br"><i class="kaleido kb rev" style="width:600px;height:600px;bottom:-200px;right:-160px"></i></div>
   <div class="wrap">
     <div class="eyebrow" data-num="03 / ">What we make</div>
     <h2 class="big reveal">Work that plays in a bigger league <span class="serif accent">than it pays for.</span></h2>
@@ -395,7 +417,7 @@ footer{border-top:1px solid var(--line);padding:52px 0 40px;position:relative;z-
 
 <!-- HOW IT WORKS -->
 <section class="process" id="process">
-  <div class="glow tl"><i class="kaleido" style="width:520px;height:520px;top:-160px;left:-160px"></i></div>
+  <div class="glow tl"><i class="kaleido kd" style="width:540px;height:540px;top:-170px;left:-170px"></i></div>
   <div class="wrap">
     <div class="eyebrow" data-num="04 / ">How it works</div>
     <h2 class="big reveal">Days, not months.</h2>
@@ -416,7 +438,7 @@ footer{border-top:1px solid var(--line);padding:52px 0 40px;position:relative;z-
 
 <!-- PRICE -->
 <section class="price" id="price">
-  <div class="glow br"><i class="kaleido slow rev" style="width:680px;height:680px;bottom:-240px;right:-200px"></i></div>
+  <div class="glow br"><i class="kaleido kb slow rev" style="width:700px;height:700px;bottom:-250px;right:-210px"></i></div>
   <div class="wrap inner">
     <div class="num-wrap reveal">
       <video data-lazy="assets/video/reel5.mp4" muted loop playsinline poster="assets/img/reel5.jpg"></video>
@@ -449,7 +471,7 @@ footer{border-top:1px solid var(--line);padding:52px 0 40px;position:relative;z-
 
 <!-- REALITY CHECK -->
 <section class="reality" id="reality">
-  <div class="glow tl"><i class="kaleido rev" style="width:560px;height:560px;top:-170px;right:-150px;left:auto"></i></div>
+  <div class="glow tl"><i class="kaleido kc rev" style="width:560px;height:560px;top:-170px;right:-150px;left:auto"></i></div>
   <div class="wrap">
     <div class="eyebrow" data-num="06 / ">A reality check</div>
     <h2 class="big reveal" style="max-width:22ch">Will one ad make you famous? <span class="serif accent">No.</span></h2>
@@ -501,8 +523,8 @@ footer{border-top:1px solid var(--line);padding:52px 0 40px;position:relative;z-
 
 <footer>
   <div class="foot-marquee"><div class="t">
-    <span>The big-budget look, <span class="accent">minus the big budget.</span></span>
-    <span>The big-budget look, <span class="accent">minus the big budget.</span></span>
+    <span class="u">The big-budget look, <span class="accent">minus the big budget.</span> <b class="sep">✦</b></span>
+    <span class="u">The big-budget look, <span class="accent">minus the big budget.</span> <b class="sep">✦</b></span>
   </div></div>
   <div class="wrap foot-bottom">
     <span class="foot-logo">Punch Lunch</span>
@@ -524,38 +546,37 @@ links.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{burger.cl
 const io=new IntersectionObserver((es)=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}})},{threshold:.14,rootMargin:'0px 0px -6% 0px'});
 document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
 
-/* Draggable, infinitely-looping reels (auto-drift + grab to spin/fling) */
-document.querySelectorAll('.marquee').forEach(m=>{
-  const track=m.querySelector('.track');
-  // duplicate until the strip is at least 2x the viewport, so the loop never gaps
+/* Seamless auto-drift loops: draggable reels (mouse + trackpad) + footer ticker */
+function setupDrift(root, trackSel, opts){
+  const track=root && root.querySelector(trackSel);
+  if(!track) return;
   let guard=0;
-  while(track.scrollWidth < m.clientWidth*2 + 400 && guard++<4){ track.innerHTML+=track.innerHTML; }
+  while(track.scrollWidth < root.clientWidth*2 + 500 && guard++<6){ track.innerHTML+=track.innerHTML; }
   let half=track.scrollWidth/2;
-  addEventListener('resize',()=>{half=track.scrollWidth/2;},{passive:true});
-  const dir=m.classList.contains('rev')?-1:1;
-  const AUTO=0.75*dir;                       // constant drift (px/frame)
-  let offset=dir<0?half:0, vel=0, dragging=false, lastX=0, movedAt=0, lastT=0;
-  const norm=()=>{ if(half>0){ offset=((offset%half)+half)%half; } };
+  addEventListener('resize',()=>{ half=track.scrollWidth/2; },{passive:true});
+  const dir=opts.dir, AUTO=opts.speed*dir;
+  let offset=dir<0?half:0, vel=0, dragging=false, lastX=0, lastT=0;
+  const norm=()=>{ if(half>0) offset=((offset%half)+half)%half; };
   const apply=()=>{ track.style.transform='translate3d('+(-offset)+'px,0,0)'; };
-  function frame(now){
-    if(!dragging){
-      offset+=AUTO+vel;
-      vel*=0.94; if(Math.abs(vel)<0.02) vel=0;
-      norm(); apply();
-    }
-    requestAnimationFrame(frame);
-  }
-  requestAnimationFrame(frame);
+  (function frame(){ if(!dragging){ offset+=AUTO+vel; vel*=0.94; if(Math.abs(vel)<0.02) vel=0; norm(); apply(); } requestAnimationFrame(frame); })();
+  if(!opts.drag) return;
   const getX=e=>e.touches?e.touches[0].clientX:e.clientX;
-  const down=e=>{dragging=true;track.classList.add('dragging');lastX=getX(e);vel=0;lastT=performance.now();};
-  const move=e=>{ if(!dragging)return; const x=getX(e),now=performance.now(),dx=x-lastX,dt=Math.max(now-lastT,1);
-    offset-=dx; vel=-dx/dt*16; lastX=x; lastT=now; norm(); apply(); };
-  const up=()=>{ if(!dragging)return; dragging=false; track.classList.remove('dragging'); };
+  const down=e=>{ dragging=true; track.classList.add('dragging'); lastX=getX(e); vel=0; lastT=performance.now(); };
+  const move=e=>{ if(!dragging) return; const x=getX(e), now=performance.now(), dx=x-lastX, dt=Math.max(now-lastT,1); offset-=dx; vel=-dx/dt*16; lastX=x; lastT=now; norm(); apply(); };
+  const up=()=>{ if(!dragging) return; dragging=false; track.classList.remove('dragging'); };
   track.addEventListener('pointerdown',down);
   addEventListener('pointermove',move,{passive:true});
   addEventListener('pointerup',up); addEventListener('pointercancel',up);
   track.addEventListener('dragstart',e=>e.preventDefault());
+  // trackpad two-finger swipe / horizontal wheel
+  root.addEventListener('wheel',e=>{
+    if(Math.abs(e.deltaX) > Math.abs(e.deltaY)){ e.preventDefault(); offset+=e.deltaX; vel=e.deltaX*0.4; norm(); apply(); }
+  },{passive:false});
+}
+document.querySelectorAll('.marquee').forEach(m=>{
+  setupDrift(m, '.track', {dir:m.classList.contains('rev')?-1:1, speed:0.75, drag:true});
 });
+setupDrift(document.querySelector('.foot-marquee'), '.t', {dir:1, speed:0.55, drag:false});
 
 /* Lazy-load + play videos only while visible; pause offscreen to save CPU/battery */
 const vids=document.querySelectorAll('video[data-lazy]');
