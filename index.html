@@ -134,13 +134,12 @@ p.body + p.body{margin-top:16px}
     rgba(255,74,28,.5) 45deg 50deg, transparent 50deg 68deg);
   -webkit-mask:radial-gradient(circle,#000 0%,#000 18%,rgba(0,0,0,.4) 46%,transparent 84%);
   mask:radial-gradient(circle,#000 0%,#000 18%,rgba(0,0,0,.4) 46%,transparent 84%);
-  mix-blend-mode:screen;opacity:.17;filter:blur(3px);animation:spin 52s linear infinite}
+  mix-blend-mode:screen;opacity:.17;filter:blur(3px)}
 .kaleido::after{content:"";position:absolute;inset:14%;border-radius:50%;
   background:repeating-conic-gradient(from 12deg,
     rgba(255,150,110,.7) 0deg 5deg, transparent 5deg 18deg,
     rgba(255,74,28,.5) 18deg 24deg, transparent 24deg 40deg);
-  -webkit-mask:radial-gradient(circle,#000 0%,transparent 68%);mask:radial-gradient(circle,#000 0%,transparent 68%);
-  animation:spin 34s linear infinite reverse}
+  -webkit-mask:radial-gradient(circle,#000 0%,transparent 68%);mask:radial-gradient(circle,#000 0%,transparent 68%)}
 .kaleido.slow{animation-duration:80s;opacity:.13}
 .kaleido.rev{animation-direction:reverse}
 /* variants — different symmetry, same restrained palette */
@@ -320,11 +319,62 @@ footer{border-top:1px solid var(--line);padding:52px 0 40px;position:relative;z-
 .foot-bottom a:hover{color:var(--ink)}
 .foot-bottom .foot-logo{font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--ink)}
 
+/* Lenis */
+html.lenis,html.lenis body{height:auto}
+.lenis.lenis-smooth{scroll-behavior:auto!important}
+
+/* INTRO */
+#intro{position:fixed;inset:0;z-index:1000;background:#050507;display:flex;align-items:center;justify-content:center;animation:introOut .7s 1.2s var(--ease) forwards}
+#intro .ii{display:flex;align-items:center;gap:14px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;font-size:clamp(15px,2.6vw,24px);color:#fff;opacity:0;animation:introIn .6s .12s var(--ease) forwards}
+#intro .dt{width:12px;height:12px;border-radius:50%;background:var(--accent);box-shadow:0 0 22px var(--accent)}
+#intro .bar{position:absolute;left:0;bottom:0;height:2px;width:0;background:var(--accent);animation:introBar 1.15s .05s var(--ease) forwards}
+@keyframes introIn{to{opacity:1}}
+@keyframes introBar{to{width:100%}}
+@keyframes introOut{to{opacity:0;visibility:hidden}}
+
+/* SECTION PROGRESS NAV */
+#sectnav{position:fixed;right:clamp(14px,2vw,30px);top:50%;transform:translateY(-50%);z-index:120;display:flex;flex-direction:column;gap:15px}
+#sectnav a{display:flex;align-items:center;gap:10px;justify-content:flex-end;color:rgba(255,255,255,.85);font-size:11px;letter-spacing:.14em;text-transform:uppercase}
+#sectnav .tx{opacity:0;transform:translateX(6px);transition:.3s;white-space:nowrap}
+#sectnav .ln{width:22px;height:2px;background:currentColor;opacity:.35;transition:.3s}
+#sectnav a:hover .tx,#sectnav a.on .tx{opacity:.95;transform:none}
+#sectnav a.on .ln{width:42px;opacity:1;background:var(--accent)}
+#sectnav a:hover .ln{opacity:.75}
+@media(max-width:900px){#sectnav{display:none}}
+
+/* CURSOR SPOTLIGHT */
+#spot{position:fixed;top:0;left:0;width:520px;height:520px;margin:-260px 0 0 -260px;border-radius:50%;z-index:90;pointer-events:none;background:radial-gradient(circle,rgba(255,74,28,.13),transparent 62%);mix-blend-mode:screen;opacity:0;transition:opacity .5s;will-change:transform}
+@media(hover:none){#spot{display:none}}
+.magnetic{will-change:transform;transition:transform .25s var(--ease)}
+
+/* HORIZONTAL PINNED GALLERY */
+.hgallery{position:relative;height:340vh;z-index:2}
+.hg-sticky{position:sticky;top:0;height:100vh;overflow:hidden;display:flex;flex-direction:column;justify-content:center}
+.hg-head{padding:0 clamp(18px,8vw,90px) clamp(18px,3vw,34px)}
+.hg-track{display:flex;gap:clamp(16px,2vw,28px);padding:0 clamp(18px,8vw,90px);will-change:transform}
+.hg-card{flex:0 0 auto;width:clamp(240px,30vw,440px);aspect-ratio:4/5;border-radius:16px;overflow:hidden;position:relative;border:1px solid var(--line);background:#0d0d0d;box-shadow:0 24px 60px rgba(0,0,0,.5)}
+.hg-card video,.hg-card img{width:100%;height:100%;object-fit:cover;pointer-events:none}
+.hg-card::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 52%,rgba(0,0,0,.8))}
+.hg-card .cap{position:absolute;left:16px;bottom:14px;z-index:2;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:#fff}
+.hg-card .cap b{display:block;font-family:'Instrument Serif',serif;font-style:italic;font-weight:400;font-size:21px;letter-spacing:0;text-transform:none;margin-top:3px}
+@media(max-width:760px){.hgallery{height:auto}.hg-sticky{position:relative;height:auto;padding:clamp(46px,9vw,80px) 0}.hg-track{overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;transform:none!important}.hg-card{scroll-snap-align:center;width:74vw}}
+
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.reveal{opacity:1;transform:none}.marquee .track,.foot-marquee .t{animation:none!important}}
 </style>
 </head>
 <body>
 <div id="progress"></div>
+<div id="intro"><div class="ii"><span class="dt"></span>Punch Lunch</div><div class="bar"></div></div>
+<div id="spot"></div>
+<nav id="sectnav" aria-hidden="true">
+  <a href="#why"><span class="tx">Why</span><span class="ln"></span></a>
+  <a href="#work"><span class="tx">Work</span><span class="ln"></span></a>
+  <a href="#gallery"><span class="tx">Reel</span><span class="ln"></span></a>
+  <a href="#process"><span class="tx">Process</span><span class="ln"></span></a>
+  <a href="#price"><span class="tx">Pricing</span><span class="ln"></span></a>
+  <a href="#faq"><span class="tx">FAQ</span><span class="ln"></span></a>
+  <a href="#contact"><span class="tx">Contact</span><span class="ln"></span></a>
+</nav>
 
 <header class="nav" id="nav">
   <a href="#top" class="logo"><span class="dot"></span> Punch Lunch</a>
@@ -333,7 +383,7 @@ footer{border-top:1px solid var(--line);padding:52px 0 40px;position:relative;z-
     <a href="#process">Process</a>
     <a href="#price">Pricing</a>
     <a href="#faq">FAQ</a>
-    <a href="#contact" class="nav-cta">Start a project</a>
+    <a href="#contact" class="nav-cta magnetic">Start a project</a>
   </nav>
   <button class="burger" id="burger" aria-label="Menu"><span></span><span></span><span></span></button>
 </header>
@@ -465,6 +515,25 @@ footer{border-top:1px solid var(--line);padding:52px 0 40px;position:relative;z-
   </div>
 </div>
 
+<!-- HORIZONTAL PINNED GALLERY -->
+<section class="hgallery" id="gallery">
+  <div class="hg-sticky">
+    <div class="hg-head">
+      <div class="eyebrow" data-num="◦ ">Selected frames</div>
+      <h2 class="big">Scroll the reel.</h2>
+    </div>
+    <div class="hg-track" id="hgtrack">
+      <article class="hg-card"><video data-lazy="assets/video/reel3.mp4" poster="assets/img/reel3.jpg" muted loop playsinline></video><div class="cap">01 · Hero spot<b>Brand film</b></div></article>
+      <article class="hg-card"><img src="assets/creatives/abstract1.jpg" alt="" loading="lazy"><div class="cap">02 · Concept<b>Untitled AI</b></div></article>
+      <article class="hg-card"><video data-lazy="assets/video/reel5.mp4" poster="assets/img/reel5.jpg" muted loop playsinline></video><div class="cap">03 · Product<b>The star</b></div></article>
+      <article class="hg-card"><img src="assets/creatives/abstract4.jpg" alt="" loading="lazy"><div class="cap">04 · Texture<b>Untitled AI</b></div></article>
+      <article class="hg-card"><video data-lazy="assets/video/reel7.mp4" poster="assets/img/reel7.jpg" muted loop playsinline></video><div class="cap">05 · Launch<b>Full volley</b></div></article>
+      <article class="hg-card"><img src="assets/creatives/abstract3.jpg" alt="" loading="lazy"><div class="cap">06 · Mood<b>Untitled AI</b></div></article>
+      <article class="hg-card"><video data-lazy="assets/video/reel8.mp4" poster="assets/img/reel8.jpg" muted loop playsinline></video><div class="cap">07 · Short-form<b>Loud on mute</b></div></article>
+    </div>
+  </div>
+</section>
+
 <!-- HOW IT WORKS -->
 <section class="process" id="process">
   <div class="glow tl"><i class="kaleido kd" style="width:540px;height:540px;top:-170px;left:-170px"></i></div>
@@ -488,7 +557,7 @@ footer{border-top:1px solid var(--line);padding:52px 0 40px;position:relative;z-
 
 <!-- CREATIVE INTERSTITIAL -->
 <div class="inter">
-  <div class="cr"><img src="assets/creatives/abstract3.jpg" alt="" loading="lazy" /></div>
+  <div class="cr"><img class="px" data-px="0.06" src="assets/creatives/abstract3.jpg" alt="" loading="lazy" /></div>
   <div>
     <div class="eyebrow badge" data-num="◦ ">The math</div>
     <h2 class="reveal">Made to look expensive. <span class="serif accent">Priced not to be.</span></h2>
@@ -555,11 +624,11 @@ footer{border-top:1px solid var(--line);padding:52px 0 40px;position:relative;z-
 
 <!-- CTA -->
 <section class="cta" id="contact">
-  <img class="bgc" src="assets/creatives/abstract2.jpg" alt="" loading="lazy" />
+  <img class="bgc px" data-px="0.05" src="assets/creatives/abstract2.jpg" alt="" loading="lazy" />
   <div class="wrap inner">
     <h2 class="reveal">Selling something <span class="serif accent">worth watching?</span></h2>
     <p class="reveal" data-d="1">Send the product, the idea, or just the ambition. We'll come back with how it could look and what it would cost. No decks longer than this page, promise.</p>
-    <a class="mail-btn reveal" data-d="2" href="mailto:hello@punchlunch.film">hello@punchlunch.film
+    <a class="mail-btn reveal magnetic" data-d="2" href="mailto:hello@punchlunch.film">hello@punchlunch.film
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H8M17 7V16"/></svg>
     </a>
   </div>
@@ -577,6 +646,7 @@ footer{border-top:1px solid var(--line);padding:52px 0 40px;position:relative;z-
   </div>
 </footer>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lenis/1.1.14/lenis.min.js"></script>
 <script>
 const nav=document.getElementById('nav'),prog=document.getElementById('progress');
 function onScroll(){const y=window.scrollY;nav.classList.toggle('solid',y>60);const h=document.documentElement.scrollHeight-innerHeight;prog.style.width=(h>0?y/h*100:0)+'%';}
@@ -665,6 +735,58 @@ document.querySelectorAll('.faq-item').forEach(item=>{
 });
 
 document.getElementById('yr').textContent=new Date().getFullYear();
+
+/* ===== NEW INTERACTIONS ===== */
+const reduce=matchMedia('(prefers-reduced-motion:reduce)').matches;
+
+/* Intro: remove after play (or immediately if reduced motion); failsafe timeout */
+(function(){const i=document.getElementById('intro');if(!i)return;
+  if(reduce){i.remove();return;}
+  i.addEventListener('animationend',e=>{if(e.animationName==='introOut')i.remove();});
+  setTimeout(()=>{if(document.getElementById('intro'))i.remove();},2600);
+})();
+
+/* Lenis smooth scroll */
+let lenis=null;
+if(!reduce && window.Lenis){
+  lenis=new Lenis({lerp:.09,smoothWheel:true});
+  requestAnimationFrame(function r(t){lenis.raf(t);requestAnimationFrame(r);});
+  lenis.on('scroll',onScroll);
+}
+document.querySelectorAll('a[href^="#"]').forEach(a=>{
+  a.addEventListener('click',e=>{const id=a.getAttribute('href');if(id.length<2)return;const t=document.querySelector(id);if(!t)return;e.preventDefault();if(lenis)lenis.scrollTo(t,{offset:-6});else t.scrollIntoView({behavior:'smooth'});});
+});
+
+/* Section progress nav */
+const secMap=[...document.querySelectorAll('#sectnav a')].map(a=>({a,el:document.querySelector(a.getAttribute('href'))})).filter(o=>o.el);
+const snObs=new IntersectionObserver((es)=>{es.forEach(e=>{if(e.isIntersecting)secMap.forEach(o=>o.a.classList.toggle('on',o.el===e.target));})},{rootMargin:'-45% 0px -45% 0px'});
+secMap.forEach(o=>snObs.observe(o.el));
+
+/* Cursor spotlight + magnetic buttons */
+const spot=document.getElementById('spot');
+let mx=innerWidth/2,my=innerHeight/2,sx=mx,sy=my;
+addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;if(spot)spot.style.opacity=1;},{passive:true});
+(function sp(){sx+=(mx-sx)*.14;sy+=(my-sy)*.14;if(spot)spot.style.transform='translate3d('+sx+'px,'+sy+'px,0)';requestAnimationFrame(sp);})();
+document.querySelectorAll('.magnetic').forEach(btn=>{
+  btn.addEventListener('mousemove',e=>{const r=btn.getBoundingClientRect();btn.style.transform='translate('+(e.clientX-r.left-r.width/2)*.25+'px,'+(e.clientY-r.top-r.height/2)*.4+'px)';});
+  btn.addEventListener('mouseleave',()=>{btn.style.transform='';});
+});
+
+/* Parallax on creatives + horizontal pinned gallery */
+const pxEls=[...document.querySelectorAll('.px')];
+const hg=document.querySelector('.hgallery'),hgt=document.getElementById('hgtrack');
+function fx(){
+  const vh=innerHeight;
+  pxEls.forEach(el=>{const r=el.getBoundingClientRect();const c=r.top+r.height/2-vh/2;const sp=parseFloat(el.dataset.px||'0.05');el.style.transform='translate3d(0,'+(-c*sp).toFixed(1)+'px,0) scale(1.16)';});
+  if(hg&&hgt&&!matchMedia('(max-width:760px)').matches){
+    const rect=hg.getBoundingClientRect();const total=hg.offsetHeight-vh;let p=total>0?(-rect.top)/total:0;p=Math.max(0,Math.min(1,p));
+    const max=Math.max(0,hgt.scrollWidth-innerWidth+innerWidth*0.12);
+    hgt.style.transform='translate3d('+(-p*max).toFixed(1)+'px,0,0)';
+  }
+}
+addEventListener('scroll',fx,{passive:true});
+if(lenis)lenis.on('scroll',fx);
+addEventListener('resize',fx);fx();
 </script>
 </body>
 </html>
