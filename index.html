@@ -161,6 +161,29 @@ p.body + p.body{margin-top:16px}
 .kaleido.kd::after{background:repeating-conic-gradient(from 9deg, rgba(255,160,120,.5) 0deg 4deg, transparent 4deg 16deg);animation-duration:48s}
 @keyframes spin{to{transform:rotate(360deg)}}
 @media(max-width:640px){.kaleido{opacity:.12;filter:blur(3px)}}
+
+/* SHOWCASE — arc of video panels on a static kaleidoscope */
+.showcase{position:relative;overflow:hidden;padding:clamp(66px,9vw,132px) 0;text-align:center;z-index:2;border-block:1px solid var(--line);background:#040404}
+.showcase .stars{position:absolute;inset:0;z-index:0;opacity:.7;background-image:
+  radial-gradient(1.5px 1.5px at 12% 28%, rgba(255,255,255,.6), transparent),
+  radial-gradient(1px 1px at 24% 68%, rgba(255,255,255,.4), transparent),
+  radial-gradient(1.5px 1.5px at 42% 16%, rgba(255,255,255,.5), transparent),
+  radial-gradient(1px 1px at 63% 76%, rgba(255,255,255,.4), transparent),
+  radial-gradient(1.5px 1.5px at 79% 32%, rgba(255,255,255,.55), transparent),
+  radial-gradient(1px 1px at 89% 60%, rgba(255,255,255,.4), transparent),
+  radial-gradient(1px 1px at 54% 44%, rgba(255,255,255,.35), transparent),
+  radial-gradient(1px 1px at 33% 84%, rgba(255,255,255,.35), transparent)}
+.showcase .kstat{position:absolute;left:50%;top:56%;transform:translate(-50%,-50%);z-index:0;width:min(80vw,860px);height:min(80vw,860px);opacity:.3;animation:none!important;filter:blur(1px)}
+.showcase .wrap{position:relative;z-index:3}
+.showcase .eyebrow{justify-content:center}
+.arc{position:relative;z-index:2;margin-top:clamp(28px,4vw,56px);perspective:1150px;perspective-origin:50% 44%}
+.arc .stage{display:flex;justify-content:center;align-items:center;transform-style:preserve-3d;min-height:clamp(210px,27vw,380px)}
+.arc .panel{flex:0 0 auto;width:clamp(158px,20vw,320px);aspect-ratio:16/10;border-radius:14px;overflow:hidden;border:1px solid var(--line);position:relative;background:#0d0d0d;margin-inline:clamp(-34px,-1.7vw,-14px);
+  transform:rotateY(var(--ry,0)) translateZ(var(--tz,0)) scale(var(--sc,1));transform-origin:center;
+  box-shadow:0 26px 62px rgba(0,0,0,.66);transition:transform .55s var(--ease)}
+.arc .panel video,.arc .panel img{width:100%;height:100%;object-fit:cover;pointer-events:none}
+.arc .panel::after{content:"";position:absolute;inset:0;border-radius:14px;box-shadow:inset 0 0 46px rgba(0,0,0,.6)}
+@media(max-width:760px){.arc{perspective:820px}.arc .panel{width:clamp(118px,32vw,175px);margin-inline:-7.5vw}}
 .marquee-label{position:absolute;top:50%;left:clamp(18px,4vw,48px);transform:translateY(-50%);z-index:3;font-family:'Instrument Serif',serif;font-style:italic;font-size:clamp(20px,2.4vw,30px);color:#fff;background:rgba(5,5,5,.55);backdrop-filter:blur(6px);padding:8px 16px;border-radius:100px;border:1px solid var(--line);pointer-events:none}
 
 /* WHY — split with video */
@@ -309,20 +332,25 @@ footer{border-top:1px solid var(--line);padding:52px 0 40px;position:relative;z-
   <div class="scroll-hint"><span>Scroll</span><span class="bar"></span></div>
 </section>
 
-<!-- MARQUEE 1 -->
-<div class="marquee" data-dur="46">
-  <div class="hint">Drag to spin <svg viewBox="0 0 26 14"><path d="M2 7h22M18 2l6 5-6 5" stroke-width="1.6"/></svg></div>
-  <div class="track auto">
-    <div class="cell"><video data-lazy="assets/video/sq1.mp4" poster="assets/img/sq1.jpg" muted loop playsinline></video></div>
-    <div class="cell"><video data-lazy="assets/video/sq2.mp4" poster="assets/img/sq2.jpg" muted loop playsinline></video></div>
-    <div class="cell"><video data-lazy="assets/video/sq3.mp4" poster="assets/img/sq3.jpg" muted loop playsinline></video></div>
-    <div class="cell"><video data-lazy="assets/video/sq4.mp4" poster="assets/img/sq4.jpg" muted loop playsinline></video></div>
-    <div class="cell"><video data-lazy="assets/video/sq5.mp4" poster="assets/img/sq5.jpg" muted loop playsinline></video></div>
-    <div class="cell"><video data-lazy="assets/video/sq6.mp4" poster="assets/img/sq6.jpg" muted loop playsinline></video></div>
-    <div class="cell"><video data-lazy="assets/video/sq7.mp4" poster="assets/img/sq7.jpg" muted loop playsinline></video></div>
-    <div class="cell"><video data-lazy="assets/video/sq8.mp4" poster="assets/img/sq8.jpg" muted loop playsinline></video></div>
+<!-- SHOWCASE: arc of video panels on a static kaleidoscope -->
+<section class="showcase">
+  <div class="stars"></div>
+  <i class="kaleido kb kstat"></i>
+  <div class="wrap">
+    <div class="eyebrow" data-num="◦ ">In motion</div>
+    <h2 class="big reveal">Nothing here was <span class="serif accent">ever filmed.</span></h2>
   </div>
-</div>
+  <div class="arc reveal" data-d="1">
+    <div class="stage">
+      <div class="panel" style="--ry:56deg;--tz:-210px;--sc:.82;z-index:1"><video data-lazy="assets/video/reel1.mp4" poster="assets/img/reel1.jpg" muted loop playsinline></video></div>
+      <div class="panel" style="--ry:34deg;--tz:-100px;--sc:.94;z-index:2"><video data-lazy="assets/video/reel2.mp4" poster="assets/img/reel2.jpg" muted loop playsinline></video></div>
+      <div class="panel" style="--ry:12deg;--tz:-8px;--sc:1.08;z-index:3"><video data-lazy="assets/video/reel3.mp4" poster="assets/img/reel3.jpg" muted loop playsinline></video></div>
+      <div class="panel" style="--ry:-12deg;--tz:-8px;--sc:1.08;z-index:3"><video data-lazy="assets/video/reel4.mp4" poster="assets/img/reel4.jpg" muted loop playsinline></video></div>
+      <div class="panel" style="--ry:-34deg;--tz:-100px;--sc:.94;z-index:2"><video data-lazy="assets/video/reel5.mp4" poster="assets/img/reel5.jpg" muted loop playsinline></video></div>
+      <div class="panel" style="--ry:-56deg;--tz:-210px;--sc:.82;z-index:1"><video data-lazy="assets/video/reel6.mp4" poster="assets/img/reel6.jpg" muted loop playsinline></video></div>
+    </div>
+  </div>
+</section>
 
 <!-- WHY WE EXIST -->
 <section class="why" id="why">
@@ -453,21 +481,6 @@ footer{border-top:1px solid var(--line);padding:52px 0 40px;position:relative;z-
     </div>
   </div>
 </section>
-
-<!-- MARQUEE 2 (reverse) -->
-<div class="marquee rev" data-dur="52">
-  <div class="hint">Drag to spin <svg viewBox="0 0 26 14"><path d="M2 7h22M18 2l6 5-6 5" stroke-width="1.6"/></svg></div>
-  <div class="track auto">
-    <div class="cell"><video data-lazy="assets/video/sq8.mp4" poster="assets/img/sq8.jpg" muted loop playsinline></video></div>
-    <div class="cell"><video data-lazy="assets/video/sq7.mp4" poster="assets/img/sq7.jpg" muted loop playsinline></video></div>
-    <div class="cell"><video data-lazy="assets/video/sq6.mp4" poster="assets/img/sq6.jpg" muted loop playsinline></video></div>
-    <div class="cell"><video data-lazy="assets/video/sq5.mp4" poster="assets/img/sq5.jpg" muted loop playsinline></video></div>
-    <div class="cell"><video data-lazy="assets/video/sq4.mp4" poster="assets/img/sq4.jpg" muted loop playsinline></video></div>
-    <div class="cell"><video data-lazy="assets/video/sq3.mp4" poster="assets/img/sq3.jpg" muted loop playsinline></video></div>
-    <div class="cell"><video data-lazy="assets/video/sq2.mp4" poster="assets/img/sq2.jpg" muted loop playsinline></video></div>
-    <div class="cell"><video data-lazy="assets/video/sq1.mp4" poster="assets/img/sq1.jpg" muted loop playsinline></video></div>
-  </div>
-</div>
 
 <!-- REALITY CHECK -->
 <section class="reality" id="reality">
