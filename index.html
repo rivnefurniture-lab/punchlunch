@@ -163,7 +163,7 @@ p.body + p.body{margin-top:16px}
   mask:radial-gradient(circle,transparent 6%,#000 20%,#000 38%,transparent 64%);animation-duration:74s;opacity:.15}
 .kaleido.kd::after{background:repeating-conic-gradient(from 9deg, rgba(255,160,120,.5) 0deg 4deg, transparent 4deg 16deg);animation-duration:48s}
 @keyframes spin{to{transform:rotate(360deg)}}
-@media(max-width:640px){.kaleido{opacity:.12;filter:blur(3px)}}
+.kaleido{display:none!important}
 
 /* SHOWCASE — arc of video panels on a static kaleidoscope */
 .showcase{position:relative;overflow:hidden;padding:clamp(80px,11vw,160px) 0;text-align:center;z-index:2}
@@ -369,7 +369,6 @@ html.lenis,html.lenis body{height:auto}
 <nav id="sectnav" aria-hidden="true">
   <a href="#why"><span class="tx">Why</span><span class="ln"></span></a>
   <a href="#work"><span class="tx">Work</span><span class="ln"></span></a>
-  <a href="#gallery"><span class="tx">Reel</span><span class="ln"></span></a>
   <a href="#process"><span class="tx">Process</span><span class="ln"></span></a>
   <a href="#price"><span class="tx">Pricing</span><span class="ln"></span></a>
   <a href="#faq"><span class="tx">FAQ</span><span class="ln"></span></a>
@@ -514,25 +513,6 @@ html.lenis,html.lenis body{height:auto}
     <h2 class="reveal">One shoot that <span class="serif accent">never physically happened.</span></h2>
   </div>
 </div>
-
-<!-- HORIZONTAL PINNED GALLERY -->
-<section class="hgallery" id="gallery">
-  <div class="hg-sticky">
-    <div class="hg-head">
-      <div class="eyebrow" data-num="◦ ">Selected frames</div>
-      <h2 class="big">Scroll the reel.</h2>
-    </div>
-    <div class="hg-track" id="hgtrack">
-      <article class="hg-card"><video data-lazy="assets/video/reel3.mp4" poster="assets/img/reel3.jpg" muted loop playsinline></video><div class="cap">01 · Hero spot<b>Brand film</b></div></article>
-      <article class="hg-card"><img src="assets/creatives/abstract1.jpg" alt="" loading="lazy"><div class="cap">02 · Concept<b>Untitled AI</b></div></article>
-      <article class="hg-card"><video data-lazy="assets/video/reel5.mp4" poster="assets/img/reel5.jpg" muted loop playsinline></video><div class="cap">03 · Product<b>The star</b></div></article>
-      <article class="hg-card"><img src="assets/creatives/abstract4.jpg" alt="" loading="lazy"><div class="cap">04 · Texture<b>Untitled AI</b></div></article>
-      <article class="hg-card"><video data-lazy="assets/video/reel7.mp4" poster="assets/img/reel7.jpg" muted loop playsinline></video><div class="cap">05 · Launch<b>Full volley</b></div></article>
-      <article class="hg-card"><img src="assets/creatives/abstract3.jpg" alt="" loading="lazy"><div class="cap">06 · Mood<b>Untitled AI</b></div></article>
-      <article class="hg-card"><video data-lazy="assets/video/reel8.mp4" poster="assets/img/reel8.jpg" muted loop playsinline></video><div class="cap">07 · Short-form<b>Loud on mute</b></div></article>
-    </div>
-  </div>
-</section>
 
 <!-- HOW IT WORKS -->
 <section class="process" id="process">
