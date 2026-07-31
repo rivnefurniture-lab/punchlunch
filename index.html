@@ -533,7 +533,7 @@ document.querySelectorAll('.marquee').forEach(m=>{
   let half=track.scrollWidth/2;
   addEventListener('resize',()=>{half=track.scrollWidth/2;},{passive:true});
   const dir=m.classList.contains('rev')?-1:1;
-  const AUTO=0.35*dir;                       // gentle constant drift (px/frame)
+  const AUTO=0.75*dir;                       // constant drift (px/frame)
   let offset=dir<0?half:0, vel=0, dragging=false, lastX=0, movedAt=0, lastT=0;
   const norm=()=>{ if(half>0){ offset=((offset%half)+half)%half; } };
   const apply=()=>{ track.style.transform='translate3d('+(-offset)+'px,0,0)'; };
