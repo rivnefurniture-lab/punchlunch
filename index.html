@@ -29,7 +29,11 @@
   --drag-cur:url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='30'%20height='30'%3E%3Ccircle%20cx='15'%20cy='15'%20r='13.5'%20fill='rgba(0,0,0,0.4)'%20stroke='%23ff4a1c'%20stroke-width='1.2'/%3E%3Cpath%20d='M12%2011%208%2015l4%204M18%2011l4%204-4%204'%20fill='none'%20stroke='%23fff'%20stroke-width='1.6'%20stroke-linecap='round'%20stroke-linejoin='round'/%3E%3C/svg%3E") 15 15,ew-resize;
 }
 html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
-body{background:var(--bg);color:var(--ink);font-family:'Space Grotesk',system-ui,sans-serif;font-size:18px;line-height:1.5;overflow-x:hidden;position:relative}
+body{color:var(--ink);font-family:'Space Grotesk',system-ui,sans-serif;font-size:18px;line-height:1.5;overflow-x:hidden;position:relative;
+  background:linear-gradient(180deg,
+    #060507 0%, #0c0808 9%, #100809 18%, #0a0611 28%, #0d0809 38%,
+    #0b0712 48%, #100a0a 58%, #0a0712 68%, #0d0808 78%, #080611 88%, #060507 100%);
+  background-attachment:scroll}
 /* film grain overlay to kill flat-black emptiness */
 body::before{content:"";position:fixed;inset:0;z-index:1;pointer-events:none;opacity:.05;mix-blend-mode:overlay;
   background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
@@ -128,9 +132,9 @@ p.body + p.body{margin-top:16px}
     rgba(255,74,28,.85) 0deg 7deg, transparent 7deg 20deg,
     rgba(255,122,77,.6) 20deg 27deg, transparent 27deg 45deg,
     rgba(255,74,28,.5) 45deg 50deg, transparent 50deg 68deg);
-  -webkit-mask:radial-gradient(circle,#000 0%,#000 30%,rgba(0,0,0,.35) 55%,transparent 72%);
-  mask:radial-gradient(circle,#000 0%,#000 30%,rgba(0,0,0,.35) 55%,transparent 72%);
-  mix-blend-mode:screen;opacity:.18;filter:blur(1px);animation:spin 52s linear infinite}
+  -webkit-mask:radial-gradient(circle,#000 0%,#000 18%,rgba(0,0,0,.4) 46%,transparent 84%);
+  mask:radial-gradient(circle,#000 0%,#000 18%,rgba(0,0,0,.4) 46%,transparent 84%);
+  mix-blend-mode:screen;opacity:.17;filter:blur(3px);animation:spin 52s linear infinite}
 .kaleido::after{content:"";position:absolute;inset:14%;border-radius:50%;
   background:repeating-conic-gradient(from 12deg,
     rgba(255,150,110,.7) 0deg 5deg, transparent 5deg 18deg,
@@ -163,7 +167,7 @@ p.body + p.body{margin-top:16px}
 @media(max-width:640px){.kaleido{opacity:.12;filter:blur(3px)}}
 
 /* SHOWCASE — arc of video panels on a static kaleidoscope */
-.showcase{position:relative;overflow:hidden;padding:clamp(66px,9vw,132px) 0;text-align:center;z-index:2;border-block:1px solid var(--line);background:#040404}
+.showcase{position:relative;overflow:hidden;padding:clamp(80px,11vw,160px) 0;text-align:center;z-index:2}
 .showcase .stars{position:absolute;inset:0;z-index:0;opacity:.7;background-image:
   radial-gradient(1.5px 1.5px at 12% 28%, rgba(255,255,255,.6), transparent),
   radial-gradient(1px 1px at 24% 68%, rgba(255,255,255,.4), transparent),
@@ -173,7 +177,7 @@ p.body + p.body{margin-top:16px}
   radial-gradient(1px 1px at 89% 60%, rgba(255,255,255,.4), transparent),
   radial-gradient(1px 1px at 54% 44%, rgba(255,255,255,.35), transparent),
   radial-gradient(1px 1px at 33% 84%, rgba(255,255,255,.35), transparent)}
-.showcase .kstat{position:absolute;left:50%;top:56%;transform:translate(-50%,-50%);z-index:0;width:min(80vw,860px);height:min(80vw,860px);opacity:.3;animation:none!important;filter:blur(1px)}
+.showcase .kstat{position:absolute;left:50%;top:52%;transform:translate(-50%,-50%);z-index:0;width:min(68vw,720px);height:min(68vw,720px);opacity:.32;animation:none!important;filter:blur(6px)}
 .showcase .wrap{position:relative;z-index:3}
 .showcase .eyebrow{justify-content:center}
 .ring{--w:clamp(196px,25vw,326px);--r:clamp(250px,32vw,404px);position:relative;z-index:2;margin-top:clamp(24px,4vw,50px);height:clamp(300px,34vw,440px);perspective:1600px;perspective-origin:50% 50%;
@@ -182,7 +186,7 @@ p.body + p.body{margin-top:16px}
 .ring .rotor{position:absolute;left:50%;top:50%;width:1px;height:1px;transform-style:preserve-3d;will-change:transform;cursor:var(--drag-cur)}
 .ring .panel{position:absolute;left:0;top:0;width:var(--w);height:calc(var(--w)*.625);margin-left:calc(var(--w)*-.5);margin-top:calc(var(--w)*-.3125);
   border-radius:14px;overflow:hidden;border:1px solid var(--line);background:#0d0d0d;
-  transform:rotateY(calc(var(--i)*45deg)) translateZ(var(--r));backface-visibility:hidden;-webkit-backface-visibility:hidden;
+  transform:rotateY(calc(var(--i)*45deg)) translateZ(calc(var(--r) * -1)) rotateY(180deg);backface-visibility:hidden;-webkit-backface-visibility:hidden;
   box-shadow:0 24px 60px rgba(0,0,0,.6)}
 .ring .panel video,.ring .panel img{width:100%;height:100%;object-fit:cover;pointer-events:none}
 .ring .panel::after{content:"";position:absolute;inset:0;border-radius:14px;box-shadow:inset 0 0 46px rgba(0,0,0,.55)}
@@ -228,11 +232,24 @@ p.body + p.body{margin-top:16px}
 @media(max-width:900px){.work-grid{grid-template-columns:repeat(2,1fr);gap:12px}.work-card.big,.work-card.small,.work-card.mid{grid-column:span 1}.work-card{min-height:230px}}
 
 /* FULL-BLEED BAND */
-.band{position:relative;height:clamp(320px,52vw,560px);overflow:hidden;display:flex;align-items:center;z-index:2;border-block:1px solid var(--line)}
+.band{position:relative;height:clamp(320px,52vw,560px);overflow:hidden;display:flex;align-items:center;z-index:2}
 .band video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0}
-.band .veil{position:absolute;inset:0;z-index:1;background:linear-gradient(90deg,rgba(5,5,5,.9) 0%,rgba(5,5,5,.45) 45%,rgba(5,5,5,.2) 100%)}
+.band .veil{position:absolute;inset:0;z-index:1;background:
+  linear-gradient(90deg,rgba(6,5,7,.92) 0%,rgba(6,5,7,.5) 45%,rgba(6,5,7,.22) 100%),
+  linear-gradient(180deg,rgba(6,5,7,1) 0%,transparent 22%,transparent 78%,rgba(6,5,7,1) 100%)}
 .band .b-inner{position:relative;z-index:2;width:min(92vw,var(--max));margin-inline:auto}
 .band h2{font-size:clamp(30px,5.5vw,68px);line-height:1.02;font-weight:700;letter-spacing:-.02em;max-width:18ch}
+
+/* CREATIVE INTERSTITIAL — abstract creative with overlapping headline that melts into neighbours */
+.inter{position:relative;min-height:clamp(340px,44vw,520px);display:flex;align-items:center;justify-content:center;text-align:center;overflow:hidden;z-index:2;margin-block:clamp(-70px,-7vw,-120px)}
+.inter .cr{position:absolute;inset:0;z-index:0}
+.inter .cr img{width:100%;height:100%;object-fit:cover}
+.inter .cr::after{content:"";position:absolute;inset:0;background:
+  radial-gradient(62% 62% at 50% 50%, rgba(6,5,7,.34) 0%, rgba(6,5,7,.68) 100%),
+  linear-gradient(180deg,rgba(6,5,7,1) 0%,rgba(6,5,7,.4) 30%,rgba(6,5,7,.4) 70%,rgba(6,5,7,1) 100%)}
+.inter .badge{position:relative;z-index:2}
+.inter h2{position:relative;z-index:2;font-size:clamp(30px,5.4vw,74px);line-height:1.04;font-weight:700;letter-spacing:-.02em;max-width:18ch;margin:14px auto 0;padding:0 6vw}
+.inter .eyebrow{justify-content:center;color:#fff}
 
 /* PROCESS — steps + sticky video */
 .process .grid{display:grid;grid-template-columns:.9fr 1.1fr;gap:clamp(26px,4vw,64px);margin-top:24px;align-items:start}
@@ -246,7 +263,7 @@ p.body + p.body{margin-top:16px}
 @media(max-width:860px){.process .grid{grid-template-columns:1fr}.process .media{position:relative;top:0;min-height:260px;aspect-ratio:16/10}}
 
 /* PRICE */
-.price{background:var(--bg-soft);border-block:1px solid var(--line)}
+.price{position:relative}
 .price .inner{display:grid;grid-template-columns:1fr 1fr;gap:clamp(28px,5vw,72px);align-items:center}
 .price .num-wrap{position:relative;aspect-ratio:1;min-height:280px;border-radius:16px;overflow:hidden;border:1px solid var(--line);display:flex;align-items:center;justify-content:center}
 .price .num-wrap video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.34;z-index:0}
@@ -282,7 +299,7 @@ p.body + p.body{margin-top:16px}
 
 /* CTA */
 .cta{text-align:center;padding:clamp(90px,13vw,180px) 0;position:relative;overflow:hidden}
-.cta video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;opacity:.18}
+.cta video,.cta img.bgc{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;opacity:.32}
 .cta::before{content:"";position:absolute;inset:0;z-index:1;background:radial-gradient(60% 60% at 50% 45%,rgba(255,74,28,.2),transparent 70%),linear-gradient(180deg,rgba(5,5,5,.7),rgba(5,5,5,.7))}
 .cta .inner{position:relative;z-index:2}
 .cta h2{font-size:clamp(40px,8vw,108px);line-height:.98;font-weight:700;letter-spacing:-.03em;margin-bottom:26px}
@@ -469,6 +486,15 @@ footer{border-top:1px solid var(--line);padding:52px 0 40px;position:relative;z-
   </div>
 </section>
 
+<!-- CREATIVE INTERSTITIAL -->
+<div class="inter">
+  <div class="cr"><img src="assets/creatives/abstract3.jpg" alt="" loading="lazy" /></div>
+  <div>
+    <div class="eyebrow badge" data-num="◦ ">The math</div>
+    <h2 class="reveal">Made to look expensive. <span class="serif accent">Priced not to be.</span></h2>
+  </div>
+</div>
+
 <!-- PRICE -->
 <section class="price" id="price">
   <div class="glow br"><i class="kaleido kb slow rev" style="width:700px;height:700px;bottom:-250px;right:-210px"></i></div>
@@ -529,7 +555,7 @@ footer{border-top:1px solid var(--line);padding:52px 0 40px;position:relative;z-
 
 <!-- CTA -->
 <section class="cta" id="contact">
-  <video data-lazy="assets/video/reel4.mp4" muted loop playsinline poster="assets/img/reel4.jpg"></video>
+  <img class="bgc" src="assets/creatives/abstract2.jpg" alt="" loading="lazy" />
   <div class="wrap inner">
     <h2 class="reveal">Selling something <span class="serif accent">worth watching?</span></h2>
     <p class="reveal" data-d="1">Send the product, the idea, or just the ambition. We'll come back with how it could look and what it would cost. No decks longer than this page, promise.</p>
