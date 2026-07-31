@@ -91,10 +91,10 @@ nav.links a:hover{color:var(--ink)}
 
 /* SECTION SHELL — tighter padding + glow to fill emptiness */
 section{position:relative;padding:clamp(56px,8vw,112px) 0}
-.glow{position:absolute;inset:0;z-index:0;pointer-events:none;overflow:hidden}
-.glow::after{content:"";position:absolute;width:60vw;height:60vw;border-radius:50%;filter:blur(120px);opacity:.12;background:radial-gradient(circle,var(--accent),transparent 62%)}
-.glow.tl::after{top:-20vw;left:-16vw}
-.glow.br::after{bottom:-24vw;right:-16vw}
+.glow{position:absolute;inset:0;z-index:0;pointer-events:none;overflow:visible}
+.glow::after{content:"";position:absolute;width:66vw;height:66vw;border-radius:50%;filter:blur(150px);opacity:.1;background:radial-gradient(circle,var(--accent),transparent 66%)}
+.glow.tl::after{top:-24vw;left:-16vw}
+.glow.br::after{bottom:-26vw;right:-16vw}
 .eyebrow{font-size:12px;letter-spacing:.28em;text-transform:uppercase;color:var(--accent);display:flex;align-items:center;gap:12px;margin-bottom:24px}
 .eyebrow::before{content:attr(data-num);color:var(--ink-dim);font-variant-numeric:tabular-nums}
 h2.big{font-size:clamp(34px,6vw,74px);line-height:1.02;font-weight:700;letter-spacing:-.02em}
