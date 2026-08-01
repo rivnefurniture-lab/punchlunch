@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Punch Lunch — The big-budget look, minus the big budget.</title>
+<meta name="description" content="AI logistics, filmmaker taste. Commercials that look like a studio blockbuster shot them." />
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#07060a;--bg-rgb:7,6,10;--surface:#0e0d12;--surface-alt:#131118;--surface-hover:#181620;
+  --border:rgba(255,255,255,.08);--border-hover:rgba(255,255,255,.2);
+  --text:#F3F0EA;--text-2:#B7B2AC;--text-3:#7C776F;--text-rgb:243,240,234;
+  --accent:#FF4A1C;--accent-2:#FF6A3D;--accent-rgb:255,74,28;
+  --max:1280px;--ease:cubic-bezier(.22,1,.36,1);--drag:grab;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{color:var(--text);font-family:'Space Grotesk',system-ui,sans-serif;font-size:18px;line-height:1.6;overflow-x:hidden;position:relative;
+  background:linear-gradient(180deg,#060507 0%,#0c0810 16%,#100810 30%,#0a0611 46%,#0d0809 62%,#0b0712 78%,#070610 92%,#060507 100%)}
+body::before{content:"";position:fixed;inset:0;z-index:1;pointer-events:none;opacity:.5;mix-blend-mode:overlay;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.4'/%3E%3C/svg%3E")}
+canvas#amb{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.55}
+img,video{display:block;max-width:100%}
+a{color:inherit;text-decoration:none}
+::selection{background:var(--accent);color:#0a0604}
+.wrap{width:min(92vw,var(--max));margin-inline:auto}
+.serif{font-family:'Instrument Serif',Georgia,serif;font-style:italic;font-weight:400}
+.accent{color:var(--accent)}
+.eyebrow{font:500 12px/1.4 'JetBrains Mono';letter-spacing:.18em;text-transform:uppercase;color:var(--accent);display:inline-flex;gap:9px;align-items:center}
+.eyebrow::before{content:"";width:26px;height:1px;background:var(--accent)}
+
+/* progress + section nav */
+#progress{position:fixed;top:0;left:0;height:2px;width:0;background:var(--accent);z-index:200;box-shadow:0 0 12px var(--accent)}
+#sectnav{position:fixed;right:clamp(12px,2vw,26px);top:50%;transform:translateY(-50%);z-index:120;display:flex;flex-direction:column;gap:15px}
+#sectnav a{display:flex;align-items:center;gap:9px;justify-content:flex-end;color:rgba(255,255,255,.8);font:500 10px/1 'JetBrains Mono';letter-spacing:.14em;text-transform:uppercase}
+#sectnav .tx{opacity:0;transform:translateX(6px);transition:.3s;white-space:nowrap}
+#sectnav .ln{width:20px;height:2px;background:currentColor;opacity:.35;transition:.3s}
+#sectnav a:hover .tx,#sectnav a.on .tx{opacity:.95;transform:none}
+#sectnav a.on .ln{width:40px;opacity:1;background:var(--accent)}
+@media(max-width:900px){#sectnav{display:none}}
+
+/* spotlight cursor */
+#spot{position:fixed;top:0;left:0;width:480px;height:480px;margin:-240px 0 0 -240px;border-radius:50%;z-index:90;pointer-events:none;background:radial-gradient(circle,rgba(var(--accent-rgb),.13),transparent 62%);mix-blend-mode:screen;opacity:0;transition:opacity .5s;will-change:transform}
+@media(hover:none){#spot{display:none}}
+.magnetic{will-change:transform;transition:transform .3s var(--ease)}
+
+/* nav */
+header.nav{position:fixed;inset:0 0 auto;display:flex;justify-content:space-between;align-items:center;padding:20px clamp(18px,4vw,48px);z-index:150;transition:background .4s,padding .4s,border-color .4s;border-bottom:1px solid transparent}
+header.nav.solid{background:rgba(var(--bg-rgb),.72);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);padding:12px clamp(18px,4vw,48px);border-bottom:1px solid var(--border)}
+.brand{display:flex;align-items:center;gap:10px;font-weight:700;letter-spacing:.02em}
+.brand .dot{width:10px;height:10px;border-radius:50%;background:var(--accent);box-shadow:0 0 14px var(--accent)}
+.nav-links{display:flex;gap:30px;align-items:center}
+.nav-links a{font:500 13px/1 'Space Grotesk';color:var(--text-2);transition:color .3s}
+.nav-links a:hover{color:var(--text)}
+.btn{font:600 14px/1 'Space Grotesk';padding:13px 22px;border-radius:999px;background:var(--accent);color:#0a0604;display:inline-flex;gap:9px;align-items:center;cursor:pointer;transition:transform .25s var(--ease),background .25s,box-shadow .25s;will-change:transform;border:1px solid transparent}
+.btn:hover{background:var(--accent-2);box-shadow:0 12px 40px rgba(var(--accent-rgb),.35)}
+.btn:active{transform:translateY(1px) scale(.99)}
+.btn:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+.btn.ghost{background:transparent;color:var(--text);border-color:var(--border-hover)}
+.btn.ghost:hover{background:var(--surface-hover);box-shadow:none}
+@media(max-width:760px){.nav-links a:not(.btn){display:none}}
+
+/* hero */
+.hero{position:relative;min-height:100svh;display:flex;align-items:flex-end;overflow:hidden;z-index:2}
+.hero video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;opacity:.55}
+.hero .veil{position:absolute;inset:0;z-index:1;background:radial-gradient(120% 90% at 50% 8%,transparent 38%,rgba(var(--bg-rgb),.55)),linear-gradient(180deg,rgba(var(--bg-rgb),.55) 0%,transparent 26%,transparent 46%,rgba(var(--bg-rgb),.96) 100%)}
+.hero-in{position:relative;z-index:2;width:min(92vw,var(--max));margin-inline:auto;padding-bottom:clamp(46px,7vw,96px);width:100%}
+.hero .eyebrow{margin-bottom:22px;opacity:0;animation:rise .9s .2s var(--ease) forwards}
+.hero h1{font-size:clamp(58px,15.5vw,240px);line-height:.82;font-weight:700;letter-spacing:-.02em;text-transform:uppercase;margin-bottom:26px}
+.hero h1 .ln{display:block;overflow:hidden}
+.hero h1 .ln b{display:block;font-weight:700;transform:translateY(115%);animation:reveal 1.05s var(--ease) forwards}
+.hero h1 .ln:nth-child(2) b{animation-delay:.1s}
+.hero h1 .fx{background:linear-gradient(100deg,var(--accent),var(--accent-2));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;text-shadow:0 0 42px rgba(var(--accent-rgb),.3)}
+.hero .sub{max-width:640px;font-size:clamp(17px,2.1vw,23px);color:#e8e7e4;margin-bottom:30px;opacity:0;animation:rise .9s .55s var(--ease) forwards}
+.hero .sub em{color:var(--text-3);font-style:normal}
+.hero .cta-row{display:flex;gap:14px;flex-wrap:wrap;opacity:0;animation:rise .9s .75s var(--ease) forwards}
+.scroll-hint{position:absolute;bottom:22px;left:50%;transform:translateX(-50%);z-index:2;font:500 10px/1 'JetBrains Mono';letter-spacing:.25em;text-transform:uppercase;color:var(--text-3);display:flex;flex-direction:column;align-items:center;gap:8px;opacity:0;animation:rise 1s 1.2s var(--ease) forwards}
+.scroll-hint .bar{width:1px;height:36px;background:linear-gradient(var(--accent),transparent);animation:drop 1.8s var(--ease) infinite}
+@keyframes drop{0%{transform:scaleY(0);transform-origin:top}45%{transform:scaleY(1);transform-origin:top}55%{transform:scaleY(1);transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}
+@keyframes reveal{to{transform:translateY(0)}}
+@keyframes rise{to{opacity:1;transform:translateY(0)}}
+
+/* reveal util */
+.reveal{opacity:0;transform:translateY(34px);transition:opacity .8s var(--ease),transform .8s var(--ease)}
+.reveal.in{opacity:1;transform:none}
+.reveal[data-d="1"]{transition-delay:.08s}.reveal[data-d="2"]{transition-delay:.16s}.reveal[data-d="3"]{transition-delay:.24s}
+
+section{position:relative;padding:clamp(80px,11vw,150px) 0;z-index:2}
+h2.big{font-size:clamp(34px,6vw,86px);line-height:1.02;font-weight:700;letter-spacing:-.02em}
+
+/* marquee manifesto (first-scroll hook) */
+.manifesto{padding:clamp(50px,7vw,90px) 0;overflow:hidden;position:relative;z-index:2}
+.mq{display:flex;gap:0;white-space:nowrap;will-change:transform;font-size:clamp(46px,10vw,150px);font-weight:700;letter-spacing:-.02em;text-transform:uppercase;line-height:1}
+.mq span{padding:0 .28em;color:transparent;-webkit-text-stroke:1.2px rgba(var(--text-rgb),.4)}
+.mq span.fill{color:var(--text);-webkit-text-stroke:0}
+.mq span.ac{color:var(--accent);-webkit-text-stroke:0}
+
+/* concave carousel */
+.showcase{position:relative;overflow:hidden;padding:clamp(80px,11vw,150px) 0;text-align:center;z-index:2}
+.showcase .eyebrow{justify-content:center}
+.showcase h2{margin-top:14px}
+.ring{--w:clamp(240px,31vw,470px);--r:clamp(320px,42vw,640px);position:relative;z-index:2;margin-top:clamp(30px,5vw,60px);height:clamp(360px,42vw,600px);perspective:1300px;perspective-origin:50% 50%;
+  -webkit-mask:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent);mask:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent)}
+.ring .rotor{position:absolute;left:50%;top:50%;width:1px;height:1px;transform-style:preserve-3d;cursor:var(--drag);transform:translateZ(var(--r)) rotateY(var(--spin,0deg))}
+.ring .panel{position:absolute;left:0;top:0;width:var(--w);height:calc(var(--w)*.625);margin-left:calc(var(--w)*-.5);margin-top:calc(var(--w)*-.3125);
+  border-radius:16px;overflow:hidden;border:1px solid var(--border);background:#0d0d0d;
+  transform:rotateY(calc(var(--i)*45deg)) translateZ(var(--r)) rotateY(180deg);backface-visibility:hidden;box-shadow:0 24px 60px rgba(0,0,0,.6)}
+.ring .panel video,.ring .panel img{width:100%;height:100%;object-fit:cover}
+.ring .panel::after{content:"";position:absolute;inset:0;border-radius:16px;box-shadow:inset 0 0 46px rgba(0,0,0,.5)}
+@media(max-width:760px){.ring{--w:clamp(150px,44vw,220px);--r:clamp(180px,52vw,270px);perspective:1000px;height:clamp(230px,58vw,320px)}}
+
+/* bento work grid — MagicBento */
+.work .head{display:flex;justify-content:space-between;align-items:flex-end;gap:20px;flex-wrap:wrap;margin-bottom:clamp(30px,4vw,52px)}
+.bento{display:grid;grid-template-columns:repeat(6,1fr);grid-auto-rows:minmax(210px,auto);gap:14px}
+.tile{position:relative;border:1px solid var(--border);border-radius:18px;overflow:hidden;background:var(--surface);display:flex;align-items:flex-end;transition:border-color .35s,transform .35s;min-height:210px}
+.tile video,.tile img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;opacity:.9}
+.tile .grad{position:absolute;inset:0;z-index:1;background:linear-gradient(180deg,transparent 40%,rgba(0,0,0,.82))}
+.tile::before{content:"";position:absolute;inset:0;z-index:2;opacity:0;transition:opacity .35s;background:radial-gradient(340px circle at var(--mx,50%) var(--my,50%),rgba(var(--accent-rgb),.16),transparent 60%)}
+.tile:hover{border-color:var(--border-hover);transform:translateY(-3px)}
+.tile:hover::before{opacity:1}
+.tile .meta{position:relative;z-index:3;padding:clamp(20px,2.4vw,30px)}
+.tile .tag{font:500 11px/1 'JetBrains Mono';letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin-bottom:8px;display:block}
+.tile h3{font-size:clamp(21px,2.4vw,30px);font-weight:700;letter-spacing:-.01em;margin-bottom:6px}
+.tile p{font-size:15px;color:var(--text-2);max-width:42ch}
+.tile.lg{grid-column:span 4;grid-row:span 2}
+.tile.md{grid-column:span 3}
+.tile.sm{grid-column:span 2}
+@media(max-width:900px){.bento{grid-template-columns:repeat(2,1fr)}.tile.lg,.tile.md,.tile.sm{grid-column:span 1;grid-row:auto}}
+@media(max-width:560px){.bento{grid-template-columns:1fr}}
+
+/* interstitial creative */
+.inter{position:relative;min-height:clamp(360px,46vw,560px);display:flex;align-items:center;justify-content:center;text-align:center;overflow:hidden;z-index:2;margin-block:clamp(-60px,-6vw,-100px)}
+.inter .cr{position:absolute;inset:0;z-index:0}
+.inter .cr img{width:100%;height:100%;object-fit:cover}
+.inter .cr::after{content:"";position:absolute;inset:0;background:radial-gradient(62% 62% at 50% 50%,rgba(var(--bg-rgb),.32),rgba(var(--bg-rgb),.7)),linear-gradient(180deg,rgba(var(--bg-rgb),1),transparent 30%,transparent 70%,rgba(var(--bg-rgb),1))}
+.inter .in{position:relative;z-index:2}
+.inter h2{font-size:clamp(30px,5.4vw,76px);line-height:1.04;font-weight:700;letter-spacing:-.02em;max-width:18ch;margin:14px auto 0;padding:0 6vw}
+
+/* pricing */
+.price .grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(26px,4vw,60px);align-items:center}
+.price .num{font-size:clamp(120px,20vw,280px);font-weight:700;line-height:.8;letter-spacing:-.03em}
+.price .num .x{font-family:'Instrument Serif',serif;font-style:italic;color:var(--accent)}
+.price p{color:var(--text-2);margin-bottom:14px;max-width:46ch}
+@media(max-width:760px){.price .grid{grid-template-columns:1fr}}
+
+/* faq */
+.faq-list{border-top:1px solid var(--border);margin-top:clamp(30px,4vw,50px)}
+.faq-item{border-bottom:1px solid var(--border)}
+.faq-q{display:flex;justify-content:space-between;gap:20px;align-items:center;padding:clamp(20px,2.6vw,30px) 0;cursor:pointer;font-size:clamp(18px,2vw,24px);font-weight:600}
+.faq-q .ic{width:26px;height:26px;flex:none;position:relative}
+.faq-q .ic::before,.faq-q .ic::after{content:"";position:absolute;inset:50% 0 auto;height:2px;background:var(--accent);transition:transform .35s}
+.faq-q .ic::after{transform:rotate(90deg)}
+.faq-item.open .ic::after{transform:rotate(0)}
+.faq-a{max-height:0;overflow:hidden;transition:max-height .5s var(--ease)}
+.faq-a p{padding:0 0 24px;color:var(--text-2);max-width:70ch}
+
+/* cta */
+.cta{text-align:center;padding:clamp(100px,15vw,200px) 0;position:relative;overflow:hidden;z-index:2}
+.cta img.bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;opacity:.3}
+.cta .veil{position:absolute;inset:0;z-index:1;background:radial-gradient(70% 70% at 50% 50%,transparent,rgba(var(--bg-rgb),.7))}
+.cta .in{position:relative;z-index:2}
+.cta h2{font-size:clamp(40px,8vw,120px);line-height:.95;font-weight:700;letter-spacing:-.02em;margin-bottom:26px}
+.cta .mail{font-family:'JetBrains Mono';font-size:clamp(15px,2vw,20px);color:var(--text-2);border-bottom:1px solid var(--border-hover);padding-bottom:3px;transition:color .3s,border-color .3s;display:inline-block;margin-top:24px}
+.cta .mail:hover{color:var(--accent);border-color:var(--accent)}
+
+footer{border-top:1px solid var(--border);padding:52px 0 40px;position:relative;z-index:2}
+.foot{display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap;color:var(--text-3);font-size:13px;font-family:'JetBrains Mono'}
+.foot a{color:var(--text-2)}.foot a:hover{color:var(--accent)}
+
+/* easter-egg tooltip */
+.egg{position:relative;cursor:help;border-bottom:1px dashed var(--border-hover)}
+.egg::after{content:attr(data-tip);position:absolute;left:50%;bottom:130%;transform:translateX(-50%) translateY(6px);white-space:nowrap;background:var(--accent);color:#0a0604;font:500 11px/1 'JetBrains Mono';letter-spacing:.04em;padding:7px 10px;border-radius:7px;opacity:0;pointer-events:none;transition:.25s}
+.egg:hover::after{opacity:1;transform:translateX(-50%)}
+
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.reveal{opacity:1;transform:none}.hero h1 .ln b{transform:none}canvas#amb{display:none}}
+</style>
+</head>
+<body>
+<div id="progress"></div>
+<canvas id="amb"></canvas>
+<div id="spot"></div>
+<nav id="sectnav" aria-hidden="true">
+  <a href="#work"><span class="tx">Work</span><span class="ln"></span></a>
+  <a href="#reel"><span class="tx">Reel</span><span class="ln"></span></a>
+  <a href="#price"><span class="tx">Pricing</span><span class="ln"></span></a>
+  <a href="#faq"><span class="tx">FAQ</span><span class="ln"></span></a>
+  <a href="#contact"><span class="tx">Contact</span><span class="ln"></span></a>
+</nav>
+
+<header class="nav" id="nav">
+  <a class="brand" href="#top"><span class="dot"></span>PUNCH LUNCH</a>
+  <div class="nav-links">
+    <a href="#work">Work</a><a href="#process">Process</a><a href="#price">Pricing</a><a href="#faq">FAQ</a>
+    <a href="#contact" class="btn magnetic">Start a project</a>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero" id="top">
+  <video autoplay muted loop playsinline preload="auto" poster="assets/img/hero-poster.jpg"><source src="assets/video/hero.mp4" type="video/mp4"></video>
+  <div class="veil"></div>
+  <div class="hero-in">
+    <div class="eyebrow">AI logistics · filmmaker taste</div>
+    <h1><span class="ln"><b>PUNCH</b></span><span class="ln"><b>LUNCH<span class="fx">.</span></b></span></h1>
+    <p class="sub">We make commercials that look like a studio blockbuster shot them. AI handles the logistics. Filmmakers handle the taste. <em>You handle the compliments.</em></p>
+    <div class="cta-row">
+      <a href="#contact" class="btn magnetic">Start a project</a>
+      <a href="#reel" class="btn ghost magnetic">See the reel</a>
+    </div>
+  </div>
+  <div class="scroll-hint">Scroll<span class="bar"></span></div>
+</section>
+
+<!-- MANIFESTO MARQUEE (first-scroll hook) -->
+<div class="manifesto">
+  <div class="mq" id="mq">
+    <span class="fill">Big-budget look</span><span>·</span><span class="ac">minus</span><span>the big budget</span><span>·</span>
+    <span class="fill">Big-budget look</span><span>·</span><span class="ac">minus</span><span>the big budget</span><span>·</span>
+  </div>
+</div>
+
+<!-- CONCAVE CAROUSEL -->
+<section class="showcase" id="reel">
+  <div class="eyebrow">In motion</div>
+  <h2 class="big reveal">Nothing here was <span class="serif accent">ever filmed.</span></h2>
+  <div class="ring reveal" data-d="1">
+    <div class="rotor" id="rotor">
+      <div class="panel" style="--i:0"><video data-lazy="assets/video/reel1.mp4" poster="assets/img/reel1.jpg" muted loop playsinline></video></div>
+      <div class="panel" style="--i:1"><video data-lazy="assets/video/reel2.mp4" poster="assets/img/reel2.jpg" muted loop playsinline></video></div>
+      <div class="panel" style="--i:2"><video data-lazy="assets/video/reel3.mp4" poster="assets/img/reel3.jpg" muted loop playsinline></video></div>
+      <div class="panel" style="--i:3"><video data-lazy="assets/video/reel4.mp4" poster="assets/img/reel4.jpg" muted loop playsinline></video></div>
+      <div class="panel" style="--i:4"><video data-lazy="assets/video/reel5.mp4" poster="assets/img/reel5.jpg" muted loop playsinline></video></div>
+      <div class="panel" style="--i:5"><video data-lazy="assets/video/reel6.mp4" poster="assets/img/reel6.jpg" muted loop playsinline></video></div>
+      <div class="panel" style="--i:6"><video data-lazy="assets/video/reel7.mp4" poster="assets/img/reel7.jpg" muted loop playsinline></video></div>
+      <div class="panel" style="--i:7"><video data-lazy="assets/video/reel8.mp4" poster="assets/img/reel8.jpg" muted loop playsinline></video></div>
+    </div>
+  </div>
+</section>
+
+<!-- WORK — BENTO -->
+<section class="work" id="work">
+  <div class="wrap">
+    <div class="head">
+      <div><div class="eyebrow">The work</div><h2 class="big reveal" style="margin-top:12px">Every format. <span class="serif accent">One shoot.</span></h2></div>
+      <p class="reveal" data-d="1" style="max-width:34ch;color:var(--text-2)">From a shoot that never physically happened. All moving, all built from scratch for you.</p>
+    </div>
+    <div class="bento">
+      <article class="tile lg spot reveal"><video data-lazy="assets/video/reel1.mp4" poster="assets/img/reel1.jpg" muted loop playsinline></video><div class="grad"></div><div class="meta"><span class="tag">Hero spot</span><h3>Brand commercials</h3><p>The hero spot. 30 or 60 seconds that make your company look like it plays in a bigger league than it pays for.</p></div></article>
+      <article class="tile md spot reveal" data-d="1"><video data-lazy="assets/video/reel5.mp4" poster="assets/img/reel5.jpg" muted loop playsinline></video><div class="grad"></div><div class="meta"><span class="tag">The star</span><h3>Product spots</h3></div></article>
+      <article class="tile md spot reveal" data-d="2"><video data-lazy="assets/video/reel3.mp4" poster="assets/img/reel3.jpg" muted loop playsinline></video><div class="grad"></div><div class="meta"><span class="tag">The future</span><h3>Concept ads</h3></div></article>
+      <article class="tile sm spot reveal"><video data-lazy="assets/video/reel7.mp4" poster="assets/img/reel7.jpg" muted loop playsinline></video><div class="grad"></div><div class="meta"><span class="tag">Full volley</span><h3>Launch films</h3></div></article>
+      <article class="tile sm spot reveal" data-d="1"><video data-lazy="assets/video/reel8.mp4" poster="assets/img/reel8.jpg" muted loop playsinline></video><div class="grad"></div><div class="meta"><span class="tag">Loud on mute</span><h3>Short-form</h3></div></article>
+      <article class="tile sm spot reveal" data-d="2"><img src="assets/creatives/abstract1.jpg" alt="Abstract AI creative placeholder"><div class="grad"></div><div class="meta"><span class="tag">Untitled AI</span><h3>Concept art</h3></div></article>
+    </div>
+  </div>
+</section>
+
+<!-- INTERSTITIAL -->
+<div class="inter">
+  <div class="cr"><img class="px" data-px="0.06" src="assets/creatives/abstract3.jpg" alt=""></div>
+  <div class="in"><div class="eyebrow" style="justify-content:center">The math</div><h2 class="reveal">Made to look expensive. <span class="serif accent">Priced not to be.</span></h2></div>
+</div>
+
+<!-- PRICING -->
+<section class="price" id="price">
+  <div class="wrap">
+    <div class="eyebrow">The price question</div>
+    <div class="grid" style="margin-top:26px">
+      <div class="reveal"><div class="num">1<span class="x">×</span></div></div>
+      <div class="reveal" data-d="1">
+        <h2 class="big" style="font-size:clamp(26px,3.4vw,44px);margin-bottom:20px">It depends — and anyone quoting you <span class="serif accent">before hearing the idea is guessing.</span></h2>
+        <p>What we can say: spots like ours traditionally come with a production budget carrying at least one more zero.</p>
+        <p>Tell us what you're selling and we'll give you a real number fast.</p>
+        <a href="#contact" class="btn magnetic" style="margin-top:12px">Get a number</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section id="faq">
+  <div class="wrap">
+    <div class="eyebrow">A reality check</div>
+    <h2 class="big reveal" style="margin-top:12px">Fair <span class="serif accent">questions.</span></h2>
+    <div class="faq-list">
+      <div class="faq-item"><div class="faq-q">Is this just <span class="egg" data-tip="← yes, and it's on purpose">AI slop</span>?<span class="ic"></span></div><div class="faq-a"><p>No. AI handles the logistics — the parts a big budget usually pays for. Filmmakers still make every creative call: the shot, the cut, why a frame sells.</p></div></div>
+      <div class="faq-item"><div class="faq-q">Will it actually show our product?<span class="ic"></span></div><div class="faq-a"><p>Your product shot like the star of a summer blockbuster. We build the world; your product is the hero of it.</p></div></div>
+      <div class="faq-item"><div class="faq-q">How fast is fast?<span class="ic"></span></div><div class="faq-a"><p>Days, not months. No reshoots, no flights, no crew of seventeen standing around a monitor eating your budget.</p></div></div>
+      <div class="faq-item"><div class="faq-q">Can you match our brand guidelines?<span class="ic"></span></div><div class="faq-a"><p>Yes — palette, type, tone. Send the deck; we build to it.</p></div></div>
+      <div class="faq-item"><div class="faq-q">Why "Punch Lunch"?<span class="ic"></span></div><div class="faq-a"><p>Because the work should hit like a punch and land like lunch — satisfying, on time, worth the wait.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta" id="contact">
+  <img class="bg px" data-px="0.05" src="assets/creatives/abstract2.jpg" alt="">
+  <div class="veil"></div>
+  <div class="in">
+    <div class="eyebrow" style="justify-content:center">Start a project</div>
+    <h2 class="reveal" style="margin-top:16px">Selling something <span class="serif accent">worth watching?</span></h2>
+    <a href="mailto:hello@punchlunch.film" class="mail magnetic">hello@punchlunch.film</a>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap foot">
+    <span>© <span id="yr"></span> Punch Lunch — the big-budget look, minus the big budget.</span>
+    <span>You made it to the bottom. <span class="accent">Thanks for watching.</span></span>
+    <span>Built with the <a href="https://github.com/DavidHDev/react-bits" target="_blank" rel="noopener">reactbits</a> motion vocabulary.</span>
+  </div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lenis/1.1.14/lenis.min.js"></script>
+<script>
+const reduce=matchMedia('(prefers-reduced-motion:reduce)').matches;
+const nav=document.getElementById('nav'),prog=document.getElementById('progress');
+function onScroll(){const st=scrollY,h=document.documentElement.scrollHeight-innerHeight;prog.style.width=(h>0?st/h*100:0)+'%';nav.classList.toggle('solid',st>40);}
+addEventListener('scroll',onScroll,{passive:true});onScroll();
+
+/* Lenis smooth (L3) */
+let lenis=null;
+if(!reduce&&window.Lenis){lenis=new Lenis({lerp:.09,smoothWheel:true});requestAnimationFrame(function r(t){lenis.raf(t);requestAnimationFrame(r)});lenis.on('scroll',onScroll);}
+document.querySelectorAll('a[href^="#"]').forEach(a=>a.addEventListener('click',e=>{const id=a.getAttribute('href');if(id.length<2)return;const t=document.querySelector(id);if(!t)return;e.preventDefault();lenis?lenis.scrollTo(t,{offset:-10}):t.scrollIntoView({behavior:'smooth'})}));
+
+/* reveal */
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{rootMargin:'0px 0px -8% 0px',threshold:.12});
+document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+/* lazy autoplay videos */
+const vio=new IntersectionObserver(es=>es.forEach(e=>{const v=e.target;if(e.isIntersecting){if(v.dataset.lazy&&!v.src){v.src=v.dataset.lazy;v.load()}v.play&&v.play().catch(()=>{})}else v.pause&&v.pause()}),{rootMargin:'150px',threshold:.05});
+document.querySelectorAll('video[data-lazy]').forEach(v=>vio.observe(v));
+
+/* section nav */
+const secMap=[...document.querySelectorAll('#sectnav a')].map(a=>({a,el:document.querySelector(a.getAttribute('href'))})).filter(o=>o.el);
+new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)secMap.forEach(o=>o.a.classList.toggle('on',o.el===e.target))}),{rootMargin:'-45% 0px -45% 0px'}).forEach?0:0;
+const snObs=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)secMap.forEach(o=>o.a.classList.toggle('on',o.el===e.target))}),{rootMargin:'-45% 0px -45% 0px'});secMap.forEach(o=>snObs.observe(o.el));
+
+/* spotlight + magnetic (hover only) */
+const spot=document.getElementById('spot');
+if(matchMedia('(hover:hover)').matches){
+  let mx=innerWidth/2,my=innerHeight/2,sx=mx,sy=my;
+  addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;if(spot)spot.style.opacity=1},{passive:true});
+  (function sp(){sx+=(mx-sx)*.14;sy+=(my-sy)*.14;if(spot)spot.style.transform='translate3d('+sx+'px,'+sy+'px,0)';requestAnimationFrame(sp)})();
+  document.querySelectorAll('.magnetic').forEach(b=>{b.addEventListener('mousemove',e=>{const r=b.getBoundingClientRect();b.style.transform='translate('+(e.clientX-r.left-r.width/2)*.25+'px,'+(e.clientY-r.top-r.height/2)*.4+'px)'});b.addEventListener('mouseleave',()=>b.style.transform='')});
+  document.querySelectorAll('.spot,.tile').forEach(c=>c.addEventListener('mousemove',e=>{const r=c.getBoundingClientRect();c.style.setProperty('--mx',(e.clientX-r.left)+'px');c.style.setProperty('--my',(e.clientY-r.top)+'px')}));
+}
+
+/* concave carousel spin + drag */
+(function(){const ring=document.querySelector('.ring'),rotor=document.getElementById('rotor');if(!ring||!rotor)return;
+  let angle=0,vel=0,drag=false,lastX=0,lastT=0;const AUTO=reduce?0:.09;
+  const apply=()=>rotor.style.setProperty('--spin',angle+'deg');
+  (function f(){if(!drag){angle+=AUTO+vel;vel*=.95;if(Math.abs(vel)<.001)vel=0}apply();requestAnimationFrame(f)})();
+  const gx=e=>e.touches?e.touches[0].clientX:e.clientX;
+  rotor.addEventListener('pointerdown',e=>{drag=true;lastX=gx(e);vel=0;lastT=performance.now()});
+  addEventListener('pointermove',e=>{if(!drag)return;const x=gx(e),n=performance.now(),dx=x-lastX,dt=Math.max(n-lastT,1),da=dx*.22;angle+=da;vel=da/dt*16;lastX=x;lastT=n},{passive:true});
+  addEventListener('pointerup',()=>drag=false);addEventListener('pointercancel',()=>drag=false);
+  rotor.addEventListener('dragstart',e=>e.preventDefault());
+  ring.addEventListener('wheel',e=>{if(Math.abs(e.deltaX)>Math.abs(e.deltaY)){e.preventDefault();const da=e.deltaX*.16;angle+=da;vel=da*.3}},{passive:false});
+})();
+
+/* parallax */
+const pxEls=[...document.querySelectorAll('.px')];
+function px(){const vh=innerHeight;pxEls.forEach(el=>{const r=el.getBoundingClientRect();const c=r.top+r.height/2-vh/2;const sp=parseFloat(el.dataset.px||'0.05');el.style.transform='translate3d(0,'+(-c*sp).toFixed(1)+'px,0) scale(1.16)'})}
+if(!reduce){addEventListener('scroll',px,{passive:true});lenis&&lenis.on('scroll',px);px()}
+
+/* faq */
+document.querySelectorAll('.faq-item').forEach(it=>{const q=it.querySelector('.faq-q'),a=it.querySelector('.faq-a');q.addEventListener('click',()=>{const open=it.classList.contains('open');document.querySelectorAll('.faq-item.open').forEach(o=>{o.classList.remove('open');o.querySelector('.faq-a').style.maxHeight=0});if(!open){it.classList.add('open');a.style.maxHeight=a.scrollHeight+'px'}})});
+
+/* ambient canvas background (bold, paused when hidden) */
+(function(){const c=document.getElementById('amb');if(!c||reduce)return;const ctx=c.getContext('2d');let W,H,run=true,t=0;
+  const blobs=[{x:.25,y:.3,r:.5,col:[255,74,28],s:.00018},{x:.75,y:.6,r:.6,col:[120,60,180],s:.00013},{x:.55,y:.85,r:.45,col:[40,90,150],s:.00021},{x:.85,y:.2,r:.4,col:[255,120,60],s:.00016}];
+  function size(){W=c.width=innerWidth;H=c.height=innerHeight}size();addEventListener('resize',size);
+  document.addEventListener('visibilitychange',()=>{run=!document.hidden;if(run)draw()});
+  function draw(){if(!run)return;t++;ctx.clearRect(0,0,W,H);ctx.globalCompositeOperation='screen';
+    blobs.forEach((b,i)=>{const x=(b.x+Math.sin(t*b.s*7+i)*.06)*W,y=(b.y+Math.cos(t*b.s*5+i)*.06)*H,rad=b.r*Math.min(W,H);const g=ctx.createRadialGradient(x,y,0,x,y,rad);g.addColorStop(0,'rgba('+b.col[0]+','+b.col[1]+','+b.col[2]+',.16)');g.addColorStop(1,'rgba('+b.col[0]+','+b.col[1]+','+b.col[2]+',0)');ctx.fillStyle=g;ctx.fillRect(0,0,W,H)});
+    requestAnimationFrame(draw)}
+  draw();
+})();
+
+document.getElementById('yr').textContent=new Date().getFullYear();
+</script>
+</body>
+</html>
