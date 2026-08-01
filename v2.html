@@ -141,6 +141,17 @@ h2.big{font-size:clamp(34px,6vw,86px);line-height:1.02;font-weight:700;letter-sp
 .inter .in{position:relative;z-index:2}
 .inter h2{font-size:clamp(30px,5.4vw,76px);line-height:1.04;font-weight:700;letter-spacing:-.02em;max-width:18ch;margin:14px auto 0;padding:0 6vw}
 
+/* cinematic crop-marks — frames a statement block without a hard box */
+.crop{position:absolute;inset:clamp(22px,4.5vw,64px);pointer-events:none;z-index:4;opacity:0;transition:opacity 1s var(--ease)}
+.crop.in{opacity:.6}
+.crop i{position:absolute;width:24px;height:24px;border:1.5px solid rgba(var(--accent-rgb),.55)}
+.crop i:nth-child(1){top:0;left:0;border-right:0;border-bottom:0}
+.crop i:nth-child(2){top:0;right:0;border-left:0;border-bottom:0}
+.crop i:nth-child(3){bottom:0;left:0;border-right:0;border-top:0}
+.crop i:nth-child(4){bottom:0;right:0;border-left:0;border-top:0}
+@media(max-width:600px){.crop{inset:14px}.crop i{width:15px;height:15px}}
+@media(prefers-reduced-motion:reduce){.crop{opacity:.6}}
+
 /* pricing */
 .price .grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(26px,4vw,60px);align-items:center}
 .price .num{font-size:clamp(120px,20vw,280px);font-weight:700;line-height:.8;letter-spacing:-.03em}
@@ -164,7 +175,7 @@ h2.big{font-size:clamp(34px,6vw,86px);line-height:1.02;font-weight:700;letter-sp
 .cta img.bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;opacity:.3}
 .cta .veil{position:absolute;inset:0;z-index:1;background:radial-gradient(75% 75% at 50% 50%,transparent,rgba(var(--bg-rgb),.62)),linear-gradient(180deg,var(--bg) 0%,transparent 24%,transparent 80%,var(--bg) 100%)}
 .cta .in{position:relative;z-index:2}
-.cta h2{font-size:clamp(40px,8vw,120px);line-height:.95;font-weight:700;letter-spacing:-.02em;margin-bottom:26px}
+.cta h2{font-size:clamp(38px,6.4vw,104px);line-height:.98;font-weight:700;letter-spacing:-.02em;margin:0 auto 26px;max-width:16ch}
 .cta .mail{font-family:'JetBrains Mono';font-size:clamp(15px,2vw,20px);color:var(--text-2);border-bottom:1px solid var(--border-hover);padding-bottom:3px;transition:color .3s,border-color .3s;display:inline-block;margin-top:24px}
 .cta .mail:hover{color:var(--accent);border-color:var(--accent)}
 
@@ -263,6 +274,7 @@ footer{border-top:1px solid var(--border);padding:52px 0 40px;position:relative;
 <!-- INTERSTITIAL -->
 <div class="inter">
   <div class="cr"><img class="px" data-px="0.06" src="assets/creatives/abstract3.jpg" alt=""></div>
+  <div class="crop in"><i></i><i></i><i></i><i></i></div>
   <div class="in"><div class="eyebrow" style="justify-content:center">The math</div><h2 class="reveal">Made to look expensive. <span class="serif accent">Priced not to be.</span></h2></div>
 </div>
 
@@ -288,7 +300,7 @@ footer{border-top:1px solid var(--border);padding:52px 0 40px;position:relative;
     <div class="eyebrow">A reality check</div>
     <h2 class="big reveal" style="margin-top:12px">Fair <span class="serif accent">questions.</span></h2>
     <div class="faq-list">
-      <div class="faq-item"><div class="faq-q">Is this just <span class="egg" data-tip="← yes, and it's on purpose">AI slop</span>?<span class="ic"></span></div><div class="faq-a"><p>No. AI handles the logistics — the parts a big budget usually pays for. Filmmakers still make every creative call: the shot, the cut, why a frame sells.</p></div></div>
+      <div class="faq-item"><div class="faq-q">Is this just AI slop?<span class="ic"></span></div><div class="faq-a"><p>Not even close. AI handles the logistics — the parts a big budget usually pays for. Every creative call stays with filmmakers: the shot, the cut, the reason a frame sells. The tool changed; the taste didn't.</p></div></div>
       <div class="faq-item"><div class="faq-q">Will it actually show our product?<span class="ic"></span></div><div class="faq-a"><p>Your product shot like the star of a summer blockbuster. We build the world; your product is the hero of it.</p></div></div>
       <div class="faq-item"><div class="faq-q">How fast is fast?<span class="ic"></span></div><div class="faq-a"><p>Days, not months. No reshoots, no flights, no crew of seventeen standing around a monitor eating your budget.</p></div></div>
       <div class="faq-item"><div class="faq-q">Can you match our brand guidelines?<span class="ic"></span></div><div class="faq-a"><p>Yes — palette, type, tone. Send the deck; we build to it.</p></div></div>
@@ -301,6 +313,7 @@ footer{border-top:1px solid var(--border);padding:52px 0 40px;position:relative;
 <section class="cta" id="contact">
   <img class="bg px" data-px="0.05" src="assets/creatives/abstract2.jpg" alt="">
   <div class="veil"></div>
+  <div class="crop in"><i></i><i></i><i></i><i></i></div>
   <div class="in">
     <div class="eyebrow" style="justify-content:center">Start a project</div>
     <h2 class="reveal" style="margin-top:16px">Selling something <span class="serif accent">worth watching?</span></h2>
