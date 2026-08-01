@@ -17,11 +17,16 @@
 }
 *{margin:0;padding:0;box-sizing:border-box}
 html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
-body{color:var(--text);font-family:'Space Grotesk',system-ui,sans-serif;font-size:18px;line-height:1.6;overflow-x:hidden;position:relative;
-  background:linear-gradient(180deg,#060507 0%,#0c0810 16%,#100810 30%,#0a0611 46%,#0d0809 62%,#0b0712 78%,#070610 92%,#060507 100%)}
-body::before{content:"";position:fixed;inset:0;z-index:1;pointer-events:none;opacity:.5;mix-blend-mode:overlay;
-  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.4'/%3E%3C/svg%3E")}
-canvas#amb{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.55}
+body{color:var(--text);font-family:'Space Grotesk',system-ui,sans-serif;font-size:18px;line-height:1.6;overflow-x:hidden;position:relative;background:#08060b}
+/* ONE fixed, continuous backdrop — never scrolls, so nothing can seam */
+#bg{position:fixed;inset:0;z-index:0;pointer-events:none;background:
+  radial-gradient(130% 80% at 50% -10%, #150b16 0%, transparent 52%),
+  radial-gradient(130% 85% at 50% 110%, #170b0b 0%, transparent 52%),
+  radial-gradient(90% 60% at 80% 45%, rgba(120,40,90,.10), transparent 60%),
+  linear-gradient(180deg,#09070d 0%, #0b0810 50%, #09070d 100%)}
+canvas#amb{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.5}
+body::before{content:"";position:fixed;inset:0;z-index:1;pointer-events:none;opacity:.6;mix-blend-mode:overlay;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.5'/%3E%3C/svg%3E")}
 img,video{display:block;max-width:100%}
 a{color:inherit;text-decoration:none}
 ::selection{background:var(--accent);color:#0a0604}
@@ -192,6 +197,7 @@ footer{border-top:1px solid var(--border);padding:52px 0 40px;position:relative;
 </style>
 </head>
 <body>
+<div id="bg"></div>
 <div id="progress"></div>
 <canvas id="amb"></canvas>
 <div id="spot"></div>
