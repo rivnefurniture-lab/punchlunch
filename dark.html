@@ -38,6 +38,14 @@ canvas#amb{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.5}
 body::before{content:"";position:fixed;inset:0;z-index:1;pointer-events:none;opacity:.55;mix-blend-mode:overlay;
   background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.5'/%3E%3C/svg%3E")}
 [data-theme="light"] body::before{opacity:.35}
+/* light theme: show creatives at full contrast instead of dimming them into the cream backdrop */
+[data-theme="light"] .fb .bg{opacity:1;-webkit-mask:none;mask:none}
+[data-theme="light"] .fb .veil{background:linear-gradient(180deg,rgba(0,0,0,.48) 0%,rgba(0,0,0,.34) 45%,rgba(0,0,0,.6) 100%)}
+[data-theme="light"] .cta img.bg{opacity:1;-webkit-mask:none;mask:none}
+[data-theme="light"] .cta .veil{background:radial-gradient(72% 72% at 50% 50%,rgba(0,0,0,.4),rgba(0,0,0,.7))}
+[data-theme="light"] .hero video{opacity:.82}
+[data-theme="light"] .ring .panel video,[data-theme="light"] .ring .panel img,
+[data-theme="light"] .tile video,[data-theme="light"] .tile img{opacity:1;filter:saturate(1.07) contrast(1.05)}
 img,video{display:block;max-width:100%}
 a{color:inherit;text-decoration:none}
 ::selection{background:var(--accent);color:#0a0604}
