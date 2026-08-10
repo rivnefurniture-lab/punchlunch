@@ -5,6 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Punch Lunch — The big-budget look, minus the big budget.</title>
 <meta name="description" content="We make commercials that look like a studio blockbuster shot them. AI handles the logistics. Filmmakers handle the taste." />
+<script type="importmap">
+{"imports":{"three":"./assets/vendor/three/three.module.js","three/addons/":"./assets/vendor/three/addons/"}}
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
@@ -191,16 +194,22 @@ section{position:relative;padding:clamp(72px,10vw,138px) 0;z-index:2}
 .step h3{font-size:clamp(20px,2.2vw,29px);font-weight:700;letter-spacing:-.01em;margin-bottom:9px}
 .step p{color:var(--text-2);max-width:66ch;font-size:clamp(15px,1.15vw,18px)}
 
-/* full-bleed statement (reality) — dark imagery, light text */
-.fb{position:relative;overflow:hidden;z-index:2;color:var(--onimg);padding:clamp(96px,14vw,180px) 0}
-.fb .bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;opacity:.42;
-  -webkit-mask:linear-gradient(180deg,transparent,#000 20%,#000 80%,transparent);mask:linear-gradient(180deg,transparent,#000 20%,#000 80%,transparent)}
-.fb .veil{position:absolute;inset:0;z-index:1;background:radial-gradient(75% 75% at 50% 50%,rgba(0,0,0,.35),rgba(0,0,0,.72))}
+/* reality check */
+.fb{position:relative;z-index:2;color:var(--text);padding:clamp(72px,10vw,140px) 0}
 .fb .wrap{position:relative;z-index:2}
 .fb .eyebrow{margin-bottom:18px}
-.fb h2{color:var(--onimg);max-width:16ch}
-.fb .copy{color:rgba(244,241,235,.85);max-width:62ch}
-.fb .copy .q{color:#fff}
+.fb h2{color:var(--text);max-width:16ch}
+.fb .copy{color:var(--text-2);max-width:60ch}
+.fb .copy .q{color:var(--text)}
+
+/* fixed 3D mascot backdrop — scroll-driven, lives behind every block after What We Make */
+#mascot-stage{position:fixed;inset:0;z-index:1;pointer-events:none;opacity:0;transition:opacity .5s ease;will-change:opacity}
+#mascot-stage canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
+#mascot-stage .vig{position:absolute;inset:0;background:radial-gradient(130% 100% at 50% 42%,transparent 22%,rgba(6,6,9,.55) 100%)}
+[data-theme="light"] #mascot-stage .vig{background:radial-gradient(130% 100% at 50% 42%,transparent 26%,rgba(243,239,231,.55) 100%)}
+#process,#price,#reality,#faq,#contact{position:relative;z-index:2}
+#process :is(h2,h3,p),#process .no,#price :is(h2,p),#price .big-figure,#reality :is(h2,p),#faq .faq-q,#faq .faq-a p,#contact :is(h2,p),#contact .mail{text-shadow:0 2px 26px rgba(0,0,0,.55)}
+[data-theme="light"] :is(#process,#price,#reality,#faq,#contact) :is(h2,h3,p,.no,.big-figure,.faq-q,.mail){text-shadow:0 1px 20px rgba(243,239,231,.75)}
 
 /* pricing */
 .price .grid{display:grid;grid-template-columns:.9fr 1.1fr;gap:clamp(26px,4vw,64px);align-items:center}
@@ -222,14 +231,12 @@ section{position:relative;padding:clamp(72px,10vw,138px) 0;z-index:2}
 .faq-a{max-height:0;overflow:hidden;transition:max-height .5s var(--ease)}
 .faq-a p{padding:0 0 26px;color:var(--text-2);max-width:74ch;font-size:clamp(15px,1.15vw,18px)}
 
-/* CTA — dark imagery, light text */
-.cta{text-align:center;padding:clamp(100px,15vw,200px) 0;position:relative;overflow:hidden;z-index:2;color:var(--onimg)}
-.cta img.bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 28%;z-index:0;opacity:.5;-webkit-mask:linear-gradient(180deg,transparent 0,#000 26%,#000 74%,transparent 100%);mask:linear-gradient(180deg,transparent 0,#000 26%,#000 74%,transparent 100%)}
-.cta .veil{position:absolute;inset:0;z-index:1;background:radial-gradient(66% 66% at 50% 50%,rgba(0,0,0,.45),rgba(0,0,0,.72))}
-.cta .in{position:relative;z-index:2;width:min(92vw,860px);margin-inline:auto}
-.cta h2{font-size:clamp(36px,6vw,96px);line-height:1;font-weight:700;letter-spacing:-.02em;margin:0 auto 22px;max-width:16ch;color:var(--onimg)}
-.cta .lead{color:rgba(244,241,235,.85);max-width:52ch;margin:0 auto 6px;font-size:clamp(16px,1.4vw,20px)}
-.cta .mail{font-family:'JetBrains Mono';font-size:clamp(16px,2vw,22px);color:#fff;border-bottom:1px solid rgba(255,255,255,.4);padding-bottom:4px;transition:color .3s,border-color .3s;display:inline-block;margin-top:26px}
+/* CTA — mascot emblem */
+.cta{text-align:center;padding:clamp(80px,12vw,170px) 0;position:relative;overflow:hidden;z-index:2;color:var(--text)}
+.cta>.in{position:relative;z-index:2;width:min(92vw,860px);margin-inline:auto}
+.cta h2{font-size:clamp(36px,6vw,96px);line-height:1;font-weight:700;letter-spacing:-.02em;margin:0 auto 22px;max-width:16ch;color:var(--text)}
+.cta .lead{color:var(--text-2);max-width:52ch;margin:0 auto 6px;font-size:clamp(16px,1.4vw,20px)}
+.cta .mail{font-family:'JetBrains Mono';font-size:clamp(16px,2vw,22px);color:var(--text);border-bottom:1px solid var(--border);padding-bottom:4px;transition:color .3s,border-color .3s;display:inline-block;margin-top:26px}
 .cta .mail:hover{color:var(--accent);border-color:var(--accent)}
 
 /* crop marks */
@@ -253,6 +260,7 @@ footer{border-top:1px solid var(--border);padding:48px 0 40px;position:relative;
 <div id="bg"></div>
 <div id="progress"></div>
 <canvas id="amb"></canvas>
+<div id="mascot-stage" aria-hidden="true"><canvas></canvas><span class="vig"></span></div>
 <div id="spot"></div>
 <nav id="sectnav" aria-hidden="true">
   <a href="#why"><span class="tx">Why</span><span class="ln"></span></a>
@@ -400,9 +408,6 @@ footer{border-top:1px solid var(--border);padding:48px 0 40px;position:relative;
 
 <!-- A REALITY CHECK -->
 <section class="fb" id="reality">
-  <img class="bg px" data-px="0.05" src="assets/creatives/building.jpg" alt="Cinematic architecture at dusk" style="object-position:center 44%">
-  <div class="veil"></div>
-  <div class="crop"><i></i><i></i><i></i><i></i></div>
   <div class="wrap">
     <div class="eyebrow">A reality check</div>
     <h2 class="big reveal">Will one ad make you famous? <span class="serif accent">No.</span></h2>
@@ -430,9 +435,6 @@ footer{border-top:1px solid var(--border);padding:48px 0 40px;position:relative;
 
 <!-- CTA -->
 <section class="cta" id="contact">
-  <img class="bg px" data-px="0.05" src="assets/creatives/woman.jpg" alt="Neon-lit portrait">
-  <div class="veil"></div>
-  <div class="crop"><i></i><i></i><i></i><i></i></div>
   <div class="in">
     <div class="eyebrow" style="justify-content:center">Start a project</div>
     <h2 class="reveal" style="margin-top:16px">Selling something <span class="serif accent">worth watching?</span></h2>
@@ -496,6 +498,76 @@ document.querySelectorAll('.faq-item').forEach(it=>{const q=it.querySelector('.f
   draw();
 })();
 document.getElementById('yr').textContent=new Date().getFullYear();
+</script>
+
+<!-- 3D mascot (scroll-driven rotation) -->
+<script type="module">
+import * as THREE from 'three';
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+const stage=document.getElementById('mascot-stage');
+const zoneStartEl=document.getElementById('process');   // first block after "What we make"
+const zoneEndEl=document.getElementById('contact');     // last block
+const reduce=matchMedia('(prefers-reduced-motion:reduce)').matches;
+if(stage&&zoneStartEl&&zoneEndEl){
+  new GLTFLoader().load('assets/models/punch_lunch_logo.glb', gltf=>initStage(gltf.scene),
+    undefined, ()=>{ if(stage) stage.style.display='none'; });
+}
+function initStage(src){
+  const canvas=stage.querySelector('canvas');
+  const renderer=new THREE.WebGLRenderer({canvas,antialias:true,alpha:true,powerPreference:'high-performance'});
+  renderer.outputColorSpace=THREE.SRGBColorSpace;
+  renderer.setPixelRatio(Math.min(2,window.devicePixelRatio||1));
+  const scene=new THREE.Scene();
+  const camera=new THREE.PerspectiveCamera(34,1,0.1,100); camera.position.set(0,0,7);
+  scene.add(new THREE.HemisphereLight(0xbfeaf2,0x0a1418,0.95));
+  const key=new THREE.DirectionalLight(0xffffff,2.0); key.position.set(3,4,5); scene.add(key);
+  const fill=new THREE.DirectionalLight(0xffffff,0.45); fill.position.set(2,-1,4); scene.add(fill);
+  const rim=new THREE.DirectionalLight(0x25f0ff,1.2); rim.position.set(-5,-1.5,-3); scene.add(rim);
+  const model=src.clone(true);
+  const box=new THREE.Box3().setFromObject(model);
+  const ctr=box.getCenter(new THREE.Vector3()), size=box.getSize(new THREE.Vector3());
+  model.position.sub(ctr);
+  const baseScale=3.1/Math.max(size.x,size.y,size.z);
+  model.scale.setScalar(baseScale);
+  const pivot=new THREE.Group(); pivot.add(model); scene.add(pivot);
+  function resize(){const w=innerWidth,h=innerHeight;renderer.setSize(w,h,false);camera.aspect=w/h;camera.updateProjectionMatrix();}
+  resize(); addEventListener('resize',resize,{passive:true});
+  const workEl=document.getElementById('work'); // the "What we make" (video) block above the zone
+  const lerp=(a,b,t)=>a+(b-a)*t, clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+  let curRot=0, curScale=1, curX=0, curY=0;
+  (function tick(){
+    requestAnimationFrame(tick);
+    const startY=zoneStartEl.getBoundingClientRect().top+scrollY;
+    const endY=zoneEndEl.getBoundingClientRect().bottom+scrollY;
+    const center=scrollY+innerHeight/2;
+    const prog=(center-startY)/Math.max(1,(endY-startY)); // 0 at zone top .. 1 at zone bottom
+    const vh=innerHeight;
+    // appear only once the video block above has scrolled off — so the mascot is already "seated"
+    // inside How it works, never emerging in the gap behind the bento.
+    const wb=workEl?workEl.getBoundingClientRect().bottom:-vh; // bento bottom in viewport px
+    const cb=zoneEndEl.getBoundingClientRect().bottom;         // last block bottom in viewport px
+    const fin=clamp((vh*0.18-wb)/(vh*0.16),0,1);   // 0 while bento still on screen, 1 once it's gone
+    const fout=clamp((cb-vh*0.10)/(vh*0.35),0,1);  // fade out as the last block leaves
+    let op=Math.min(fin,fout)*0.62;
+    stage.style.opacity=op;
+    if(op<0.01){return;} // pause rendering when out of the zone
+    const P=clamp(prog,0,1);
+    // scroll-driven motion: turns + dolly in/out + lateral drift
+    const tRot=reduce?0.2:(Math.sin(P*Math.PI*2)*0.95);    // swings left/right (never edge-on)
+    const tScale=reduce?1:(1+Math.sin(P*Math.PI*3)*0.17);  // pulses closer / further
+    const tX=reduce?0:(Math.sin(P*Math.PI*2.4)*1.15);      // drifts side to side
+    const tY=reduce?0:(Math.cos(P*Math.PI*2.6)*0.5+0.15*Math.sin(P*Math.PI*6));
+    curRot=lerp(curRot,tRot,0.08);
+    curScale=lerp(curScale,tScale,0.08);
+    curX=lerp(curX,tX,0.08);
+    curY=lerp(curY,tY,0.08);
+    pivot.rotation.y=curRot;
+    pivot.rotation.x=0.06+Math.sin(P*Math.PI*2)*0.12;
+    pivot.position.set(curX,curY,0);
+    model.scale.setScalar(baseScale*curScale);
+    renderer.render(scene,camera);
+  })();
+}
 </script>
 </body>
 </html>
