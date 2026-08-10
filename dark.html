@@ -5,6 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Punch Lunch — The big-budget look, minus the big budget.</title>
 <meta name="description" content="We make commercials that look like a studio blockbuster shot them. AI handles the logistics. Filmmakers handle the taste." />
+<script type="importmap">
+{"imports":{"three":"./assets/vendor/three/three.module.js","three/addons/":"./assets/vendor/three/addons/"}}
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
@@ -191,16 +194,24 @@ section{position:relative;padding:clamp(72px,10vw,138px) 0;z-index:2}
 .step h3{font-size:clamp(20px,2.2vw,29px);font-weight:700;letter-spacing:-.01em;margin-bottom:9px}
 .step p{color:var(--text-2);max-width:66ch;font-size:clamp(15px,1.15vw,18px)}
 
-/* full-bleed statement (reality) — dark imagery, light text */
-.fb{position:relative;overflow:hidden;z-index:2;color:var(--onimg);padding:clamp(96px,14vw,180px) 0}
-.fb .bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;opacity:.42;
-  -webkit-mask:linear-gradient(180deg,transparent,#000 20%,#000 80%,transparent);mask:linear-gradient(180deg,transparent,#000 20%,#000 80%,transparent)}
-.fb .veil{position:absolute;inset:0;z-index:1;background:radial-gradient(75% 75% at 50% 50%,rgba(0,0,0,.35),rgba(0,0,0,.72))}
+/* reality check — mascot statement */
+.fb{position:relative;overflow:hidden;z-index:2;color:var(--text);padding:clamp(72px,10vw,140px) 0}
 .fb .wrap{position:relative;z-index:2}
+.fb .fbgrid{display:grid;grid-template-columns:1.05fr .95fr;gap:clamp(28px,5vw,72px);align-items:center}
 .fb .eyebrow{margin-bottom:18px}
-.fb h2{color:var(--onimg);max-width:16ch}
-.fb .copy{color:rgba(244,241,235,.85);max-width:62ch}
-.fb .copy .q{color:#fff}
+.fb h2{color:var(--text);max-width:15ch}
+.fb .copy{color:var(--text-2);max-width:54ch}
+.fb .copy .q{color:var(--text)}
+@media(max-width:860px){.fb .fbgrid{grid-template-columns:1fr;gap:20px}.fb .mascot-lg{order:-1}}
+
+/* 3D mascot */
+.mascot{position:relative;display:block}
+.mascot canvas{display:block;width:100%;height:100%;position:relative;z-index:1}
+.mascot .glow{position:absolute;inset:-8% -8% -4%;z-index:0;pointer-events:none;
+  background:radial-gradient(48% 46% at 50% 50%,rgba(1,250,253,.20),rgba(1,250,253,.05) 55%,transparent 72%)}
+[data-theme="light"] .mascot .glow{background:radial-gradient(48% 46% at 50% 50%,rgba(1,190,200,.22),rgba(1,190,200,.06) 55%,transparent 72%)}
+.mascot-lg{width:100%;height:clamp(320px,40vw,500px)}
+.mascot-sm{width:min(330px,78vw);aspect-ratio:1/1;margin:0 auto clamp(6px,1.4vw,18px)}
 
 /* pricing */
 .price .grid{display:grid;grid-template-columns:.9fr 1.1fr;gap:clamp(26px,4vw,64px);align-items:center}
@@ -222,14 +233,12 @@ section{position:relative;padding:clamp(72px,10vw,138px) 0;z-index:2}
 .faq-a{max-height:0;overflow:hidden;transition:max-height .5s var(--ease)}
 .faq-a p{padding:0 0 26px;color:var(--text-2);max-width:74ch;font-size:clamp(15px,1.15vw,18px)}
 
-/* CTA — dark imagery, light text */
-.cta{text-align:center;padding:clamp(100px,15vw,200px) 0;position:relative;overflow:hidden;z-index:2;color:var(--onimg)}
-.cta img.bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 28%;z-index:0;opacity:.5;-webkit-mask:linear-gradient(180deg,transparent 0,#000 26%,#000 74%,transparent 100%);mask:linear-gradient(180deg,transparent 0,#000 26%,#000 74%,transparent 100%)}
-.cta .veil{position:absolute;inset:0;z-index:1;background:radial-gradient(66% 66% at 50% 50%,rgba(0,0,0,.45),rgba(0,0,0,.72))}
-.cta .in{position:relative;z-index:2;width:min(92vw,860px);margin-inline:auto}
-.cta h2{font-size:clamp(36px,6vw,96px);line-height:1;font-weight:700;letter-spacing:-.02em;margin:0 auto 22px;max-width:16ch;color:var(--onimg)}
-.cta .lead{color:rgba(244,241,235,.85);max-width:52ch;margin:0 auto 6px;font-size:clamp(16px,1.4vw,20px)}
-.cta .mail{font-family:'JetBrains Mono';font-size:clamp(16px,2vw,22px);color:#fff;border-bottom:1px solid rgba(255,255,255,.4);padding-bottom:4px;transition:color .3s,border-color .3s;display:inline-block;margin-top:26px}
+/* CTA — mascot emblem */
+.cta{text-align:center;padding:clamp(80px,12vw,170px) 0;position:relative;overflow:hidden;z-index:2;color:var(--text)}
+.cta>.in{position:relative;z-index:2;width:min(92vw,860px);margin-inline:auto}
+.cta h2{font-size:clamp(36px,6vw,96px);line-height:1;font-weight:700;letter-spacing:-.02em;margin:0 auto 22px;max-width:16ch;color:var(--text)}
+.cta .lead{color:var(--text-2);max-width:52ch;margin:0 auto 6px;font-size:clamp(16px,1.4vw,20px)}
+.cta .mail{font-family:'JetBrains Mono';font-size:clamp(16px,2vw,22px);color:var(--text);border-bottom:1px solid var(--border);padding-bottom:4px;transition:color .3s,border-color .3s;display:inline-block;margin-top:26px}
 .cta .mail:hover{color:var(--accent);border-color:var(--accent)}
 
 /* crop marks */
@@ -400,15 +409,17 @@ footer{border-top:1px solid var(--border);padding:48px 0 40px;position:relative;
 
 <!-- A REALITY CHECK -->
 <section class="fb" id="reality">
-  <img class="bg px" data-px="0.05" src="assets/creatives/building.jpg" alt="Cinematic architecture at dusk" style="object-position:center 44%">
-  <div class="veil"></div>
-  <div class="crop"><i></i><i></i><i></i><i></i></div>
   <div class="wrap">
-    <div class="eyebrow">A reality check</div>
-    <h2 class="big reveal">Will one ad make you famous? <span class="serif accent">No.</span></h2>
-    <div class="copy reveal" data-d="1">
-      <p>Anyone promising virality is selling weather forecasts. What one great commercial does: makes your brand look like the category leader, gives your sales team something they're proud to send and keeps working long after the campaign around it retires.</p>
-      <p class="q">That's the target, and we hit it.</p>
+    <div class="fbgrid">
+      <div class="fbtext">
+        <div class="eyebrow">A reality check</div>
+        <h2 class="big reveal">Will one ad make you famous? <span class="serif accent">No.</span></h2>
+        <div class="copy reveal" data-d="1">
+          <p>Anyone promising virality is selling weather forecasts. What one great commercial does: makes your brand look like the category leader, gives your sales team something they're proud to send and keeps working long after the campaign around it retires.</p>
+          <p class="q">That's the target, and we hit it.</p>
+        </div>
+      </div>
+      <div class="mascot mascot-lg reveal" data-d="1" data-mascot aria-hidden="true"><span class="glow"></span></div>
     </div>
   </div>
 </section>
@@ -430,10 +441,8 @@ footer{border-top:1px solid var(--border);padding:48px 0 40px;position:relative;
 
 <!-- CTA -->
 <section class="cta" id="contact">
-  <img class="bg px" data-px="0.05" src="assets/creatives/woman.jpg" alt="Neon-lit portrait">
-  <div class="veil"></div>
-  <div class="crop"><i></i><i></i><i></i><i></i></div>
   <div class="in">
+    <div class="mascot mascot-sm reveal" data-mascot aria-hidden="true"><span class="glow"></span></div>
     <div class="eyebrow" style="justify-content:center">Start a project</div>
     <h2 class="reveal" style="margin-top:16px">Selling something <span class="serif accent">worth watching?</span></h2>
     <p class="lead reveal" data-d="1">Send the product, the idea, or just the ambition. We'll come back with how it could look and what it would cost. No decks longer than this page, promise.</p>
@@ -496,6 +505,57 @@ document.querySelectorAll('.faq-item').forEach(it=>{const q=it.querySelector('.f
   draw();
 })();
 document.getElementById('yr').textContent=new Date().getFullYear();
+</script>
+
+<!-- 3D mascot (scroll-driven rotation) -->
+<script type="module">
+import * as THREE from 'three';
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+const hosts=[...document.querySelectorAll('[data-mascot]')];
+const reduce=matchMedia('(prefers-reduced-motion:reduce)').matches;
+if(hosts.length){
+  new GLTFLoader().load('assets/models/punch_lunch_logo.glb', gltf=>{
+    hosts.forEach(h=>mountMascot(h, gltf.scene));
+  }, undefined, ()=>hosts.forEach(h=>h.classList.add('mascot-off')));
+}
+function mountMascot(host, src){
+  const canvas=document.createElement('canvas');
+  host.appendChild(canvas);
+  const renderer=new THREE.WebGLRenderer({canvas,antialias:true,alpha:true,powerPreference:'high-performance'});
+  renderer.outputColorSpace=THREE.SRGBColorSpace;
+  renderer.setPixelRatio(Math.min(2,window.devicePixelRatio||1));
+  const scene=new THREE.Scene();
+  const camera=new THREE.PerspectiveCamera(30,1,0.1,100); camera.position.set(0,0,6.4);
+  scene.add(new THREE.HemisphereLight(0xcbeff5,0x0a1418,1.0));
+  const key=new THREE.DirectionalLight(0xffffff,2.2); key.position.set(3,4,5); scene.add(key);
+  const fill=new THREE.DirectionalLight(0xffffff,0.5); fill.position.set(2,-1,4); scene.add(fill);
+  const rim=new THREE.DirectionalLight(0x25f0ff,1.35); rim.position.set(-5,-1.5,-3); scene.add(rim);
+  const model=src.clone(true);
+  const box=new THREE.Box3().setFromObject(model);
+  const ctr=box.getCenter(new THREE.Vector3()), size=box.getSize(new THREE.Vector3());
+  model.position.sub(ctr);
+  model.scale.setScalar(2.95/Math.max(size.x,size.y,size.z));
+  model.rotation.x=0.08;
+  const pivot=new THREE.Group(); pivot.add(model); scene.add(pivot);
+  function resize(){const r=host.getBoundingClientRect();const w=Math.max(1,r.width),h=Math.max(1,r.height);renderer.setSize(w,h,false);camera.aspect=w/h;camera.updateProjectionMatrix();}
+  resize(); addEventListener('resize',resize,{passive:true});
+  if(window.ResizeObserver) new ResizeObserver(resize).observe(host);
+  let vis=true, cur=0.15, t=0;
+  new IntersectionObserver(es=>es.forEach(e=>vis=e.isIntersecting),{rootMargin:'300px 0px'}).observe(host);
+  (function tick(){
+    requestAnimationFrame(tick);
+    if(!vis) return;
+    t++;
+    const r=host.getBoundingClientRect();
+    const p=((window.innerHeight/2)-(r.top+r.height/2))/window.innerHeight; // ~ -0.5 .. 0.5
+    let target=reduce?0.3:(p*0.95 + 0.14);
+    target=Math.max(-0.55,Math.min(0.6,target)); // keep a flattering 3/4 range, never the thin edge
+    cur+=(target-cur)*0.06;
+    pivot.rotation.y=cur;
+    if(!reduce) model.position.y=Math.sin(t*0.02)*0.05;
+    renderer.render(scene,camera);
+  })();
+}
 </script>
 </body>
 </html>
