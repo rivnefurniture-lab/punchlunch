@@ -203,10 +203,10 @@ section{position:relative;padding:clamp(72px,10vw,138px) 0;z-index:2}
 .fb .copy .q{color:var(--text)}
 
 /* fixed 3D mascot backdrop — scroll-driven, lives behind every block after What We Make */
-#mascot-stage{position:fixed;inset:0;z-index:1;pointer-events:none;opacity:0;transition:opacity .5s ease;will-change:opacity}
+#mascot-stage{position:fixed;inset:0;z-index:1;pointer-events:none;opacity:0;transition:opacity .2s ease;will-change:opacity}
 #mascot-stage canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
-#mascot-stage .vig{position:absolute;inset:0;background:radial-gradient(130% 100% at 50% 42%,transparent 22%,rgba(6,6,9,.55) 100%)}
-[data-theme="light"] #mascot-stage .vig{background:radial-gradient(130% 100% at 50% 42%,transparent 26%,rgba(243,239,231,.55) 100%)}
+#mascot-stage .vig{position:absolute;inset:0;background:radial-gradient(120% 100% at 50% 46%,transparent 34%,rgba(6,6,9,.32) 100%)}
+[data-theme="light"] #mascot-stage .vig{background:radial-gradient(120% 100% at 50% 46%,transparent 38%,rgba(243,239,231,.34) 100%)}
 #process,#price,#reality,#faq,#contact{position:relative;z-index:2}
 #process :is(h2,h3,p),#process .no,#price :is(h2,p),#price .big-figure,#reality :is(h2,p),#faq .faq-q,#faq .faq-a p,#contact :is(h2,p),#contact .mail{text-shadow:0 2px 26px rgba(0,0,0,.55)}
 [data-theme="light"] :is(#process,#price,#reality,#faq,#contact) :is(h2,h3,p,.no,.big-figure,.faq-q,.mail){text-shadow:0 1px 20px rgba(243,239,231,.75)}
@@ -546,17 +546,17 @@ function initStage(src){
     // inside How it works, never emerging in the gap behind the bento.
     const wb=workEl?workEl.getBoundingClientRect().bottom:-vh; // bento bottom in viewport px
     const cb=zoneEndEl.getBoundingClientRect().bottom;         // last block bottom in viewport px
-    const fin=clamp((vh*0.18-wb)/(vh*0.16),0,1);   // 0 while bento still on screen, 1 once it's gone
-    const fout=clamp((cb-vh*0.10)/(vh*0.35),0,1);  // fade out as the last block leaves
-    let op=Math.min(fin,fout)*0.62;
-    stage.style.opacity=op;
-    if(op<0.01){return;} // pause rendering when out of the zone
+    // Present as a solid object the whole time the zone is active — constant opacity, NO scroll-linked
+    // fade. It's simply "there" once the video block is gone, then it moves/turns as you scroll.
+    const active=(wb < vh*0.14) && (cb > vh*0.06);
+    stage.style.opacity = active ? 0.6 : 0;   // CSS does one quick 0.2s fade at the zone edges only
+    if(!active) return;
     const P=clamp(prog,0,1);
-    // scroll-driven motion: turns + dolly in/out + lateral drift
-    const tRot=reduce?0.2:(Math.sin(P*Math.PI*2)*0.95);    // swings left/right (never edge-on)
-    const tScale=reduce?1:(1+Math.sin(P*Math.PI*3)*0.17);  // pulses closer / further
-    const tX=reduce?0:(Math.sin(P*Math.PI*2.4)*1.15);      // drifts side to side
-    const tY=reduce?0:(Math.cos(P*Math.PI*2.6)*0.5+0.15*Math.sin(P*Math.PI*6));
+    // scroll-driven motion: turns + dolly in/out + lateral drift (centre)
+    const tRot=reduce?0.2:(Math.sin(P*Math.PI*2)*0.9);     // swings left/right (never edge-on)
+    const tScale=reduce?1:(1+Math.sin(P*Math.PI*3)*0.15);  // pulses closer / further
+    const tX=reduce?0:(Math.sin(P*Math.PI*2.4)*1.0);       // drifts side to side
+    const tY=reduce?0:(Math.cos(P*Math.PI*2.6)*0.45+0.12*Math.sin(P*Math.PI*6));
     curRot=lerp(curRot,tRot,0.08);
     curScale=lerp(curScale,tScale,0.08);
     curX=lerp(curX,tX,0.08);
