@@ -194,24 +194,22 @@ section{position:relative;padding:clamp(72px,10vw,138px) 0;z-index:2}
 .step h3{font-size:clamp(20px,2.2vw,29px);font-weight:700;letter-spacing:-.01em;margin-bottom:9px}
 .step p{color:var(--text-2);max-width:66ch;font-size:clamp(15px,1.15vw,18px)}
 
-/* reality check — mascot statement */
-.fb{position:relative;overflow:hidden;z-index:2;color:var(--text);padding:clamp(72px,10vw,140px) 0}
+/* reality check */
+.fb{position:relative;z-index:2;color:var(--text);padding:clamp(72px,10vw,140px) 0}
 .fb .wrap{position:relative;z-index:2}
-.fb .fbgrid{display:grid;grid-template-columns:1.05fr .95fr;gap:clamp(28px,5vw,72px);align-items:center}
 .fb .eyebrow{margin-bottom:18px}
-.fb h2{color:var(--text);max-width:15ch}
-.fb .copy{color:var(--text-2);max-width:54ch}
+.fb h2{color:var(--text);max-width:16ch}
+.fb .copy{color:var(--text-2);max-width:60ch}
 .fb .copy .q{color:var(--text)}
-@media(max-width:860px){.fb .fbgrid{grid-template-columns:1fr;gap:20px}.fb .mascot-lg{order:-1}}
 
-/* 3D mascot */
-.mascot{position:relative;display:block}
-.mascot canvas{display:block;width:100%;height:100%;position:relative;z-index:1}
-.mascot .glow{position:absolute;inset:-8% -8% -4%;z-index:0;pointer-events:none;
-  background:radial-gradient(48% 46% at 50% 50%,rgba(1,250,253,.20),rgba(1,250,253,.05) 55%,transparent 72%)}
-[data-theme="light"] .mascot .glow{background:radial-gradient(48% 46% at 50% 50%,rgba(1,190,200,.22),rgba(1,190,200,.06) 55%,transparent 72%)}
-.mascot-lg{width:100%;height:clamp(320px,40vw,500px)}
-.mascot-sm{width:min(330px,78vw);aspect-ratio:1/1;margin:0 auto clamp(6px,1.4vw,18px)}
+/* fixed 3D mascot backdrop — scroll-driven, lives behind every block after What We Make */
+#mascot-stage{position:fixed;inset:0;z-index:1;pointer-events:none;opacity:0;transition:opacity .5s ease;will-change:opacity}
+#mascot-stage canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
+#mascot-stage .vig{position:absolute;inset:0;background:radial-gradient(130% 100% at 50% 42%,transparent 22%,rgba(6,6,9,.55) 100%)}
+[data-theme="light"] #mascot-stage .vig{background:radial-gradient(130% 100% at 50% 42%,transparent 26%,rgba(243,239,231,.55) 100%)}
+#process,#price,#reality,#faq,#contact{position:relative;z-index:2}
+#process :is(h2,h3,p),#process .no,#price :is(h2,p),#price .big-figure,#reality :is(h2,p),#faq .faq-q,#faq .faq-a p,#contact :is(h2,p),#contact .mail{text-shadow:0 2px 26px rgba(0,0,0,.55)}
+[data-theme="light"] :is(#process,#price,#reality,#faq,#contact) :is(h2,h3,p,.no,.big-figure,.faq-q,.mail){text-shadow:0 1px 20px rgba(243,239,231,.75)}
 
 /* pricing */
 .price .grid{display:grid;grid-template-columns:.9fr 1.1fr;gap:clamp(26px,4vw,64px);align-items:center}
@@ -262,6 +260,7 @@ footer{border-top:1px solid var(--border);padding:48px 0 40px;position:relative;
 <div id="bg"></div>
 <div id="progress"></div>
 <canvas id="amb"></canvas>
+<div id="mascot-stage" aria-hidden="true"><canvas></canvas><span class="vig"></span></div>
 <div id="spot"></div>
 <nav id="sectnav" aria-hidden="true">
   <a href="#why"><span class="tx">Why</span><span class="ln"></span></a>
@@ -410,16 +409,11 @@ footer{border-top:1px solid var(--border);padding:48px 0 40px;position:relative;
 <!-- A REALITY CHECK -->
 <section class="fb" id="reality">
   <div class="wrap">
-    <div class="fbgrid">
-      <div class="fbtext">
-        <div class="eyebrow">A reality check</div>
-        <h2 class="big reveal">Will one ad make you famous? <span class="serif accent">No.</span></h2>
-        <div class="copy reveal" data-d="1">
-          <p>Anyone promising virality is selling weather forecasts. What one great commercial does: makes your brand look like the category leader, gives your sales team something they're proud to send and keeps working long after the campaign around it retires.</p>
-          <p class="q">That's the target, and we hit it.</p>
-        </div>
-      </div>
-      <div class="mascot mascot-lg reveal" data-d="1" data-mascot aria-hidden="true"><span class="glow"></span></div>
+    <div class="eyebrow">A reality check</div>
+    <h2 class="big reveal">Will one ad make you famous? <span class="serif accent">No.</span></h2>
+    <div class="copy reveal" data-d="1">
+      <p>Anyone promising virality is selling weather forecasts. What one great commercial does: makes your brand look like the category leader, gives your sales team something they're proud to send and keeps working long after the campaign around it retires.</p>
+      <p class="q">That's the target, and we hit it.</p>
     </div>
   </div>
 </section>
@@ -442,7 +436,6 @@ footer{border-top:1px solid var(--border);padding:48px 0 40px;position:relative;
 <!-- CTA -->
 <section class="cta" id="contact">
   <div class="in">
-    <div class="mascot mascot-sm reveal" data-mascot aria-hidden="true"><span class="glow"></span></div>
     <div class="eyebrow" style="justify-content:center">Start a project</div>
     <h2 class="reveal" style="margin-top:16px">Selling something <span class="serif accent">worth watching?</span></h2>
     <p class="lead reveal" data-d="1">Send the product, the idea, or just the ambition. We'll come back with how it could look and what it would cost. No decks longer than this page, promise.</p>
@@ -511,48 +504,63 @@ document.getElementById('yr').textContent=new Date().getFullYear();
 <script type="module">
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
-const hosts=[...document.querySelectorAll('[data-mascot]')];
+const stage=document.getElementById('mascot-stage');
+const zoneStartEl=document.getElementById('process');   // first block after "What we make"
+const zoneEndEl=document.getElementById('contact');     // last block
 const reduce=matchMedia('(prefers-reduced-motion:reduce)').matches;
-if(hosts.length){
-  new GLTFLoader().load('assets/models/punch_lunch_logo.glb', gltf=>{
-    hosts.forEach(h=>mountMascot(h, gltf.scene));
-  }, undefined, ()=>hosts.forEach(h=>h.classList.add('mascot-off')));
+if(stage&&zoneStartEl&&zoneEndEl){
+  new GLTFLoader().load('assets/models/punch_lunch_logo.glb', gltf=>initStage(gltf.scene),
+    undefined, ()=>{ if(stage) stage.style.display='none'; });
 }
-function mountMascot(host, src){
-  const canvas=document.createElement('canvas');
-  host.appendChild(canvas);
+function initStage(src){
+  const canvas=stage.querySelector('canvas');
   const renderer=new THREE.WebGLRenderer({canvas,antialias:true,alpha:true,powerPreference:'high-performance'});
   renderer.outputColorSpace=THREE.SRGBColorSpace;
   renderer.setPixelRatio(Math.min(2,window.devicePixelRatio||1));
   const scene=new THREE.Scene();
-  const camera=new THREE.PerspectiveCamera(30,1,0.1,100); camera.position.set(0,0,6.4);
-  scene.add(new THREE.HemisphereLight(0xcbeff5,0x0a1418,1.0));
-  const key=new THREE.DirectionalLight(0xffffff,2.2); key.position.set(3,4,5); scene.add(key);
-  const fill=new THREE.DirectionalLight(0xffffff,0.5); fill.position.set(2,-1,4); scene.add(fill);
-  const rim=new THREE.DirectionalLight(0x25f0ff,1.35); rim.position.set(-5,-1.5,-3); scene.add(rim);
+  const camera=new THREE.PerspectiveCamera(34,1,0.1,100); camera.position.set(0,0,7);
+  scene.add(new THREE.HemisphereLight(0xbfeaf2,0x0a1418,0.95));
+  const key=new THREE.DirectionalLight(0xffffff,2.0); key.position.set(3,4,5); scene.add(key);
+  const fill=new THREE.DirectionalLight(0xffffff,0.45); fill.position.set(2,-1,4); scene.add(fill);
+  const rim=new THREE.DirectionalLight(0x25f0ff,1.2); rim.position.set(-5,-1.5,-3); scene.add(rim);
   const model=src.clone(true);
   const box=new THREE.Box3().setFromObject(model);
   const ctr=box.getCenter(new THREE.Vector3()), size=box.getSize(new THREE.Vector3());
   model.position.sub(ctr);
-  model.scale.setScalar(2.95/Math.max(size.x,size.y,size.z));
-  model.rotation.x=0.08;
+  const baseScale=3.1/Math.max(size.x,size.y,size.z);
+  model.scale.setScalar(baseScale);
   const pivot=new THREE.Group(); pivot.add(model); scene.add(pivot);
-  function resize(){const r=host.getBoundingClientRect();const w=Math.max(1,r.width),h=Math.max(1,r.height);renderer.setSize(w,h,false);camera.aspect=w/h;camera.updateProjectionMatrix();}
+  function resize(){const w=innerWidth,h=innerHeight;renderer.setSize(w,h,false);camera.aspect=w/h;camera.updateProjectionMatrix();}
   resize(); addEventListener('resize',resize,{passive:true});
-  if(window.ResizeObserver) new ResizeObserver(resize).observe(host);
-  let vis=true, cur=0.15, t=0;
-  new IntersectionObserver(es=>es.forEach(e=>vis=e.isIntersecting),{rootMargin:'300px 0px'}).observe(host);
+  const lerp=(a,b,t)=>a+(b-a)*t, clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+  let curRot=0, curScale=1, curX=0, curY=0, shown=false;
   (function tick(){
     requestAnimationFrame(tick);
-    if(!vis) return;
-    t++;
-    const r=host.getBoundingClientRect();
-    const p=((window.innerHeight/2)-(r.top+r.height/2))/window.innerHeight; // ~ -0.5 .. 0.5
-    let target=reduce?0.3:(p*0.95 + 0.14);
-    target=Math.max(-0.55,Math.min(0.6,target)); // keep a flattering 3/4 range, never the thin edge
-    cur+=(target-cur)*0.06;
-    pivot.rotation.y=cur;
-    if(!reduce) model.position.y=Math.sin(t*0.02)*0.05;
+    const startY=zoneStartEl.getBoundingClientRect().top+scrollY;
+    const endY=zoneEndEl.getBoundingClientRect().bottom+scrollY;
+    const center=scrollY+innerHeight/2;
+    const prog=(center-startY)/Math.max(1,(endY-startY)); // 0 at zone top .. 1 at zone bottom
+    // fade in/out at the edges of the zone
+    let op=clamp((prog+0.12)/0.12,0,1)*clamp((1.12-prog)/0.12,0,1);
+    op=clamp(op,0,1)*0.62;
+    const wantShown=op>0.01;
+    if(wantShown!==shown){shown=wantShown;stage.style.opacity=op;}
+    else if(shown){stage.style.opacity=op;}
+    if(!wantShown){return;} // pause rendering when fully out of the zone
+    const P=clamp(prog,0,1);
+    // scroll-driven motion: turns + dolly in/out + lateral drift
+    const tRot=reduce?0.2:(Math.sin(P*Math.PI*2)*0.95);    // swings left/right (never edge-on)
+    const tScale=reduce?1:(1+Math.sin(P*Math.PI*3)*0.17);  // pulses closer / further
+    const tX=reduce?0:(Math.sin(P*Math.PI*2.4)*1.15);      // drifts side to side
+    const tY=reduce?0:(Math.cos(P*Math.PI*2.6)*0.5+0.15*Math.sin(P*Math.PI*6));
+    curRot=lerp(curRot,tRot,0.08);
+    curScale=lerp(curScale,tScale,0.08);
+    curX=lerp(curX,tX,0.08);
+    curY=lerp(curY,tY,0.08);
+    pivot.rotation.y=curRot;
+    pivot.rotation.x=0.06+Math.sin(P*Math.PI*2)*0.12;
+    pivot.position.set(curX,curY,0);
+    model.scale.setScalar(baseScale*curScale);
     renderer.render(scene,camera);
   })();
 }
