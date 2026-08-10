@@ -205,6 +205,9 @@ section{position:relative;padding:clamp(72px,10vw,138px) 0;z-index:2}
 /* fixed 3D mascot backdrop — scroll-driven, lives behind every block after What We Make */
 #mascot-stage{position:fixed;inset:0;z-index:1;pointer-events:none;opacity:.7}
 #mascot-stage canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
+/* white variant: punchier mascot (+30% saturation, a touch more solid) so it doesn't read pale on cream */
+[data-theme="light"] #mascot-stage{opacity:.85}
+[data-theme="light"] #mascot-stage canvas{filter:saturate(1.3) contrast(1.06)}
 #process,#price,#reality,#faq,#contact{position:relative;z-index:2}
 #process :is(h2,h3,p),#process .no,#price :is(h2,p),#price .big-figure,#reality :is(h2,p),#faq .faq-q,#faq .faq-a p,#contact :is(h2,p),#contact .mail{text-shadow:0 2px 26px rgba(0,0,0,.55)}
 [data-theme="light"] :is(#process,#price,#reality,#faq,#contact) :is(h2,h3,p,.no,.big-figure,.faq-q,.mail){text-shadow:0 1px 20px rgba(243,239,231,.75)}
