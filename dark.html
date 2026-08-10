@@ -203,10 +203,8 @@ section{position:relative;padding:clamp(72px,10vw,138px) 0;z-index:2}
 .fb .copy .q{color:var(--text)}
 
 /* fixed 3D mascot backdrop — scroll-driven, lives behind every block after What We Make */
-#mascot-stage{position:fixed;inset:0;z-index:1;pointer-events:none;opacity:0;transition:opacity .2s ease;will-change:opacity}
+#mascot-stage{position:fixed;inset:0;z-index:1;pointer-events:none;opacity:.7}
 #mascot-stage canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
-#mascot-stage .vig{position:absolute;inset:0;background:radial-gradient(120% 100% at 50% 46%,transparent 34%,rgba(6,6,9,.32) 100%)}
-[data-theme="light"] #mascot-stage .vig{background:radial-gradient(120% 100% at 50% 46%,transparent 38%,rgba(243,239,231,.34) 100%)}
 #process,#price,#reality,#faq,#contact{position:relative;z-index:2}
 #process :is(h2,h3,p),#process .no,#price :is(h2,p),#price .big-figure,#reality :is(h2,p),#faq .faq-q,#faq .faq-a p,#contact :is(h2,p),#contact .mail{text-shadow:0 2px 26px rgba(0,0,0,.55)}
 [data-theme="light"] :is(#process,#price,#reality,#faq,#contact) :is(h2,h3,p,.no,.big-figure,.faq-q,.mail){text-shadow:0 1px 20px rgba(243,239,231,.75)}
@@ -260,7 +258,7 @@ footer{border-top:1px solid var(--border);padding:48px 0 40px;position:relative;
 <div id="bg"></div>
 <div id="progress"></div>
 <canvas id="amb"></canvas>
-<div id="mascot-stage" aria-hidden="true"><canvas></canvas><span class="vig"></span></div>
+<div id="mascot-stage" aria-hidden="true"><canvas></canvas></div>
 <div id="spot"></div>
 <nav id="sectnav" aria-hidden="true">
   <a href="#why"><span class="tx">Why</span><span class="ln"></span></a>
@@ -534,35 +532,40 @@ function initStage(src){
   resize(); addEventListener('resize',resize,{passive:true});
   const workEl=document.getElementById('work'); // the "What we make" (video) block above the zone
   const lerp=(a,b,t)=>a+(b-a)*t, clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
-  let curRot=0, curScale=1, curX=0, curY=0;
+  const visH=2*Math.tan(camera.fov*Math.PI/360)*camera.position.z; // world height visible at z=0
+  let curRot=0, curScale=1, curX=0, curY=-visH, rendering=false;
   (function tick(){
     requestAnimationFrame(tick);
-    const startY=zoneStartEl.getBoundingClientRect().top+scrollY;
-    const endY=zoneEndEl.getBoundingClientRect().bottom+scrollY;
-    const center=scrollY+innerHeight/2;
-    const prog=(center-startY)/Math.max(1,(endY-startY)); // 0 at zone top .. 1 at zone bottom
     const vh=innerHeight;
-    // appear only once the video block above has scrolled off — so the mascot is already "seated"
-    // inside How it works, never emerging in the gap behind the bento.
-    const wb=workEl?workEl.getBoundingClientRect().bottom:-vh; // bento bottom in viewport px
-    const cb=zoneEndEl.getBoundingClientRect().bottom;         // last block bottom in viewport px
-    // Present as a solid object the whole time the zone is active — constant opacity, NO scroll-linked
-    // fade. It's simply "there" once the video block is gone, then it moves/turns as you scroll.
-    const active=(wb < vh*0.14) && (cb > vh*0.06);
-    stage.style.opacity = active ? 0.6 : 0;   // CSS does one quick 0.2s fade at the zone edges only
-    if(!active) return;
+    const st=zoneStartEl.getBoundingClientRect().top;    // How it works top, viewport px
+    const en=zoneEndEl.getBoundingClientRect().bottom;   // last block bottom, viewport px
+    // Only draw while the zone is near the viewport; otherwise clear once and idle.
+    if(st>vh*1.06 || en< -vh*0.12){
+      if(rendering){renderer.clear();rendering=false;}
+      return;
+    }
+    rendering=true;
+    const startY=st+scrollY, endY=en+scrollY, center=scrollY+vh/2;
+    const prog=(center-startY)/Math.max(1,(endY-startY));
     const P=clamp(prog,0,1);
-    // scroll-driven motion: turns + dolly in/out + lateral drift (centre)
-    const tRot=reduce?0.2:(Math.sin(P*Math.PI*2)*0.9);     // swings left/right (never edge-on)
-    const tScale=reduce?1:(1+Math.sin(P*Math.PI*3)*0.15);  // pulses closer / further
-    const tX=reduce?0:(Math.sin(P*Math.PI*2.4)*1.0);       // drifts side to side
-    const tY=reduce?0:(Math.cos(P*Math.PI*2.6)*0.45+0.12*Math.sin(P*Math.PI*6));
+    // GEOMETRIC REVEAL (no opacity trick): the mascot is anchored in the page like a real object.
+    // It rises into view head-first from the bottom as you scroll in, sits/pins through the zone,
+    // then rises out the top as the last block leaves. You scroll onto it — it doesn't fade in.
+    const fEntry=lerp(1.5,0.5,clamp((vh-st)/vh,0,1));   // st=vh(below) -> st=0(centre)
+    const fExit =lerp(0.5,-0.5,clamp((vh-en)/vh,0,1));  // en=vh(centre) -> en=0(above)
+    const frac=fEntry+fExit-0.5;                        // 0=top .. .5=centre .. 1=bottom of viewport
+    const baseY=(0.5-frac)*visH;
+    // motion the client approved: swing, dolly, small drift
+    const tRot=reduce?0.2:(Math.sin(P*Math.PI*2)*0.9);
+    const tScale=reduce?1:(1+Math.sin(P*Math.PI*3)*0.15);
+    const tX=reduce?0:(Math.sin(P*Math.PI*2.4)*0.9);
+    const tYd=reduce?0:(0.12*Math.sin(P*Math.PI*6));
     curRot=lerp(curRot,tRot,0.08);
     curScale=lerp(curScale,tScale,0.08);
     curX=lerp(curX,tX,0.08);
-    curY=lerp(curY,tY,0.08);
+    curY=lerp(curY,baseY+tYd,0.16);
     pivot.rotation.y=curRot;
-    pivot.rotation.x=0.06+Math.sin(P*Math.PI*2)*0.12;
+    pivot.rotation.x=0.06+Math.sin(P*Math.PI*2)*0.10;
     pivot.position.set(curX,curY,0);
     model.scale.setScalar(baseScale*curScale);
     renderer.render(scene,camera);
