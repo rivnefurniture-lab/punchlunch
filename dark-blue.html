@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Punch Lunch — The big-budget look, minus the big budget.</title>
+<meta name="description" content="We make commercials that look like a studio blockbuster shot them. AI handles the logistics. Filmmakers handle the taste." />
+<script type="importmap">
+{"imports":{"three":"./assets/vendor/three/three.module.js","three/addons/":"./assets/vendor/three/addons/"}}
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#08060b;--bg-rgb:8,6,11;--surface:#0e0d12;--surface-hover:#181620;
+  --border:rgba(255,255,255,.08);--border-hover:rgba(255,255,255,.2);
+  --text:#F3F0EA;--text-2:#B7B2AC;--text-3:#7C776F;--text-rgb:243,240,234;
+  --accent:#16E0E8;--accent-2:#5CEFF5;--accent-rgb:22,224,232;
+  --onimg:#F4F1EB;
+  --max:1200px;--ease:cubic-bezier(.22,1,.36,1);--drag:grab;
+}
+:root[data-theme="light"]{
+  --bg:#F3EFE7;--bg-rgb:243,239,231;--surface:#FFFFFF;--surface-hover:#EFEBE1;
+  --border:rgba(24,18,12,.12);--border-hover:rgba(24,18,12,.30);
+  --text:#191510;--text-2:#5C5449;--text-3:#938B7D;--text-rgb:25,21,16;
+  --accent:#0894A2;--accent-2:#0BB2C2;--accent-rgb:8,148,162;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{color:var(--text);font-family:'Space Grotesk',system-ui,sans-serif;font-size:18px;line-height:1.6;overflow-x:hidden;position:relative;background:var(--bg)}
+#bg{position:fixed;inset:0;z-index:0;pointer-events:none;background:
+  radial-gradient(130% 80% at 50% -10%, #150b16 0%, transparent 52%),
+  radial-gradient(130% 85% at 50% 110%, #170b0b 0%, transparent 52%),
+  radial-gradient(90% 60% at 80% 45%, rgba(120,40,90,.10), transparent 60%),
+  linear-gradient(180deg,#09070d 0%, #0b0810 50%, #09070d 100%)}
+[data-theme="light"] #bg{background:
+  radial-gradient(120% 80% at 50% -10%, #FBEFE6 0%, transparent 55%),
+  radial-gradient(120% 80% at 50% 110%, #F7ECEA 0%, transparent 55%),
+  linear-gradient(180deg,#F6F1E9 0%, #EFE9DE 50%, #F6F1E9 100%)}
+canvas#amb{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.5}
+[data-theme="light"] canvas#amb{display:none}
+body::before{content:"";position:fixed;inset:0;z-index:1;pointer-events:none;opacity:.55;mix-blend-mode:overlay;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.5'/%3E%3C/svg%3E")}
+[data-theme="light"] body::before{opacity:.35}
+/* light theme: show creatives at full contrast instead of dimming them into the cream backdrop */
+[data-theme="light"] .fb .bg{opacity:1;-webkit-mask:none;mask:none}
+[data-theme="light"] .fb .veil{background:linear-gradient(180deg,rgba(0,0,0,.48) 0%,rgba(0,0,0,.34) 45%,rgba(0,0,0,.6) 100%)}
+[data-theme="light"] .cta img.bg{opacity:1;-webkit-mask:none;mask:none}
+[data-theme="light"] .cta .veil{background:radial-gradient(72% 72% at 50% 50%,rgba(0,0,0,.4),rgba(0,0,0,.7))}
+[data-theme="light"] .hero video,[data-theme="light"] .hero .poster{opacity:1;filter:saturate(1.06) contrast(1.05)}
+[data-theme="light"] .hero .veil{background:radial-gradient(120% 90% at 50% 6%,transparent 40%,rgba(0,0,0,.42)),linear-gradient(180deg,rgba(0,0,0,.55) 0%,transparent 26%,transparent 44%,rgba(4,3,6,.8) 100%)}
+[data-theme="light"] .ring .panel video,[data-theme="light"] .ring .panel img,
+[data-theme="light"] .tile video,[data-theme="light"] .tile img{opacity:1;filter:saturate(1.07) contrast(1.05)}
+img,video{display:block;max-width:100%}
+a{color:inherit;text-decoration:none}
+::selection{background:var(--accent);color:#0a0604}
+.wrap{width:min(92vw,var(--max));margin-inline:auto}
+.serif{font-family:'Instrument Serif',Georgia,serif;font-style:italic;font-weight:400}
+.accent{color:var(--accent)}
+.eyebrow{font:500 12px/1.4 'JetBrains Mono';letter-spacing:.18em;text-transform:uppercase;color:var(--accent);display:inline-flex;gap:9px;align-items:center}
+.eyebrow::before{content:"";width:26px;height:1px;background:var(--accent)}
+h2.big{font-size:clamp(32px,5.4vw,76px);line-height:1.03;font-weight:700;letter-spacing:-.02em}
+
+/* progress + section nav */
+#progress{position:fixed;top:0;left:0;height:2px;width:0;background:var(--accent);z-index:200;box-shadow:0 0 12px var(--accent)}
+#sectnav{position:fixed;right:clamp(12px,2vw,26px);top:50%;transform:translateY(-50%);z-index:120;display:flex;flex-direction:column;gap:15px}
+#sectnav a{display:flex;align-items:center;gap:9px;justify-content:flex-end;color:var(--text-2);font:500 10px/1 'JetBrains Mono';letter-spacing:.14em;text-transform:uppercase}
+#sectnav .tx{opacity:0;transform:translateX(6px);transition:.3s;white-space:nowrap}
+#sectnav .ln{width:20px;height:2px;background:currentColor;opacity:.4;transition:.3s}
+#sectnav a:hover .tx,#sectnav a.on .tx{opacity:.95;transform:none}
+#sectnav a.on .ln{width:40px;opacity:1;background:var(--accent)}
+@media(max-width:900px){#sectnav{display:none}}
+
+/* spotlight cursor + magnetic */
+#spot{position:fixed;top:0;left:0;width:480px;height:480px;margin:-240px 0 0 -240px;border-radius:50%;z-index:90;pointer-events:none;background:radial-gradient(circle,rgba(var(--accent-rgb),.13),transparent 62%);mix-blend-mode:screen;opacity:0;transition:opacity .5s;will-change:transform}
+[data-theme="light"] #spot{mix-blend-mode:multiply;background:radial-gradient(circle,rgba(var(--accent-rgb),.10),transparent 62%)}
+@media(hover:none){#spot{display:none}}
+.magnetic{will-change:transform;transition:transform .3s var(--ease)}
+
+/* nav */
+header.nav{position:fixed;inset:0 0 auto;display:flex;justify-content:space-between;align-items:center;padding:20px clamp(18px,4vw,48px);z-index:150;transition:background .4s,padding .4s,border-color .4s;border-bottom:1px solid transparent}
+header.nav.solid{background:rgba(var(--bg-rgb),.8);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);padding:12px clamp(18px,4vw,48px);border-bottom:1px solid var(--border)}
+.brand{display:flex;align-items:center;gap:10px;font-weight:700;letter-spacing:.02em;color:#F4F1EB}
+.brand .dot{width:10px;height:10px;border-radius:50%;background:var(--accent);box-shadow:0 0 14px var(--accent)}
+.nav-links{display:flex;gap:30px;align-items:center}
+.nav-links a{font:500 13px/1 'Space Grotesk';color:rgba(244,241,235,.82);transition:color .3s}
+.nav-links a:hover{color:#fff}
+header.nav.solid .brand{color:var(--text)}
+header.nav.solid .nav-links a{color:var(--text-2)}
+header.nav.solid .nav-links a:hover{color:var(--text)}
+.btn{font:600 14px/1 'Space Grotesk';padding:13px 22px;border-radius:999px;background:var(--accent);color:#120503;display:inline-flex;gap:9px;align-items:center;cursor:pointer;transition:transform .25s var(--ease),background .25s,box-shadow .25s;will-change:transform;border:1px solid transparent}
+.btn:hover{background:var(--accent-2);box-shadow:0 12px 40px rgba(var(--accent-rgb),.35)}
+.btn:active{transform:translateY(1px) scale(.99)}
+.btn:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+.btn.ghost{background:transparent;color:#F4F1EB;border-color:rgba(244,241,235,.4)}
+header.nav.solid .btn.ghost{color:var(--text);border-color:var(--border-hover)}
+.btn.ghost:hover{background:rgba(255,255,255,.08)}
+[data-theme="light"] .btn.ghost:hover{background:rgba(0,0,0,.05)}
+@media(max-width:760px){.nav-links a:not(.btn){display:none}}
+
+/* hero (always dark imagery -> light text) */
+.hero{position:relative;min-height:100svh;display:flex;align-items:flex-end;overflow:hidden;z-index:2;color:var(--onimg)}
+.hero video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;opacity:.6}
+.hero .veil{position:absolute;inset:0;z-index:1;background:radial-gradient(120% 90% at 50% 6%,transparent 42%,rgba(0,0,0,.5)),linear-gradient(180deg,rgba(0,0,0,.5) 0%,transparent 30%,transparent 46%,rgba(4,3,6,.86) 100%)}
+.hero-in{position:relative;z-index:2;width:min(92vw,var(--max));margin-inline:auto;padding-bottom:clamp(46px,7vw,96px);width:100%}
+.hero h1{font-size:clamp(58px,15.5vw,236px);line-height:.82;font-weight:700;letter-spacing:-.02em;text-transform:uppercase;margin-bottom:26px;color:var(--onimg)}
+.hero h1 .ln{display:block;overflow:hidden}
+.hero h1 .ln b{display:block;font-weight:700;transform:translateY(115%);animation:reveal 1.05s var(--ease) forwards}
+.hero h1 .ln:nth-child(2) b{animation-delay:.1s}
+.hero h1 .fx{background:linear-gradient(100deg,var(--accent),var(--accent-2));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.hero .sub{max-width:660px;font-size:clamp(17px,2vw,22px);color:rgba(244,241,235,.92);margin-bottom:30px;opacity:0;animation:rise .9s .55s var(--ease) forwards}
+.hero .sub b{color:#fff;font-weight:500}
+.hero .cta-row{display:flex;gap:14px;flex-wrap:wrap;opacity:0;animation:rise .9s .75s var(--ease) forwards}
+.scroll-hint{position:absolute;bottom:22px;left:50%;transform:translateX(-50%);z-index:2;font:500 10px/1 'JetBrains Mono';letter-spacing:.25em;text-transform:uppercase;color:rgba(244,241,235,.6);display:flex;flex-direction:column;align-items:center;gap:8px;opacity:0;animation:rise 1s 1.2s var(--ease) forwards}
+.scroll-hint .bar{width:1px;height:36px;background:linear-gradient(var(--accent),transparent);animation:drop 1.8s var(--ease) infinite}
+@keyframes drop{0%{transform:scaleY(0);transform-origin:top}45%{transform:scaleY(1);transform-origin:top}55%{transform:scaleY(1);transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}
+@keyframes reveal{to{transform:translateY(0)}}
+@keyframes rise{to{opacity:1;transform:translateY(0)}}
+
+/* reveal */
+.reveal{opacity:0;transform:translateY(30px);transition:opacity .8s var(--ease),transform .8s var(--ease)}
+.reveal.in{opacity:1;transform:none}
+.reveal[data-d="1"]{transition-delay:.08s}.reveal[data-d="2"]{transition-delay:.16s}.reveal[data-d="3"]{transition-delay:.24s}
+
+section{position:relative;padding:clamp(72px,10vw,138px) 0;z-index:2}
+
+/* marquee */
+.manifesto{padding:clamp(40px,6vw,78px) 0;overflow:hidden;position:relative;z-index:2}
+.mq{display:flex;width:max-content;white-space:nowrap;will-change:transform;font-size:clamp(40px,8vw,120px);font-weight:700;letter-spacing:-.015em;text-transform:uppercase;line-height:1.1;animation:mqscroll 36s linear infinite}
+.manifesto:hover .mq{animation-play-state:paused}
+.mq span{padding:0 .3em;color:transparent;-webkit-text-stroke:1.1px rgba(var(--text-rgb),.38)}
+.mq span.fill{color:var(--text);-webkit-text-stroke:0}
+.mq span.ac{color:var(--accent);-webkit-text-stroke:0}
+@keyframes mqscroll{to{transform:translateX(-50%)}}
+
+/* generic text section */
+.tsec .eyebrow{margin-bottom:20px}
+.tsec h2{max-width:20ch}
+.copy{max-width:62ch;margin-top:22px;color:var(--text-2);font-size:clamp(16px,1.2vw,19px)}
+.copy p+p{margin-top:16px}
+.copy .q{color:var(--text)}
+
+/* WHY layout */
+.why .wrap{display:grid;grid-template-columns:1.1fr 1fr;gap:clamp(30px,5vw,70px);align-items:center}
+.why .copy{margin-top:18px}
+@media(max-width:860px){.why .wrap{grid-template-columns:1fr}}
+
+/* reel ring */
+.reel{position:relative;overflow:hidden;padding:clamp(20px,3vw,44px) 0 clamp(30px,4vw,60px);z-index:2}
+.ring{--w:clamp(230px,30vw,440px);--r:clamp(300px,40vw,600px);position:relative;z-index:2;height:clamp(280px,32vw,440px);perspective:1300px;perspective-origin:50% 50%;
+  -webkit-mask:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent);mask:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent)}
+.ring .rotor{position:absolute;left:50%;top:50%;width:1px;height:1px;transform-style:preserve-3d;cursor:var(--drag);transform:translateZ(var(--r)) rotateY(var(--spin,0deg))}
+.ring .panel{position:absolute;left:0;top:0;width:var(--w);height:calc(var(--w)*.625);margin-left:calc(var(--w)*-.5);margin-top:calc(var(--w)*-.3125);
+  border-radius:16px;overflow:hidden;border:1px solid var(--border);background:#0d0d0d;
+  transform:rotateY(calc(var(--i)*45deg)) translateZ(var(--r)) rotateY(180deg);backface-visibility:hidden;box-shadow:0 24px 60px rgba(0,0,0,.5)}
+.ring .panel video{width:100%;height:100%;object-fit:cover}
+@media(max-width:760px){.ring{--w:clamp(150px,44vw,220px);--r:clamp(180px,52vw,270px);perspective:1000px;height:clamp(220px,56vw,300px)}}
+
+/* AI removes / doesn't */
+.ai .split{display:grid;grid-template-columns:1fr 1fr;gap:clamp(26px,4vw,64px);margin-top:clamp(30px,4vw,54px)}
+.ai .col h3{font:500 12px/1 'JetBrains Mono';letter-spacing:.16em;text-transform:uppercase;color:var(--accent);margin-bottom:20px}
+.ai .removes ul{list-style:none}
+.ai .removes li{padding:13px 0;border-bottom:1px solid var(--border);color:var(--text);font-size:clamp(16px,1.5vw,21px);display:flex;gap:12px;align-items:baseline}
+.ai .removes li:first-child{border-top:1px solid var(--border)}
+.ai .removes li::before{content:"—";color:var(--accent);flex:none}
+.ai .keeps p{color:var(--text-2);font-size:clamp(16px,1.3vw,20px)}
+.ai .keeps p b{color:var(--text)}
+.ai .keeps .lead{font-size:clamp(22px,2.6vw,34px);line-height:1.15;color:var(--text);font-weight:600;margin-bottom:18px}
+@media(max-width:760px){.ai .split{grid-template-columns:1fr;gap:34px}}
+
+/* WHAT WE MAKE bento */
+.make .head{margin-bottom:clamp(28px,4vw,50px)}
+.bento{display:grid;grid-template-columns:repeat(6,1fr);grid-auto-rows:minmax(230px,auto);gap:14px}
+.tile{position:relative;border:1px solid var(--border);border-radius:18px;overflow:hidden;background:#0d0d0d;display:flex;align-items:flex-end;transition:border-color .35s,transform .35s;min-height:230px}
+.tile video,.tile img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;opacity:.92}
+.tile .grad{position:absolute;inset:0;z-index:1;background:linear-gradient(180deg,rgba(0,0,0,.15) 0%,transparent 32%,rgba(0,0,0,.88) 100%)}
+.tile::before{content:"";position:absolute;inset:0;z-index:2;opacity:0;transition:opacity .35s;background:radial-gradient(340px circle at var(--mx,50%) var(--my,50%),rgba(var(--accent-rgb),.18),transparent 60%)}
+.tile:hover{border-color:var(--border-hover);transform:translateY(-3px)}
+.tile:hover::before{opacity:1}
+.tile .meta{position:relative;z-index:3;padding:clamp(20px,2.4vw,30px)}
+.tile .tag{font:500 11px/1 'JetBrains Mono';letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin-bottom:9px;display:block}
+.tile h3{font-size:clamp(21px,2.3vw,30px);font-weight:700;letter-spacing:-.01em;margin-bottom:8px;color:#fff}
+.tile p{font-size:14.5px;line-height:1.5;color:rgba(255,255,255,.82);max-width:44ch}
+.tile.lg{grid-column:span 4;grid-row:span 2}
+.tile.w3{grid-column:span 3}
+.tile.w2{grid-column:span 2}
+@media(max-width:900px){.bento{grid-template-columns:repeat(2,1fr)}.tile.lg,.tile.w3,.tile.w2{grid-column:span 1;grid-row:auto}}
+@media(max-width:560px){.bento{grid-template-columns:1fr}}
+
+/* HOW IT WORKS */
+.process .steps{margin-top:clamp(30px,4vw,52px);border-top:1px solid var(--border)}
+.step{display:grid;grid-template-columns:clamp(48px,7vw,96px) 1fr;gap:clamp(16px,3vw,44px);padding:clamp(22px,2.8vw,34px) 0;border-bottom:1px solid var(--border);align-items:start;transition:background .4s}
+.step:hover{background:rgba(var(--accent-rgb),.04)}
+.step .no{font-family:'Instrument Serif',serif;font-style:italic;font-size:clamp(36px,4.4vw,64px);color:var(--accent);line-height:.9}
+.step h3{font-size:clamp(20px,2.2vw,29px);font-weight:700;letter-spacing:-.01em;margin-bottom:9px}
+.step p{color:var(--text-2);max-width:66ch;font-size:clamp(15px,1.15vw,18px)}
+
+/* reality check */
+.fb{position:relative;z-index:2;color:var(--text);padding:clamp(72px,10vw,140px) 0}
+.fb .wrap{position:relative;z-index:2}
+.fb .eyebrow{margin-bottom:18px}
+.fb h2{color:var(--text);max-width:16ch}
+.fb .copy{color:var(--text-2);max-width:60ch}
+.fb .copy .q{color:var(--text)}
+
+/* fixed 3D mascot backdrop — scroll-driven, lives behind every block after What We Make */
+#mascot-stage{position:fixed;inset:0;z-index:1;pointer-events:none;opacity:.7}
+#mascot-stage canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
+/* white variant: punchier mascot (+30% saturation, a touch more solid) so it doesn't read pale on cream */
+[data-theme="light"] #mascot-stage{opacity:.85}
+[data-theme="light"] #mascot-stage canvas{filter:saturate(1.3) contrast(1.06)}
+#process,#price,#reality,#faq,#contact{position:relative;z-index:2}
+#process :is(h2,h3,p),#process .no,#price :is(h2,p),#price .big-figure,#reality :is(h2,p),#faq .faq-q,#faq .faq-a p,#contact :is(h2,p),#contact .mail{text-shadow:0 2px 26px rgba(0,0,0,.55)}
+[data-theme="light"] :is(#process,#price,#reality,#faq,#contact) :is(h2,h3,p,.no,.big-figure,.faq-q,.mail){text-shadow:0 1px 20px rgba(243,239,231,.75)}
+
+/* pricing */
+.price .grid{display:grid;grid-template-columns:.9fr 1.1fr;gap:clamp(26px,4vw,64px);align-items:center}
+.price .big-figure{font-size:clamp(64px,11vw,150px);font-weight:700;line-height:.9;letter-spacing:-.03em;color:var(--text)}
+.price .big-figure .z{color:var(--accent);font-family:'Instrument Serif',serif;font-style:italic}
+.price .big-figure small{display:block;font-family:'JetBrains Mono';font-size:12px;font-weight:500;letter-spacing:.16em;text-transform:uppercase;color:var(--text-3);margin-top:14px}
+.price .copy .q{color:var(--text)}
+.price .copy{margin-top:0}
+@media(max-width:760px){.price .grid{grid-template-columns:1fr}}
+
+/* faq */
+.faq-list{border-top:1px solid var(--border);margin-top:clamp(30px,4vw,50px)}
+.faq-item{border-bottom:1px solid var(--border)}
+.faq-q{display:flex;justify-content:space-between;gap:20px;align-items:center;padding:clamp(20px,2.6vw,30px) 0;cursor:pointer;font-size:clamp(18px,2vw,25px);font-weight:600;color:var(--text)}
+.faq-q .ic{width:26px;height:26px;flex:none;position:relative}
+.faq-q .ic::before,.faq-q .ic::after{content:"";position:absolute;inset:50% 0 auto;height:2px;background:var(--accent);transition:transform .35s}
+.faq-q .ic::after{transform:rotate(90deg)}
+.faq-item.open .ic::after{transform:rotate(0)}
+.faq-a{max-height:0;overflow:hidden;transition:max-height .5s var(--ease)}
+.faq-a p{padding:0 0 26px;color:var(--text-2);max-width:74ch;font-size:clamp(15px,1.15vw,18px)}
+
+/* CTA — mascot emblem */
+.cta{text-align:center;padding:clamp(80px,12vw,170px) 0;position:relative;overflow:hidden;z-index:2;color:var(--text)}
+.cta>.in{position:relative;z-index:2;width:min(92vw,860px);margin-inline:auto}
+.cta h2{font-size:clamp(36px,6vw,96px);line-height:1;font-weight:700;letter-spacing:-.02em;margin:0 auto 22px;max-width:16ch;color:var(--text)}
+.cta .lead{color:var(--text-2);max-width:52ch;margin:0 auto 6px;font-size:clamp(16px,1.4vw,20px)}
+.cta .mail{font-family:'JetBrains Mono';font-size:clamp(16px,2vw,22px);color:var(--text);border-bottom:1px solid var(--border);padding-bottom:4px;transition:color .3s,border-color .3s;display:inline-block;margin-top:26px}
+.cta .mail:hover{color:var(--accent);border-color:var(--accent)}
+
+/* crop marks */
+.crop{position:absolute;inset:clamp(20px,4vw,58px);pointer-events:none;z-index:3;opacity:.5}
+.crop i{position:absolute;width:22px;height:22px;border:1.5px solid rgba(var(--accent-rgb),.6)}
+.crop i:nth-child(1){top:0;left:0;border-right:0;border-bottom:0}
+.crop i:nth-child(2){top:0;right:0;border-left:0;border-bottom:0}
+.crop i:nth-child(3){bottom:0;left:0;border-right:0;border-top:0}
+.crop i:nth-child(4){bottom:0;right:0;border-left:0;border-top:0}
+@media(max-width:600px){.crop{inset:14px}.crop i{width:15px;height:15px}}
+
+footer{border-top:1px solid var(--border);padding:48px 0 40px;position:relative;z-index:2}
+.foot{display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap;color:var(--text-3);font-size:13px;font-family:'JetBrains Mono'}
+.foot .tag{color:var(--text-2)}
+.foot .tag b{color:var(--text);font-weight:500}
+
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.reveal{opacity:1;transform:none}.hero h1 .ln b{transform:none}canvas#amb{display:none}}
+</style>
+</head>
+<body>
+<div id="bg"></div>
+<div id="progress"></div>
+<canvas id="amb"></canvas>
+<div id="mascot-stage" aria-hidden="true"><canvas></canvas></div>
+<div id="spot"></div>
+<nav id="sectnav" aria-hidden="true">
+  <a href="#why"><span class="tx">Why</span><span class="ln"></span></a>
+  <a href="#work"><span class="tx">Work</span><span class="ln"></span></a>
+  <a href="#process"><span class="tx">Process</span><span class="ln"></span></a>
+  <a href="#price"><span class="tx">Pricing</span><span class="ln"></span></a>
+  <a href="#faq"><span class="tx">FAQ</span><span class="ln"></span></a>
+  <a href="#contact"><span class="tx">Contact</span><span class="ln"></span></a>
+</nav>
+
+<header class="nav" id="nav">
+  <a class="brand" href="#top"><span class="dot"></span>PUNCH LUNCH</a>
+  <div class="nav-links">
+    <a href="#why">Why</a><a href="#work">Work</a><a href="#process">Process</a><a href="#price">Pricing</a><a href="#faq">FAQ</a>
+    <a href="#contact" class="btn magnetic">Start a project</a>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero" id="top">
+  <video autoplay muted loop playsinline preload="auto" poster="assets/img/hero-poster.jpg"><source src="assets/video/hero.mp4" type="video/mp4"></video>
+  <div class="veil"></div>
+  <div class="hero-in">
+    <h1><span class="ln"><b>PUNCH</b></span><span class="ln"><b>LUNCH<span class="fx">.</span></b></span></h1>
+    <p class="sub">We make commercials that look like a studio blockbuster shot them. AI handles the logistics. Filmmakers handle the taste. <b>You handle the compliments.</b></p>
+    <div class="cta-row">
+      <a href="#contact" class="btn magnetic">Start a project</a>
+      <a href="#work" class="btn ghost magnetic">See the work</a>
+    </div>
+  </div>
+  <div class="scroll-hint">Scroll<span class="bar"></span></div>
+</section>
+
+<!-- MARQUEE (footer line) -->
+<div class="manifesto">
+  <div class="mq">
+    <span class="fill">The big-budget look</span><span class="ac">—</span><span>minus the big budget</span><span class="ac">·</span>
+    <span class="fill">The big-budget look</span><span class="ac">—</span><span>minus the big budget</span><span class="ac">·</span>
+  </div>
+</div>
+
+<!-- WHY WE EXIST -->
+<section class="tsec why" id="why">
+  <div class="wrap">
+    <div>
+      <div class="eyebrow">Why we exist</div>
+      <h2 class="big reveal">Every brand has ads now. <span class="serif accent">That's the problem.</span></h2>
+    </div>
+    <div class="copy reveal" data-d="1">
+      <p>Most business advertising is wallpaper. Technically fine, instantly forgotten, identical to the competitor's. It exists because someone said "we need video" and nobody asked "would anyone actually watch this?"</p>
+      <p class="q">We ask. Then we make the ad people watch to the end.</p>
+    </div>
+  </div>
+</section>
+
+<!-- REEL (visual) -->
+<div class="reel" id="reel">
+  <div class="ring reveal">
+    <div class="rotor" id="rotor">
+      <div class="panel" style="--i:0"><video data-lazy="assets/video/reel1.mp4" poster="assets/img/reel1.jpg" muted loop playsinline></video></div>
+      <div class="panel" style="--i:1"><video data-lazy="assets/video/reel2.mp4" poster="assets/img/reel2.jpg" muted loop playsinline></video></div>
+      <div class="panel" style="--i:2"><video data-lazy="assets/video/reel3.mp4" poster="assets/img/reel3.jpg" muted loop playsinline></video></div>
+      <div class="panel" style="--i:3"><video data-lazy="assets/video/reel4.mp4" poster="assets/img/reel4.jpg" muted loop playsinline></video></div>
+      <div class="panel" style="--i:4"><video data-lazy="assets/video/reel5.mp4" poster="assets/img/reel5.jpg" muted loop playsinline></video></div>
+      <div class="panel" style="--i:5"><video data-lazy="assets/video/reel6.mp4" poster="assets/img/reel6.jpg" muted loop playsinline></video></div>
+      <div class="panel" style="--i:6"><video data-lazy="assets/video/reel7.mp4" poster="assets/img/reel7.jpg" muted loop playsinline></video></div>
+      <div class="panel" style="--i:7"><video data-lazy="assets/video/reel8.mp4" poster="assets/img/reel8.jpg" muted loop playsinline></video></div>
+    </div>
+  </div>
+</div>
+
+<!-- WHAT AI CHANGES -->
+<section class="tsec ai">
+  <div class="wrap">
+    <div class="eyebrow">What AI changes (and what it doesn't)</div>
+    <h2 class="big reveal">The honest version.</h2>
+    <div class="split">
+      <div class="col removes reveal">
+        <h3>What it removes</h3>
+        <p style="color:var(--text-2);margin-bottom:18px">AI removes the parts of a commercial shoot that never made your ad better.</p>
+        <ul>
+          <li>Location permits</li>
+          <li>Flight cases</li>
+          <li>Crane rentals</li>
+          <li>Weather delays</li>
+          <li>Seventeen people standing around a monitor eating sandwiches on your budget</li>
+        </ul>
+      </div>
+      <div class="col keeps reveal" data-d="1">
+        <h3>What it doesn't</h3>
+        <p class="lead">What it doesn't remove: taste.</p>
+        <p>An eye for a shot. Knowing why a frame sells and a frame bores. That still comes from filmmakers. <b>It comes from us.</b></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WHAT WE MAKE -->
+<section class="make" id="work">
+  <div class="wrap">
+    <div class="head"><div class="eyebrow">What we make</div></div>
+    <div class="bento">
+      <article class="tile lg spot reveal"><video data-lazy="assets/video/reel1.mp4" poster="assets/img/reel1.jpg" muted loop playsinline></video><div class="grad"></div><div class="meta"><span class="tag">Brand commercials</span><h3>The hero spot.</h3><p>30 or 60 seconds that make your company look like it plays in a bigger league than it pays for.</p></div></article>
+      <article class="tile w2 spot reveal" data-d="1"><video data-lazy="assets/video/reel5.mp4" poster="assets/img/reel5.jpg" muted loop playsinline></video><div class="grad"></div><div class="meta"><span class="tag">Product spots</span><h3>Your product shot like the star of a summer blockbuster.</h3><p>Especially satisfying if your product drives through swamps, flies or otherwise refuses to sit still.</p></div></article>
+      <article class="tile w2 spot reveal" data-d="2"><video data-lazy="assets/video/reel7.mp4" poster="assets/img/reel7.jpg" muted loop playsinline></video><div class="grad"></div><div class="meta"><span class="tag">Launch campaigns</span><h3>The full volley for a new product or market:</h3><p>hero spot, cutdowns, formats for every platform, all from one shoot that never physically happened.</p></div></article>
+      <article class="tile w3 spot reveal"><video data-lazy="assets/video/reel3.mp4" poster="assets/img/reel3.jpg" muted loop playsinline></video><div class="grad"></div><div class="meta"><span class="tag">Concept ads</span><h3>The thing that doesn't exist yet, advertised as if it does.</h3><p>Investors and pre-orders respond better to seeing the future than reading about it.</p></div></article>
+      <article class="tile w3 spot reveal" data-d="1"><video data-lazy="assets/video/reel8.mp4" poster="assets/img/reel8.jpg" muted loop playsinline></video><div class="grad"></div><div class="meta"><span class="tag">Short-form volleys</span><h3>6 to 15 seconds, built for feeds, loud on mute.</h3><p>The stuff that does the numbers.</p></div></article>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="tsec process" id="process">
+  <div class="wrap">
+    <div class="eyebrow">How it works</div>
+    <h2 class="big reveal">Four steps. <span class="serif accent">No reshoots in another country.</span></h2>
+    <div class="steps">
+      <div class="step reveal"><div class="no">1</div><div><h3>You tell us the goal.</h3><p>Not "we need an ad." The actual goal. New market, new customers, new respect. This matters more than anything else on this page.</p></div></div>
+      <div class="step reveal"><div class="no">2</div><div><h3>We write the spot.</h3><p>Script, look, boards. You approve the idea before a single frame exists. This is where the punch gets loaded.</p></div></div>
+      <div class="step reveal"><div class="no">3</div><div><h3>We make it.</h3><p>Days, not months. You see cuts early and often. Changes go in fast, because nothing needs a reshoot in another country.</p></div></div>
+      <div class="step reveal"><div class="no">4</div><div><h3>You ship it.</h3><p>Every format, every platform, every aspect ratio. Ready to run.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- THE PRICE QUESTION -->
+<section class="tsec price" id="price">
+  <div class="wrap">
+    <div class="eyebrow">The price question</div>
+    <div class="grid" style="margin-top:26px">
+      <div class="reveal">
+        <div class="big-figure">+1<span class="z">0</span><small>at least one more zero — traditionally</small></div>
+      </div>
+      <div class="reveal" data-d="1">
+        <h2 class="big" style="font-size:clamp(24px,3.2vw,40px);margin-bottom:20px">It depends, and anyone quoting you <span class="serif accent">before hearing the idea is guessing.</span></h2>
+        <div class="copy" style="margin-top:0">
+          <p>What we can say: spots like ours traditionally come with a production budget carrying at least one more zero.</p>
+          <p class="q">Tell us what you're selling and we'll give you a real number fast.</p>
+        </div>
+        <a href="#contact" class="btn magnetic" style="margin-top:20px">Get a number</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- A REALITY CHECK -->
+<section class="fb" id="reality">
+  <div class="wrap">
+    <div class="eyebrow">A reality check</div>
+    <h2 class="big reveal">Will one ad make you famous? <span class="serif accent">No.</span></h2>
+    <div class="copy reveal" data-d="1">
+      <p>Anyone promising virality is selling weather forecasts. What one great commercial does: makes your brand look like the category leader, gives your sales team something they're proud to send and keeps working long after the campaign around it retires.</p>
+      <p class="q">That's the target, and we hit it.</p>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="tsec" id="faq">
+  <div class="wrap">
+    <div class="eyebrow">FAQ</div>
+    <h2 class="big reveal">Fair <span class="serif accent">questions.</span></h2>
+    <div class="faq-list">
+      <div class="faq-item"><div class="faq-q">Is this just AI slop?<span class="ic"></span></div><div class="faq-a"><p>Watch the reel and decide. Slop happens when nobody with taste is steering. Somebody with taste is very much steering.</p></div></div>
+      <div class="faq-item"><div class="faq-q">Will it actually show our product?<span class="ic"></span></div><div class="faq-a"><p>Yes. Your product, your people if you want them, your world, rendered properly. Built for you from scratch every time.</p></div></div>
+      <div class="faq-item"><div class="faq-q">How fast is fast?<span class="ic"></span></div><div class="faq-a"><p>First cut in days for most spots. Complexity moves the number, honesty keeps it accurate.</p></div></div>
+      <div class="faq-item"><div class="faq-q">Can you match our brand guidelines?<span class="ic"></span></div><div class="faq-a"><p>We can match them or improve them. Your call.</p></div></div>
+      <div class="faq-item"><div class="faq-q">Why "Punch Lunch"?<span class="ic"></span></div><div class="faq-a"><p>Because it's memorable and you just proved it.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta" id="contact">
+  <div class="in">
+    <div class="eyebrow" style="justify-content:center">Start a project</div>
+    <h2 class="reveal" style="margin-top:16px">Selling something <span class="serif accent">worth watching?</span></h2>
+    <p class="lead reveal" data-d="1">Send the product, the idea, or just the ambition. We'll come back with how it could look and what it would cost. No decks longer than this page, promise.</p>
+    <a href="mailto:hello@punchlunch.film" class="mail magnetic">hello@punchlunch.film</a>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap foot">
+    <span class="tag"><b>Punch Lunch.</b> The big-budget look, minus the big budget.</span>
+    <span>© <span id="yr"></span></span>
+  </div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lenis/1.1.14/lenis.min.js"></script>
+<script>
+const reduce=matchMedia('(prefers-reduced-motion:reduce)').matches;
+const nav=document.getElementById('nav'),prog=document.getElementById('progress');
+function onScroll(){const st=scrollY,h=document.documentElement.scrollHeight-innerHeight;prog.style.width=(h>0?st/h*100:0)+'%';nav.classList.toggle('solid',st>40);}
+addEventListener('scroll',onScroll,{passive:true});onScroll();
+let lenis=null;
+if(!reduce&&window.Lenis){lenis=new Lenis({lerp:.09,smoothWheel:true});requestAnimationFrame(function r(t){lenis.raf(t);requestAnimationFrame(r)});lenis.on('scroll',onScroll);}
+document.querySelectorAll('a[href^="#"]').forEach(a=>a.addEventListener('click',e=>{const id=a.getAttribute('href');if(id.length<2)return;const t=document.querySelector(id);if(!t)return;e.preventDefault();lenis?lenis.scrollTo(t,{offset:-10}):t.scrollIntoView({behavior:'smooth'})}));
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{rootMargin:'0px 0px -8% 0px',threshold:.1});
+document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+const vio=new IntersectionObserver(es=>es.forEach(e=>{const v=e.target;if(e.isIntersecting){if(v.dataset.lazy&&!v.src){v.src=v.dataset.lazy;v.load()}v.play&&v.play().catch(()=>{})}else v.pause&&v.pause()}),{rootMargin:'150px',threshold:.05});
+document.querySelectorAll('video[data-lazy]').forEach(v=>vio.observe(v));
+const secMap=[...document.querySelectorAll('#sectnav a')].map(a=>({a,el:document.querySelector(a.getAttribute('href'))})).filter(o=>o.el);
+const snObs=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)secMap.forEach(o=>o.a.classList.toggle('on',o.el===e.target))}),{rootMargin:'-45% 0px -45% 0px'});secMap.forEach(o=>snObs.observe(o.el));
+const spot=document.getElementById('spot');
+if(matchMedia('(hover:hover)').matches){
+  let mx=innerWidth/2,my=innerHeight/2,sx=mx,sy=my;
+  addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;if(spot)spot.style.opacity=1},{passive:true});
+  (function sp(){sx+=(mx-sx)*.14;sy+=(my-sy)*.14;if(spot)spot.style.transform='translate3d('+sx+'px,'+sy+'px,0)';requestAnimationFrame(sp)})();
+  document.querySelectorAll('.magnetic').forEach(b=>{b.addEventListener('mousemove',e=>{const r=b.getBoundingClientRect();b.style.transform='translate('+(e.clientX-r.left-r.width/2)*.25+'px,'+(e.clientY-r.top-r.height/2)*.4+'px)'});b.addEventListener('mouseleave',()=>b.style.transform='')});
+  document.querySelectorAll('.tile').forEach(c=>c.addEventListener('mousemove',e=>{const r=c.getBoundingClientRect();c.style.setProperty('--mx',(e.clientX-r.left)+'px');c.style.setProperty('--my',(e.clientY-r.top)+'px')}));
+}
+(function(){const ring=document.querySelector('.ring'),rotor=document.getElementById('rotor');if(!ring||!rotor)return;
+  let angle=0,vel=0,drag=false,lastX=0,lastT=0;const AUTO=reduce?0:.09;
+  const apply=()=>rotor.style.setProperty('--spin',angle+'deg');
+  (function f(){if(!drag){angle+=AUTO+vel;vel*=.95;if(Math.abs(vel)<.001)vel=0}apply();requestAnimationFrame(f)})();
+  const gx=e=>e.touches?e.touches[0].clientX:e.clientX;
+  rotor.addEventListener('pointerdown',e=>{drag=true;lastX=gx(e);vel=0;lastT=performance.now()});
+  addEventListener('pointermove',e=>{if(!drag)return;const x=gx(e),n=performance.now(),dx=x-lastX,dt=Math.max(n-lastT,1),da=dx*.22;angle+=da;vel=da/dt*16;lastX=x;lastT=n},{passive:true});
+  addEventListener('pointerup',()=>drag=false);addEventListener('pointercancel',()=>drag=false);
+  rotor.addEventListener('dragstart',e=>e.preventDefault());
+  ring.addEventListener('wheel',e=>{if(Math.abs(e.deltaX)>Math.abs(e.deltaY)){e.preventDefault();const da=e.deltaX*.16;angle+=da;vel=da*.3}},{passive:false});
+})();
+const pxEls=[...document.querySelectorAll('.px')];
+function px(){const vh=innerHeight;pxEls.forEach(el=>{const r=el.getBoundingClientRect();const c=r.top+r.height/2-vh/2;const sp=parseFloat(el.dataset.px||'0.05');el.style.transform='translate3d(0,'+(-c*sp).toFixed(1)+'px,0) scale(1.14)'})}
+if(!reduce){addEventListener('scroll',px,{passive:true});lenis&&lenis.on('scroll',px);px()}
+document.querySelectorAll('.faq-item').forEach(it=>{const q=it.querySelector('.faq-q'),a=it.querySelector('.faq-a');q.addEventListener('click',()=>{const open=it.classList.contains('open');document.querySelectorAll('.faq-item.open').forEach(o=>{o.classList.remove('open');o.querySelector('.faq-a').style.maxHeight=0});if(!open){it.classList.add('open');a.style.maxHeight=a.scrollHeight+'px'}})});
+(function(){const c=document.getElementById('amb');if(!c||reduce||document.documentElement.dataset.theme==='light'){if(c)c.style.display='none';return}const ctx=c.getContext('2d');let W,H,run=true,t=0;
+  const blobs=[{x:.25,y:.3,r:.5,col:[255,74,28],s:.00018},{x:.75,y:.6,r:.6,col:[120,60,180],s:.00013},{x:.55,y:.85,r:.45,col:[40,90,150],s:.00021},{x:.85,y:.2,r:.4,col:[255,120,60],s:.00016}];
+  function size(){W=c.width=innerWidth;H=c.height=innerHeight}size();addEventListener('resize',size);
+  document.addEventListener('visibilitychange',()=>{run=!document.hidden;if(run)draw()});
+  function draw(){if(!run)return;t++;ctx.clearRect(0,0,W,H);ctx.globalCompositeOperation='screen';
+    blobs.forEach((b,i)=>{const x=(b.x+Math.sin(t*b.s*7+i)*.06)*W,y=(b.y+Math.cos(t*b.s*5+i)*.06)*H,rad=b.r*Math.min(W,H);const g=ctx.createRadialGradient(x,y,0,x,y,rad);g.addColorStop(0,'rgba('+b.col[0]+','+b.col[1]+','+b.col[2]+',.16)');g.addColorStop(1,'rgba('+b.col[0]+','+b.col[1]+','+b.col[2]+',0)');ctx.fillStyle=g;ctx.fillRect(0,0,W,H)});
+    requestAnimationFrame(draw)}
+  draw();
+})();
+document.getElementById('yr').textContent=new Date().getFullYear();
+</script>
+
+<!-- 3D mascot (scroll-driven rotation) -->
+<script type="module">
+import * as THREE from 'three';
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+const stage=document.getElementById('mascot-stage');
+const zoneStartEl=document.getElementById('process');   // first block after "What we make"
+const zoneEndEl=document.getElementById('contact');     // last block
+const reduce=matchMedia('(prefers-reduced-motion:reduce)').matches;
+if(stage&&zoneStartEl&&zoneEndEl){
+  new GLTFLoader().load('assets/models/punch_lunch_logo.glb', gltf=>initStage(gltf.scene),
+    undefined, ()=>{ if(stage) stage.style.display='none'; });
+}
+function initStage(src){
+  const canvas=stage.querySelector('canvas');
+  const renderer=new THREE.WebGLRenderer({canvas,antialias:true,alpha:true,powerPreference:'high-performance'});
+  renderer.outputColorSpace=THREE.SRGBColorSpace;
+  renderer.setPixelRatio(Math.min(2,window.devicePixelRatio||1));
+  const scene=new THREE.Scene();
+  const camera=new THREE.PerspectiveCamera(34,1,0.1,100); camera.position.set(0,0,7);
+  scene.add(new THREE.HemisphereLight(0xbfeaf2,0x0a1418,0.95));
+  const key=new THREE.DirectionalLight(0xffffff,2.0); key.position.set(3,4,5); scene.add(key);
+  const fill=new THREE.DirectionalLight(0xffffff,0.45); fill.position.set(2,-1,4); scene.add(fill);
+  const rim=new THREE.DirectionalLight(0x25f0ff,1.2); rim.position.set(-5,-1.5,-3); scene.add(rim);
+  const model=src.clone(true);
+  const box=new THREE.Box3().setFromObject(model);
+  const ctr=box.getCenter(new THREE.Vector3()), size=box.getSize(new THREE.Vector3());
+  model.position.sub(ctr);
+  const baseScale=3.1/Math.max(size.x,size.y,size.z);
+  model.scale.setScalar(baseScale);
+  const pivot=new THREE.Group(); pivot.add(model); scene.add(pivot);
+  function resize(){const w=innerWidth,h=innerHeight;renderer.setSize(w,h,false);camera.aspect=w/h;camera.updateProjectionMatrix();}
+  resize(); addEventListener('resize',resize,{passive:true});
+  const workEl=document.getElementById('work'); // the "What we make" (video) block above the zone
+  const lerp=(a,b,t)=>a+(b-a)*t, clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+  const visH=2*Math.tan(camera.fov*Math.PI/360)*camera.position.z; // world height visible at z=0
+  let curRot=0, curScale=1, curX=0, curY=-visH, rendering=false;
+  (function tick(){
+    requestAnimationFrame(tick);
+    const vh=innerHeight;
+    const st=zoneStartEl.getBoundingClientRect().top;    // How it works top, viewport px
+    const en=zoneEndEl.getBoundingClientRect().bottom;   // last block bottom, viewport px
+    // Only draw while the zone is near the viewport; otherwise clear once and idle.
+    if(st>vh*1.06 || en< -vh*0.12){
+      if(rendering){renderer.clear();rendering=false;}
+      return;
+    }
+    rendering=true;
+    const startY=st+scrollY, endY=en+scrollY, center=scrollY+vh/2;
+    const prog=(center-startY)/Math.max(1,(endY-startY));
+    const P=clamp(prog,0,1);
+    // GEOMETRIC REVEAL (no opacity trick): the mascot is anchored in the page like a real object.
+    // It rises into view head-first from the bottom as you scroll in, sits/pins through the zone,
+    // then rises out the top as the last block leaves. You scroll onto it — it doesn't fade in.
+    const fEntry=lerp(1.5,0.5,clamp((vh-st)/vh,0,1));   // st=vh(below) -> st=0(centre)
+    const fExit =lerp(0.5,-0.5,clamp((vh-en)/vh,0,1));  // en=vh(centre) -> en=0(above)
+    const frac=fEntry+fExit-0.5;                        // 0=top .. .5=centre .. 1=bottom of viewport
+    const baseY=(0.5-frac)*visH;
+    // motion the client approved: swing, dolly, small drift
+    const tRot=reduce?0.2:(Math.sin(P*Math.PI*2)*0.9);
+    const tScale=reduce?1:(1+Math.sin(P*Math.PI*3)*0.15);
+    const tX=reduce?0:(Math.sin(P*Math.PI*2.4)*0.9);
+    const tYd=reduce?0:(0.12*Math.sin(P*Math.PI*6));
+    curRot=lerp(curRot,tRot,0.08);
+    curScale=lerp(curScale,tScale,0.08);
+    curX=lerp(curX,tX,0.08);
+    curY=lerp(curY,baseY+tYd,0.16);
+    pivot.rotation.y=curRot;
+    pivot.rotation.x=0.06+Math.sin(P*Math.PI*2)*0.10;
+    pivot.position.set(curX,curY,0);
+    model.scale.setScalar(baseScale*curScale);
+    renderer.render(scene,camera);
+  })();
+}
+</script>
+</body>
+</html>
