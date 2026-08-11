@@ -5,9 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Punch Lunch — The big-budget look, minus the big budget.</title>
 <meta name="description" content="We make commercials that look like a studio blockbuster shot them. AI handles the logistics. Filmmakers handle the taste." />
-<script type="importmap">
-{"imports":{"three":"./assets/vendor/three/three.module.js","three/addons/":"./assets/vendor/three/addons/"}}
-</script>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
@@ -153,7 +150,7 @@ section{position:relative;padding:clamp(72px,10vw,138px) 0;z-index:2}
 .ring .panel{position:absolute;left:0;top:0;width:var(--w);height:calc(var(--w)*.625);margin-left:calc(var(--w)*-.5);margin-top:calc(var(--w)*-.3125);
   border-radius:16px;overflow:hidden;border:1px solid var(--border);background:#0d0d0d;
   transform:rotateY(calc(var(--i)*45deg)) translateZ(var(--r)) rotateY(180deg);backface-visibility:hidden}
-.ring .panel video{width:100%;height:100%;object-fit:cover}
+.ring .panel img,.ring .panel video{width:100%;height:100%;object-fit:cover}
 @media(max-width:760px){.ring{--w:clamp(150px,44vw,220px);--r:clamp(180px,52vw,270px);perspective:1000px;height:clamp(220px,56vw,300px)}}
 
 /* AI removes / doesn't */
@@ -204,11 +201,10 @@ section{position:relative;padding:clamp(72px,10vw,138px) 0;z-index:2}
 .fb .copy .q{color:var(--text)}
 
 /* fixed 3D mascot backdrop — scroll-driven, lives behind every block after What We Make */
-#mascot-stage{position:fixed;inset:0;z-index:1;pointer-events:none;opacity:.7}
-#mascot-stage canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
-/* white variant: punchier mascot (+30% saturation, a touch more solid) so it doesn't read pale on cream */
+#mascot-stage{position:fixed;inset:0;z-index:1;pointer-events:none;opacity:.7;overflow:hidden}
+#mascot-sprite{position:absolute;left:50%;top:50%;width:100vh;height:100vh;margin:-50vh 0 0 -50vh;background:url(assets/mascot-sprite.webp) no-repeat;background-size:800% 500%;will-change:transform;transform:translate3d(0,90vh,0)}
 [data-theme="light"] #mascot-stage{opacity:.85}
-[data-theme="light"] #mascot-stage canvas{filter:saturate(1.3) contrast(1.06)}
+[data-theme="light"] #mascot-sprite{filter:saturate(1.3) contrast(1.06)}
 #process,#price,#reality,#faq,#contact{position:relative;z-index:2}
 #process :is(h2,h3,p),#process .no,#price :is(h2,p),#price .big-figure,#reality :is(h2,p),#faq .faq-q,#faq .faq-a p,#contact :is(h2,p),#contact .mail{text-shadow:0 2px 26px rgba(0,0,0,.55)}
 [data-theme="light"] :is(#process,#price,#reality,#faq,#contact) :is(h2,h3,p,.no,.big-figure,.faq-q,.mail){text-shadow:0 1px 20px rgba(243,239,231,.75)}
@@ -262,7 +258,7 @@ footer{border-top:1px solid var(--border);padding:48px 0 40px;position:relative;
 <div id="bg"></div>
 <div id="progress"></div>
 <canvas id="amb"></canvas>
-<div id="mascot-stage" aria-hidden="true"><canvas></canvas></div>
+<div id="mascot-stage" aria-hidden="true"><div id="mascot-sprite"></div></div>
 <div id="spot"></div>
 <nav id="sectnav" aria-hidden="true">
   <a href="#why"><span class="tx">Why</span><span class="ln"></span></a>
@@ -322,14 +318,14 @@ footer{border-top:1px solid var(--border);padding:48px 0 40px;position:relative;
 <div class="reel" id="reel">
   <div class="ring reveal">
     <div class="rotor" id="rotor">
-      <div class="panel" style="--i:0"><video data-lazy="assets/video/reel1.mp4" poster="assets/img/reel1.jpg" muted loop playsinline></video></div>
-      <div class="panel" style="--i:1"><video data-lazy="assets/video/reel2.mp4" poster="assets/img/reel2.jpg" muted loop playsinline></video></div>
-      <div class="panel" style="--i:2"><video data-lazy="assets/video/reel3.mp4" poster="assets/img/reel3.jpg" muted loop playsinline></video></div>
-      <div class="panel" style="--i:3"><video data-lazy="assets/video/reel4.mp4" poster="assets/img/reel4.jpg" muted loop playsinline></video></div>
-      <div class="panel" style="--i:4"><video data-lazy="assets/video/reel5.mp4" poster="assets/img/reel5.jpg" muted loop playsinline></video></div>
-      <div class="panel" style="--i:5"><video data-lazy="assets/video/reel6.mp4" poster="assets/img/reel6.jpg" muted loop playsinline></video></div>
-      <div class="panel" style="--i:6"><video data-lazy="assets/video/reel7.mp4" poster="assets/img/reel7.jpg" muted loop playsinline></video></div>
-      <div class="panel" style="--i:7"><video data-lazy="assets/video/reel8.mp4" poster="assets/img/reel8.jpg" muted loop playsinline></video></div>
+      <div class="panel" style="--i:0"><img src="assets/img/reel1.jpg" alt=""></div>
+      <div class="panel" style="--i:1"><img src="assets/img/reel2.jpg" alt=""></div>
+      <div class="panel" style="--i:2"><img src="assets/img/reel3.jpg" alt=""></div>
+      <div class="panel" style="--i:3"><img src="assets/img/reel4.jpg" alt=""></div>
+      <div class="panel" style="--i:4"><img src="assets/img/reel5.jpg" alt=""></div>
+      <div class="panel" style="--i:5"><img src="assets/img/reel6.jpg" alt=""></div>
+      <div class="panel" style="--i:6"><img src="assets/img/reel7.jpg" alt=""></div>
+      <div class="panel" style="--i:7"><img src="assets/img/reel8.jpg" alt=""></div>
     </div>
   </div>
 </div>
@@ -504,80 +500,33 @@ document.querySelectorAll('.faq-item').forEach(it=>{const q=it.querySelector('.f
 document.getElementById('yr').textContent=new Date().getFullYear();
 </script>
 
-<!-- 3D mascot (scroll-driven rotation) -->
-<script type="module">
-import * as THREE from 'three';
-import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
-const stage=document.getElementById('mascot-stage');
-const zoneStartEl=document.getElementById('process');   // first block after "What we make"
-const zoneEndEl=document.getElementById('contact');     // last block
-const reduce=matchMedia('(prefers-reduced-motion:reduce)').matches;
-if(stage&&zoneStartEl&&zoneEndEl){
-  new GLTFLoader().load('assets/models/punch_lunch_logo.glb', gltf=>initStage(gltf.scene),
-    undefined, ()=>{ if(stage) stage.style.display='none'; });
-}
-function initStage(src){
-  const canvas=stage.querySelector('canvas');
-  const renderer=new THREE.WebGLRenderer({canvas,antialias:true,alpha:true,powerPreference:'high-performance'});
-  renderer.outputColorSpace=THREE.SRGBColorSpace;
-  renderer.setPixelRatio(Math.min(1.35,window.devicePixelRatio||1));
-  const scene=new THREE.Scene();
-  const camera=new THREE.PerspectiveCamera(34,1,0.1,100); camera.position.set(0,0,7);
-  scene.add(new THREE.HemisphereLight(0xbfeaf2,0x0a1418,0.95));
-  const key=new THREE.DirectionalLight(0xffffff,2.0); key.position.set(3,4,5); scene.add(key);
-  const fill=new THREE.DirectionalLight(0xffffff,0.45); fill.position.set(2,-1,4); scene.add(fill);
-  const rim=new THREE.DirectionalLight(0x25f0ff,1.2); rim.position.set(-5,-1.5,-3); scene.add(rim);
-  const model=src.clone(true);
-  const box=new THREE.Box3().setFromObject(model);
-  const ctr=box.getCenter(new THREE.Vector3()), size=box.getSize(new THREE.Vector3());
-  model.position.sub(ctr);
-  const baseScale=3.1/Math.max(size.x,size.y,size.z);
-  model.scale.setScalar(baseScale);
-  const pivot=new THREE.Group(); pivot.add(model); scene.add(pivot);
-  function resize(){const w=innerWidth,h=innerHeight;renderer.setSize(w,h,false);camera.aspect=w/h;camera.updateProjectionMatrix();}
-  resize(); addEventListener('resize',resize,{passive:true});
-  const workEl=document.getElementById('work'); // the "What we make" (video) block above the zone
-  const lerp=(a,b,t)=>a+(b-a)*t, clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
-  const visH=2*Math.tan(camera.fov*Math.PI/360)*camera.position.z; // world height visible at z=0
-  let curRot=0, curScale=1, curX=0, curY=-visH, rendering=false, lastFrame=0;
-  (function tick(){
-    requestAnimationFrame(tick);
-    const _n=performance.now(); if(_n-lastFrame<30) return; lastFrame=_n;
-    const vh=innerHeight;
-    const st=zoneStartEl.getBoundingClientRect().top;    // How it works top, viewport px
-    const en=zoneEndEl.getBoundingClientRect().bottom;   // last block bottom, viewport px
-    // Only draw while the zone is near the viewport; otherwise clear once and idle.
-    if(st>vh*1.06 || en< -vh*0.12){
-      if(rendering){renderer.clear();rendering=false;}
-      return;
-    }
-    rendering=true;
-    const startY=st+scrollY, endY=en+scrollY, center=scrollY+vh/2;
-    const prog=(center-startY)/Math.max(1,(endY-startY));
-    const P=clamp(prog,0,1);
-    // GEOMETRIC REVEAL (no opacity trick): the mascot is anchored in the page like a real object.
-    // It rises into view head-first from the bottom as you scroll in, sits/pins through the zone,
-    // then rises out the top as the last block leaves. You scroll onto it — it doesn't fade in.
-    const fEntry=lerp(1.5,0.5,clamp((vh-st)/vh,0,1));   // st=vh(below) -> st=0(centre)
-    const fExit =lerp(0.5,-0.5,clamp((vh-en)/vh,0,1));  // en=vh(centre) -> en=0(above)
-    const frac=fEntry+fExit-0.5;                        // 0=top .. .5=centre .. 1=bottom of viewport
-    const baseY=(0.5-frac)*visH;
-    // motion the client approved: swing, dolly, small drift
-    const tRot=reduce?0.2:(Math.sin(P*Math.PI*2)*0.9);
-    const tScale=reduce?1:(1+Math.sin(P*Math.PI*3)*0.15);
-    const tX=reduce?0:(Math.sin(P*Math.PI*2.4)*0.9);
-    const tYd=reduce?0:(0.12*Math.sin(P*Math.PI*6));
-    curRot=lerp(curRot,tRot,0.08);
-    curScale=lerp(curScale,tScale,0.08);
-    curX=lerp(curX,tX,0.08);
-    curY=lerp(curY,baseY+tYd,0.16);
-    pivot.rotation.y=curRot;
-    pivot.rotation.x=0.06+Math.sin(P*Math.PI*2)*0.10;
-    pivot.position.set(curX,curY,0);
-    model.scale.setScalar(baseScale*curScale);
-    renderer.render(scene,camera);
-  })();
-}
+<!-- Mascot: pre-rendered sprite sheet, scrubbed by scroll (no WebGL) -->
+<script>
+(function(){
+  var stage=document.getElementById('mascot-stage'),sprite=document.getElementById('mascot-sprite');
+  var a=document.getElementById('process'),z=document.getElementById('contact');
+  if(!stage||!sprite||!a||!z)return;
+  var COLS=8,ROWS=5,N=40;
+  function cl(v,lo,hi){return v<lo?lo:v>hi?hi:v;}
+  var ticking=false;
+  function update(){
+    ticking=false;
+    var vh=innerHeight,st=a.getBoundingClientRect().top,en=z.getBoundingClientRect().bottom;
+    if(st>vh*1.1||en<-vh*0.15){stage.style.opacity='0';return;}
+    stage.style.opacity='';
+    var startY=st+scrollY,endY=en+scrollY,center=scrollY+vh/2;
+    var P=cl((center-startY)/Math.max(1,endY-startY),0,1);
+    var fEntry=1.5-cl((vh-st)/vh,0,1),fExit=0.5-cl((vh-en)/vh,0,1),frac=fEntry+fExit-0.5;
+    var ty=(frac-0.5)*100,tx=Math.sin(P*Math.PI*2.4)*6;
+    sprite.style.transform='translate3d('+tx.toFixed(2)+'vh,'+ty.toFixed(2)+'vh,0)';
+    var f=cl(Math.round(P*(N-1)),0,N-1),c=f%COLS,r=(f/COLS)|0;
+    sprite.style.backgroundPosition=(c/(COLS-1)*100)+'% '+(r/(ROWS-1)*100)+'%';
+  }
+  function onScroll(){if(!ticking){ticking=true;requestAnimationFrame(update);}}
+  addEventListener('scroll',onScroll,{passive:true});
+  addEventListener('resize',onScroll,{passive:true});
+  update();
+})();
 </script>
 </body>
 </html>
