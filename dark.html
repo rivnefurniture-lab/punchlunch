@@ -151,7 +151,7 @@ section{position:relative;padding:clamp(72px,10vw,138px) 0;z-index:2}
 .ring .rotor{position:absolute;left:50%;top:50%;width:1px;height:1px;transform-style:preserve-3d;cursor:var(--drag);transform:translateZ(var(--r)) rotateY(var(--spin,0deg))}
 .ring .panel{position:absolute;left:0;top:0;width:var(--w);height:calc(var(--w)*.625);margin-left:calc(var(--w)*-.5);margin-top:calc(var(--w)*-.3125);
   border-radius:16px;overflow:hidden;border:1px solid var(--border);background:#0d0d0d;
-  transform:rotateY(calc(var(--i)*45deg)) translateZ(var(--r)) rotateY(180deg);backface-visibility:hidden;box-shadow:0 24px 60px rgba(0,0,0,.5)}
+  transform:rotateY(calc(var(--i)*45deg)) translateZ(var(--r)) rotateY(180deg);backface-visibility:hidden}
 .ring .panel video{width:100%;height:100%;object-fit:cover}
 @media(max-width:760px){.ring{--w:clamp(150px,44vw,220px);--r:clamp(180px,52vw,270px);perspective:1000px;height:clamp(220px,56vw,300px)}}
 
