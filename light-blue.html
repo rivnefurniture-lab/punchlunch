@@ -147,14 +147,14 @@ section{position:relative;padding:clamp(72px,10vw,138px) 0;z-index:2}
 
 /* reel ring */
 .reel{position:relative;overflow:hidden;padding:clamp(20px,3vw,44px) 0 clamp(30px,4vw,60px);z-index:2}
-.ring{--w:clamp(230px,30vw,440px);--r:clamp(300px,40vw,600px);position:relative;z-index:2;height:clamp(280px,32vw,440px);perspective:1300px;perspective-origin:50% 50%;
+.ring{--w:clamp(200px,24vw,360px);--r:clamp(392px,47vw,706px);position:relative;z-index:2;height:clamp(240px,26vw,380px);perspective:1650px;perspective-origin:50% 50%;
   -webkit-mask:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent);mask:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent)}
 .ring .rotor{position:absolute;left:50%;top:50%;width:1px;height:1px;transform-style:preserve-3d;cursor:var(--drag);transform:translateZ(var(--r)) rotateY(var(--spin,0deg))}
 .ring .panel{position:absolute;left:0;top:0;width:var(--w);height:calc(var(--w)*.625);margin-left:calc(var(--w)*-.5);margin-top:calc(var(--w)*-.3125);
   border-radius:16px;overflow:hidden;border:1px solid var(--border);background:#0d0d0d;
-  transform:rotateY(calc(var(--i)*45deg)) translateZ(var(--r)) rotateY(180deg);backface-visibility:hidden}
+  transform:rotateY(calc(var(--i)*30deg)) translateZ(var(--r)) rotateY(180deg);backface-visibility:hidden}
 .ring .panel video{width:100%;height:100%;object-fit:cover}
-@media(max-width:760px){.ring{--w:clamp(150px,44vw,220px);--r:clamp(180px,52vw,270px);perspective:1000px;height:clamp(220px,56vw,300px)}}
+@media(max-width:760px){.ring{--w:clamp(130px,34vw,190px);--r:clamp(256px,67vw,380px);perspective:1420px;height:clamp(190px,44vw,260px)}}
 
 /* AI removes / doesn't */
 .ai .split{display:grid;grid-template-columns:1fr 1fr;gap:clamp(26px,4vw,64px);margin-top:clamp(30px,4vw,54px)}
@@ -283,7 +283,7 @@ footer{border-top:1px solid var(--border);padding:48px 0 40px;position:relative;
 
 <!-- HERO -->
 <section class="hero" id="top">
-  <video autoplay muted loop playsinline preload="auto" poster="assets/img/hero-poster.jpg"><source src="assets/video/hero.mp4" type="video/mp4"></video>
+  <video autoplay muted loop playsinline preload="auto" poster="assets/img/hero2-poster.jpg"><source src="assets/video/hero2.mp4" type="video/mp4"></video>
   <div class="veil"></div>
   <div class="hero-in">
     <h1><span class="ln"><b>PUNCH</b></span><span class="ln"><b>LUNCH<span class="fx">.</span></b></span></h1>
@@ -322,14 +322,18 @@ footer{border-top:1px solid var(--border);padding:48px 0 40px;position:relative;
 <div class="reel" id="reel">
   <div class="ring reveal">
     <div class="rotor" id="rotor">
-      <div class="panel" style="--i:0"><video data-lazy="assets/video/reel1.mp4" poster="assets/img/reel1.jpg" muted loop playsinline></video></div>
-      <div class="panel" style="--i:1"><video data-lazy="assets/video/reel2.mp4" poster="assets/img/reel2.jpg" muted loop playsinline></video></div>
-      <div class="panel" style="--i:2"><video data-lazy="assets/video/reel3.mp4" poster="assets/img/reel3.jpg" muted loop playsinline></video></div>
-      <div class="panel" style="--i:3"><video data-lazy="assets/video/reel4.mp4" poster="assets/img/reel4.jpg" muted loop playsinline></video></div>
-      <div class="panel" style="--i:4"><video data-lazy="assets/video/reel5.mp4" poster="assets/img/reel5.jpg" muted loop playsinline></video></div>
-      <div class="panel" style="--i:5"><video data-lazy="assets/video/reel6.mp4" poster="assets/img/reel6.jpg" muted loop playsinline></video></div>
-      <div class="panel" style="--i:6"><video data-lazy="assets/video/reel7.mp4" poster="assets/img/reel7.jpg" muted loop playsinline></video></div>
-      <div class="panel" style="--i:7"><video data-lazy="assets/video/reel8.mp4" poster="assets/img/reel8.jpg" muted loop playsinline></video></div>
+      <div class="panel" style="--i:0"><video class="rv" data-lazy="assets/video/reel1.mp4" poster="assets/img/reel1.jpg" muted loop playsinline></video></div>
+      <div class="panel" style="--i:1"><video class="rv" data-lazy="assets/video/nr1.mp4" poster="assets/img/nr1.jpg" muted loop playsinline></video></div>
+      <div class="panel" style="--i:2"><video class="rv" data-lazy="assets/video/reel2.mp4" poster="assets/img/reel2.jpg" muted loop playsinline></video></div>
+      <div class="panel" style="--i:3"><video class="rv" data-lazy="assets/video/reel3.mp4" poster="assets/img/reel3.jpg" muted loop playsinline></video></div>
+      <div class="panel" style="--i:4"><video class="rv" data-lazy="assets/video/nr2.mp4" poster="assets/img/nr2.jpg" muted loop playsinline></video></div>
+      <div class="panel" style="--i:5"><video class="rv" data-lazy="assets/video/reel4.mp4" poster="assets/img/reel4.jpg" muted loop playsinline></video></div>
+      <div class="panel" style="--i:6"><video class="rv" data-lazy="assets/video/reel5.mp4" poster="assets/img/reel5.jpg" muted loop playsinline></video></div>
+      <div class="panel" style="--i:7"><video class="rv" data-lazy="assets/video/nr3.mp4" poster="assets/img/nr3.jpg" muted loop playsinline></video></div>
+      <div class="panel" style="--i:8"><video class="rv" data-lazy="assets/video/reel6.mp4" poster="assets/img/reel6.jpg" muted loop playsinline></video></div>
+      <div class="panel" style="--i:9"><video class="rv" data-lazy="assets/video/reel7.mp4" poster="assets/img/reel7.jpg" muted loop playsinline></video></div>
+      <div class="panel" style="--i:10"><video class="rv" data-lazy="assets/video/nr4.mp4" poster="assets/img/nr4.jpg" muted loop playsinline></video></div>
+      <div class="panel" style="--i:11"><video class="rv" data-lazy="assets/video/reel8.mp4" poster="assets/img/reel8.jpg" muted loop playsinline></video></div>
     </div>
   </div>
 </div>
@@ -366,10 +370,10 @@ footer{border-top:1px solid var(--border);padding:48px 0 40px;position:relative;
     <div class="head"><div class="eyebrow">What we make</div></div>
     <div class="bento">
       <article class="tile lg spot reveal"><video data-lazy="assets/video/reel1.mp4" poster="assets/img/reel1.jpg" muted loop playsinline></video><div class="grad"></div><div class="meta"><span class="tag">Brand commercials</span><h3>The hero spot.</h3><p>30 or 60 seconds that make your company look like it plays in a bigger league than it pays for.</p></div></article>
-      <article class="tile w2 spot reveal" data-d="1"><video data-lazy="assets/video/reel5.mp4" poster="assets/img/reel5.jpg" muted loop playsinline></video><div class="grad"></div><div class="meta"><span class="tag">Product spots</span><h3>Your product shot like the star of a summer blockbuster.</h3><p>Especially satisfying if your product drives through swamps, flies or otherwise refuses to sit still.</p></div></article>
-      <article class="tile w2 spot reveal" data-d="2"><video data-lazy="assets/video/reel7.mp4" poster="assets/img/reel7.jpg" muted loop playsinline></video><div class="grad"></div><div class="meta"><span class="tag">Launch campaigns</span><h3>The full volley for a new product or market:</h3><p>hero spot, cutdowns, formats for every platform, all from one shoot that never physically happened.</p></div></article>
+      <article class="tile w2 spot reveal" data-d="1"><video data-lazy="assets/video/nb1.mp4" poster="assets/img/nb1.jpg" muted loop playsinline></video><div class="grad"></div><div class="meta"><span class="tag">Product spots</span><h3>Your product shot like the star of a summer blockbuster.</h3><p>Especially satisfying if your product drives through swamps, flies or otherwise refuses to sit still.</p></div></article>
+      <article class="tile w2 spot reveal" data-d="2"><video data-lazy="assets/video/nb2.mp4" poster="assets/img/nb2.jpg" muted loop playsinline></video><div class="grad"></div><div class="meta"><span class="tag">Launch campaigns</span><h3>The full volley for a new product or market:</h3><p>hero spot, cutdowns, formats for every platform, all from one shoot that never physically happened.</p></div></article>
       <article class="tile w3 spot reveal"><video data-lazy="assets/video/reel3.mp4" poster="assets/img/reel3.jpg" muted loop playsinline></video><div class="grad"></div><div class="meta"><span class="tag">Concept ads</span><h3>The thing that doesn't exist yet, advertised as if it does.</h3><p>Investors and pre-orders respond better to seeing the future than reading about it.</p></div></article>
-      <article class="tile w3 spot reveal" data-d="1"><video data-lazy="assets/video/reel8.mp4" poster="assets/img/reel8.jpg" muted loop playsinline></video><div class="grad"></div><div class="meta"><span class="tag">Short-form volleys</span><h3>6 to 15 seconds, built for feeds, loud on mute.</h3><p>The stuff that does the numbers.</p></div></article>
+      <article class="tile w3 spot reveal" data-d="1"><video data-lazy="assets/video/nb3.mp4" poster="assets/img/nb3.jpg" muted loop playsinline></video><div class="grad"></div><div class="meta"><span class="tag">Short-form volleys</span><h3>6 to 15 seconds, built for feeds, loud on mute.</h3><p>The stuff that does the numbers.</p></div></article>
     </div>
   </div>
 </section>
@@ -464,7 +468,7 @@ document.querySelectorAll('a[href^="#"]').forEach(a=>a.addEventListener('click',
 const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{rootMargin:'0px 0px -8% 0px',threshold:.1});
 document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
 const vio=new IntersectionObserver(es=>es.forEach(e=>{const v=e.target;if(e.isIntersecting){if(v.dataset.lazy&&!v.src){v.src=v.dataset.lazy;v.load()}v.play&&v.play().catch(()=>{})}else v.pause&&v.pause()}),{rootMargin:'150px',threshold:.05});
-document.querySelectorAll('video[data-lazy]').forEach(v=>vio.observe(v));
+document.querySelectorAll('video[data-lazy]:not(.rv)').forEach(v=>vio.observe(v));
 const secMap=[...document.querySelectorAll('#sectnav a')].map(a=>({a,el:document.querySelector(a.getAttribute('href'))})).filter(o=>o.el);
 const snObs=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)secMap.forEach(o=>o.a.classList.toggle('on',o.el===e.target))}),{rootMargin:'-45% 0px -45% 0px'});secMap.forEach(o=>snObs.observe(o.el));
 const spot=document.getElementById('spot');
@@ -480,7 +484,12 @@ if(matchMedia('(hover:hover)').matches){
   let angle=0,vel=0,drag=false,lastX=0,lastT=0;const AUTO=reduce?0:.09;
   const apply=()=>rotor.style.setProperty('--spin',angle+'deg');
   let _vis=true;try{new IntersectionObserver(es=>{_vis=es[0].isIntersecting},{rootMargin:'140px'}).observe(ring)}catch(e){}
-  (function f(){requestAnimationFrame(f);if(!_vis)return;if(!drag){angle+=AUTO+vel;vel*=.95;if(Math.abs(vel)<.001)vel=0}apply();})();
+    const rvs=[...rotor.querySelectorAll('.panel')].map(p=>({v:p.querySelector('video'),i:parseFloat(p.style.getPropertyValue('--i'))||0}));
+  function cull(){rvs.forEach(o=>{const v=o.v;if(!v)return;const d=((angle+o.i*30-180)%360+540)%360-180;const on=_vis&&Math.abs(d)<=62;
+    if(on){if(v.dataset.lazy&&!v.src){v.src=v.dataset.lazy;v.load()}if(v.paused)v.play().catch(()=>{})}else if(!v.paused)v.pause()})}
+  let _cn=0;
+  (function f(){requestAnimationFrame(f);if(!_vis){if(_cn!==-1){_cn=-1;cull()}return}if(_cn<0)_cn=0;if(!drag){angle+=AUTO+vel;vel*=.95;if(Math.abs(vel)<.001)vel=0}apply();if((++_cn%10)===0)cull();})();
+  cull();
   const gx=e=>e.touches?e.touches[0].clientX:e.clientX;
   rotor.addEventListener('pointerdown',e=>{drag=true;lastX=gx(e);vel=0;lastT=performance.now()});
   addEventListener('pointermove',e=>{if(!drag)return;const x=gx(e),n=performance.now(),dx=x-lastX,dt=Math.max(n-lastT,1),da=dx*.22;angle+=da;vel=da/dt*16;lastX=x;lastT=n},{passive:true});
